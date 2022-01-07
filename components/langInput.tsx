@@ -1,7 +1,7 @@
 import Kuroshiro from 'kuroshiro'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import React, { useState, useEffect } from 'react';
-import styles from '../styles/Home.module.css'
+import styles from '../styles/langInput.module.css'
 
 const toFurigana = async (text: String) => {
   const kuroshiro = new Kuroshiro()
@@ -16,24 +16,33 @@ const toFurigana = async (text: String) => {
 const LangInput = () => {
   useEffect(() => {
   })
-  
+
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = async () => {
-    setIsLoading(true)
-    setOutput(await toFurigana(input))
-    setInput('')
-    setIsLoading(false)
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(event.target.value)
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement> ) => {
+    event.preventDefault()
+    if (input) {
+      setIsLoading(true)
+      setOutput(await toFurigana(input))
+      setInput('')
+      setIsLoading(false)
+    }
   }
 
   return (
     <div className={styles.container}>
-      {isLoading && 'loading...'}
-      <div dangerouslySetInnerHTML={{ __html: output }}></div>
-      <input type="text" onInput={input => setInput(input.target.value)} />
-      <button onClick={async () => handleSubmit()}>click</button>
+      <form onSubmit={event => handleSubmit(event)}>
+        <input type="text" value={input} onChange={event => handleInput(event)} />
+        <button type="submit">click</button>
+        {isLoading && 'loading...'}
+        <div dangerouslySetInnerHTML={{ __html: output }}></div>
+      </form>
     </div >
   )
 }
