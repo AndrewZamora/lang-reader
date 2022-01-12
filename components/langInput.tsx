@@ -1,13 +1,32 @@
 import Kuroshiro from 'kuroshiro'
+import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/langInput.module.css'
 
+const DICT_PATH = '/static/dict/'
+
+const initTokenizer = () => {
+  return new Promise((reject,resolve)=>{
+    Kuromoji.builder({dicPath: '/static/dict/'}).build(function(error, _tokenizer){
+       console.log(error)
+      if(error !== null) { 
+        console.log(error)
+        return reject(error)
+      }
+      console.log(_tokenizer)
+      resolve(_tokenizer)
+    })
+  });
+}
+
 const toFurigana = async (text: String) => {
+  const tokenizer = await initTokenizer()
+  console.log(await tokenizer.tokenize(text))
   const kuroshiro = new Kuroshiro()
   await kuroshiro.init(new KuromojiAnalyzer({
     // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
-    dictPath: '/static/dict/',
+    dictPath: DICT_PATH,
   }))
   const furigana = await kuroshiro.convert(text, { mode: "furigana", to: "hiragana" }).catch(err => console.log(err))
   return furigana
