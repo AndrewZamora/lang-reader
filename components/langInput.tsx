@@ -7,15 +7,10 @@ import styles from '../styles/langInput.module.css'
 const DICT_PATH = '/static/dict/'
 
 const initTokenizer = () => {
-  return new Promise((reject,resolve)=>{
-    Kuromoji.builder({dicPath: '/static/dict/'}).build(function(error, _tokenizer){
-       console.log(error)
-      if(error !== null) { 
-        console.log(error)
-        return reject(error)
-      }
-      console.log(_tokenizer)
-      resolve(_tokenizer)
+  return new Promise((resolve, reject) => {
+    Kuromoji.builder({ dicPath: DICT_PATH }).build((error, tokenizer) => {
+      if (error) return reject(error)
+      resolve(tokenizer)
     })
   });
 }
@@ -44,7 +39,7 @@ const LangInput = () => {
     setInput(event.target.value)
   }
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement> ) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (input) {
       setIsLoading(true)
