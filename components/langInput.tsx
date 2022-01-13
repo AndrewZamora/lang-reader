@@ -1,12 +1,12 @@
 import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from '../styles/langInput.module.css'
 
 const DICT_PATH = '/static/dict/'
 
-const initTokenizer = () => {
+const initTokenizer = (): Promise<object> => {
   return new Promise((resolve, reject) => {
     Kuromoji.builder({ dicPath: DICT_PATH }).build((error, tokenizer) => {
       if (error) return reject(error)
@@ -16,8 +16,6 @@ const initTokenizer = () => {
 }
 
 const toFurigana = async (text: String) => {
-  const tokenizer = await initTokenizer()
-  console.log(await tokenizer.tokenize(text))
   const kuroshiro = new Kuroshiro()
   await kuroshiro.init(new KuromojiAnalyzer({
     // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
@@ -28,9 +26,16 @@ const toFurigana = async (text: String) => {
 }
 
 const LangInput = () => {
+  const setUpTokenizer = useCallback(async () => {
+    const newTokenizer = await initTokenizer()
+    setTokenizer(newTokenizer)
+  }, []);
+
   useEffect(() => {
+    setUpTokenizer()
   })
 
+  const [tokenizer, setTokenizer] = useState<object | null>(null)
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -43,6 +48,10 @@ const LangInput = () => {
     event.preventDefault()
     if (input) {
       setIsLoading(true)
+      if (tokenizer) {
+        const tokens = await tokenizer.tokenize(input)
+        console.log(tokens)
+      }
       setOutput(await toFurigana(input))
       setInput('')
       setIsLoading(false)
