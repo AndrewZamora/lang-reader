@@ -36,6 +36,7 @@ const LangInput = () => {
   })
 
   const [tokenizer, setTokenizer] = useState<object | null>(null)
+  const [tokens, setTokens] = useState([])
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -51,6 +52,7 @@ const LangInput = () => {
       if (tokenizer) {
         const tokens = await tokenizer.tokenize(input)
         console.log(tokens)
+        setTokens(tokens)
       }
       setOutput(await toFurigana(input))
       setInput('')
@@ -65,6 +67,7 @@ const LangInput = () => {
         <button type="submit">click</button>
         {isLoading && 'loading...'}
         <div dangerouslySetInnerHTML={{ __html: output }}></div>
+        <div>{tokens.length > 0 && tokens.map(token => token.reading ? token.reading : '')}</div>
       </form>
     </div >
   )
