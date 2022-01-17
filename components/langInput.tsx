@@ -15,32 +15,36 @@ const initTokenizer = (): Promise<object> => {
   });
 }
 
-const toFurigana = async (text: String) => {
-  const kuroshiro = new Kuroshiro()
-  await kuroshiro.init(new KuromojiAnalyzer({
-    // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
-    dictPath: DICT_PATH,
-  }))
-  const furigana = await kuroshiro.convert(text, { mode: "furigana", to: "hiragana" }).catch(err => console.log(err))
-  return furigana
-}
 
 const LangInput = () => {
-  const setUpTokenizer = useCallback(async () => {
-    const newTokenizer = await initTokenizer()
-    setTokenizer(newTokenizer)
+  const setUp = useCallback(async () => {
+    const newKuroshiro = new Kuroshiro()
+    await newKuroshiro.init(new KuromojiAnalyzer({
+      // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
+      dictPath: DICT_PATH,
+    }))
+    // const newTokenizer = await initTokenizer()
+    // setTokenizer(newTokenizer)
+    setKuroshiro(newKuroshiro)
   }, []);
 
   useEffect(() => {
-    setUpTokenizer()
+    setUp()
   })
 
-  const [tokenizer, setTokenizer] = useState<object | null>(null)
+  // const [tokenizer, setTokenizer] = useState<object | null>(null)
+  const [kuroshiro, setKuroshiro] = useState<object | null>(null)
   const [tokens, setTokens] = useState([])
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
+  const toFurigana = async (text: String) => {
+    if (kuroshiro) {
+      const furigana = await kuroshiro.convert(text, { mode: "furigana", to: "hiragana" }).catch(err => console.log(err))
+      return furigana
+    }
+  }
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value)
   }
@@ -49,11 +53,11 @@ const LangInput = () => {
     event.preventDefault()
     if (input) {
       setIsLoading(true)
-      if (tokenizer) {
-        const tokens = await tokenizer.tokenize(input)
-        console.log(tokens)
-        setTokens(tokens)
-      }
+      // if (tokenizer) {
+      //   const tokens = await tokenizer.tokenize(input)
+      //   console.log(tokens)
+      //   setTokens(tokens)
+      // }
       setOutput(await toFurigana(input))
       setInput('')
       setIsLoading(false)
