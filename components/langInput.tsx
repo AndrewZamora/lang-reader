@@ -39,12 +39,13 @@ const LangInput = () => {
   const [output, setOutput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const toFurigana = async (text: String) => {
+  const convertTo = async (mode: String, text: String) => {
     if (kuroshiro) {
-      const furigana = await kuroshiro.convert(text, { mode: "furigana", to: "hiragana" }).catch(err => console.log(err))
+      const furigana = await kuroshiro.convert(text, { mode }).catch(err => console.log(err))
       return furigana
     }
   }
+
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value)
   }
@@ -58,7 +59,10 @@ const LangInput = () => {
       //   console.log(tokens)
       //   setTokens(tokens)
       // }
-      setOutput(await toFurigana(input))
+      const okurigana = await convertTo("okurigana", input)
+      console.log(okurigana)
+      const newOutput = okurigana.split("")
+      setOutput(newOutput)
       setInput('')
       setIsLoading(false)
     }
