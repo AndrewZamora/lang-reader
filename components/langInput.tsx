@@ -18,32 +18,42 @@ const initTokenizer = (): Promise<object> => {
 
 const LangInput = () => {
   const setUp = useCallback(async () => {
-    const newKuroshiro = new Kuroshiro()
-    await newKuroshiro.init(new KuromojiAnalyzer({
-      // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
-      dictPath: DICT_PATH,
-    }))
+    // const newKuroshiro = new Kuroshiro()
+    // await newKuroshiro.init(new KuromojiAnalyzer({
+    //   // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
+    //   dictPath: DICT_PATH,
+    // }))
     // const newTokenizer = await initTokenizer()
     // setTokenizer(newTokenizer)
-    setKuroshiro(newKuroshiro)
+    // setKuroshiro(newKuroshiro)
+    const newSegmenterJa = new Intl.Segmenter('ja-JP', { granularity: 'word' });
+    setSegmenterJa(newSegmenterJa)
   }, []);
 
   useEffect(() => {
+    if(segmenterJa) return
     setUp()
   })
 
   // const [tokenizer, setTokenizer] = useState<object | null>(null)
   const [kuroshiro, setKuroshiro] = useState<object | null>(null)
+  const [segmenterJa, setSegmenterJa] = useState<object | null>(null)
   const [tokens, setTokens] = useState([])
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   const convertTo = async (mode: String, text: String) => {
-    if (kuroshiro) {
-      const furigana = await kuroshiro.convert(text, { mode }).catch(err => console.log(err))
-      return furigana
+    // if (kuroshiro) {
+    //   const furigana = await kuroshiro.convert(text, { mode }).catch(err => console.log(err))
+    //   return furigana
+    // }
+    if(segmenterJa) {
+      const segments = segmenterJa.segment(text)
+      console.table(Array.from(segments));
+      console.log(segmenterJa,segments)
     }
+    return "test"
   }
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,9 +69,7 @@ const LangInput = () => {
       //   console.log(tokens)
       //   setTokens(tokens)
       // }
-      const okurigana = await convertTo("okurigana", input)
-      console.log(okurigana)
-      const newOutput = okurigana.split("")
+      const newOutput = await convertTo("okurigana", input)
       setOutput(newOutput)
       setInput('')
       setIsLoading(false)
