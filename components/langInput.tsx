@@ -52,8 +52,12 @@ const LangInput = () => {
       const segments = segmenterJa.segment(text)
       console.table(Array.from(segments));
       console.log(segmenterJa,segments)
+      const htmlString = Array.from(segments).map((segment) =>{
+        return `<span style="border: solid 1px blue">${segment.segment}</span>`
+      }).join("")
+      return htmlString
     }
-    return "test"
+    return ''
   }
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +87,6 @@ const LangInput = () => {
         <button type="submit">click</button>
         {isLoading && 'loading...'}
         <div dangerouslySetInnerHTML={{ __html: output }}></div>
-        <div>{tokens.length > 0 && tokens.map(token => token.reading ? token.reading : '')}</div>
       </form>
     </div >
   )
