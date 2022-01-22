@@ -1,3 +1,7 @@
 .container {
   display: flex;
 }
+
+.segment {
+  border: lightblue solid 1px;
+}

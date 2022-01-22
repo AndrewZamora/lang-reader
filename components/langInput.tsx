@@ -53,7 +53,10 @@ const LangInput = () => {
       console.table(Array.from(segments));
       console.log(segmenterJa,segments)
       const htmlString = Array.from(segments).map((segment) =>{
-        return `<span style="border: solid 1px blue">${segment.segment}</span>`
+        if(segment.segment && segment.isWordLike) {
+          return `<span class="${styles.segment}">${segment.segment}</span>`
+        }
+        return segment.segment
       }).join("")
       return htmlString
     }
