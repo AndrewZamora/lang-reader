@@ -52,9 +52,9 @@ const LangInput = () => {
       const segments = segmenterJa.segment(text)
       console.table(Array.from(segments));
       console.log(segmenterJa,segments)
-      const htmlString = Array.from(segments).map((segment) =>{
+      const htmlString = Array.from(segments).map((segment, index) =>{
         if(segment.segment && segment.isWordLike) {
-          return `<span class="${styles.segment}">${segment.segment}</span>`
+          return `<span ref="${segment.segment}${index}" onMouseOver={console.log(this.refs)} class="${styles.segment}">${segment.segment}</span>`
         }
         return segment.segment
       }).join("")
