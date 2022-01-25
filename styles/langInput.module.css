@@ -4,4 +4,9 @@
 
 .segment {
   border: lightblue solid 1px;
+  cursor: pointer;
+}
+
+.segment:hover {
+  background: lightblue;
 }

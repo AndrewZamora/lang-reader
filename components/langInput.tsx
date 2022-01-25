@@ -52,15 +52,18 @@ const LangInput = () => {
       const segments = segmenterJa.segment(text)
       console.table(Array.from(segments));
       console.log(segmenterJa,segments)
+      const handleClick = (segment) => {
+        console.log(segment, 'test')
+      }
       const htmlString = Array.from(segments).map((segment, index) =>{
         if(segment.segment && segment.isWordLike) {
-          return `<span ref="${segment.segment}${index}" onMouseOver={console.log(this.refs)} class="${styles.segment}">${segment.segment}</span>`
+          return <span key={segment.segment} onMouseOver={console.log(segment.segment)} onClick={()=>handleClick(segment.segment)} className={styles.segment}>{segment.segment}</span>
         }
         return segment.segment
-      }).join("")
+      })
       return htmlString
     }
-    return ''
+    return [<span></span>]
   }
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +92,7 @@ const LangInput = () => {
         <input type="text" value={input} onChange={event => handleInput(event)} />
         <button type="submit">click</button>
         {isLoading && 'loading...'}
-        <div dangerouslySetInnerHTML={{ __html: output }}></div>
+        {output && output.map(item => item)}
       </form>
     </div >
   )
