@@ -42,6 +42,7 @@ const LangInput = () => {
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [selection, setSelection] = useState('')
 
   const convertTo = async (mode: String, text: String) => {
     // if (kuroshiro) {
@@ -53,7 +54,7 @@ const LangInput = () => {
       console.table(Array.from(segments));
       console.log(segmenterJa,segments)
       const handleClick = (segment) => {
-        console.log(segment, 'test')
+        setSelection(segment)
       }
       const htmlString = Array.from(segments).map((segment, index) =>{
         if(segment.segment && segment.isWordLike) {
@@ -94,6 +95,9 @@ const LangInput = () => {
         {isLoading && 'loading...'}
         {output && output.map(item => item)}
       </form>
+      <div>
+        {selection && selection}
+      </div>
     </div >
   )
 }
