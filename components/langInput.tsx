@@ -18,20 +18,20 @@ const initTokenizer = (): Promise<object> => {
 
 const LangInput = () => {
   const setUp = useCallback(async () => {
-    // const newKuroshiro = new Kuroshiro()
-    // await newKuroshiro.init(new KuromojiAnalyzer({
-    //   // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
-    //   dictPath: DICT_PATH,
-    // }))
+    const newKuroshiro = new Kuroshiro()
+    await newKuroshiro.init(new KuromojiAnalyzer({
+      // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
+      dictPath: DICT_PATH,
+    }))
     // const newTokenizer = await initTokenizer()
     // setTokenizer(newTokenizer)
-    // setKuroshiro(newKuroshiro)
+    setKuroshiro(newKuroshiro)
     const newSegmenterJa = new Intl.Segmenter('ja-JP', { granularity: 'word' });
     setSegmenterJa(newSegmenterJa)
   }, []);
 
   useEffect(() => {
-    if(segmenterJa) return
+    if (segmenterJa) return
     setUp()
   })
 
@@ -49,16 +49,21 @@ const LangInput = () => {
     //   const furigana = await kuroshiro.convert(text, { mode }).catch(err => console.log(err))
     //   return furigana
     // }
-    if(segmenterJa) {
+    if (segmenterJa) {
       const segments = segmenterJa.segment(text)
       console.table(Array.from(segments));
-      console.log(segmenterJa,segments)
-      const handleClick = (segment) => {
+      console.log(segmenterJa, segments)
+      const handleClick = async (segment) => {
+        if (kuroshiro) {
+          console.log("kuroshiro", kuroshiro)
+          const furigana = await kuroshiro.convert(segment, { mode: "furigana", to: "hiragana" }).catch(err => console.log(err))
+          console.log(furigana)
+        }
         setSelection(segment)
       }
-      const htmlString = Array.from(segments).map((segment, index) =>{
-        if(segment.segment && segment.isWordLike) {
-          return <span key={segment.segment} onMouseOver={console.log(segment.segment)} onClick={()=>handleClick(segment.segment)} className={styles.segment}>{segment.segment}</span>
+      const htmlString = Array.from(segments).map((segment, index) => {
+        if (segment.segment && segment.isWordLike) {
+          return <span key={segment.segment} onClick={() => handleClick(segment.segment)} className={styles.segment}>{segment.segment}</span>
         }
         return segment.segment
       })
