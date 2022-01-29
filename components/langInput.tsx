@@ -42,7 +42,7 @@ const LangInput = () => {
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [selection, setSelection] = useState('')
+  const [selection, setSelection] = useState<object | null>(null)
 
   const convertTo = async (mode: String, text: String) => {
     // if (kuroshiro) {
@@ -56,10 +56,10 @@ const LangInput = () => {
       const handleClick = async (segment) => {
         if (kuroshiro) {
           console.log("kuroshiro", kuroshiro)
-          const furigana = await kuroshiro.convert(segment, { mode: "furigana", to: "hiragana" }).catch(err => console.log(err))
-          console.log(furigana)
+          const hiragana = await kuroshiro.convert(segment, { mode: "normal", to: "hiragana" }).catch(err => console.log(err))
+          console.log(hiragana)
+          setSelection({segment,hiragana})
         }
-        setSelection(segment)
       }
       const htmlString = Array.from(segments).map((segment, index) => {
         if (segment.segment && segment.isWordLike) {
@@ -101,7 +101,7 @@ const LangInput = () => {
         {output && output.map(item => item)}
       </form>
       <div>
-        {selection && selection}
+        {selection && `${selection.segment} ${selection.hiragana}`}
       </div>
     </div >
   )
