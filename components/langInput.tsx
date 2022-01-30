@@ -16,7 +16,7 @@ const initTokenizer = (): Promise<object> => {
 }
 
 
-const LangInput = () => {
+const LangInput = ({handleOutput}) => {
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
     await newKuroshiro.init(new KuromojiAnalyzer({
@@ -26,6 +26,7 @@ const LangInput = () => {
     // const newTokenizer = await initTokenizer()
     // setTokenizer(newTokenizer)
     setKuroshiro(newKuroshiro)
+    // Can only use Intl.Segmenter on chrome
     const newSegmenterJa = new Intl.Segmenter('ja-JP', { granularity: 'word' });
     setSegmenterJa(newSegmenterJa)
   }, []);
@@ -57,8 +58,7 @@ const LangInput = () => {
         if (kuroshiro) {
           console.log("kuroshiro", kuroshiro)
           const hiragana = await kuroshiro.convert(segment, { mode: "normal", to: "hiragana" }).catch(err => console.log(err))
-          console.log(hiragana)
-          setSelection({segment,hiragana})
+          setSelection({ segment, hiragana })
         }
       }
       const htmlString = Array.from(segments).map((segment, index) => {
@@ -73,6 +73,7 @@ const LangInput = () => {
   }
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleOutput(event.target.value)
     setInput(event.target.value)
   }
 
@@ -98,8 +99,10 @@ const LangInput = () => {
         <input type="text" value={input} onChange={event => handleInput(event)} />
         <button type="submit">click</button>
         {isLoading && 'loading...'}
-        {output && output.map(item => item)}
       </form>
+      <div>
+        {output && output.map(item => item)}
+      </div>
       <div>
         {selection && `${selection.segment} ${selection.hiragana}`}
       </div>
