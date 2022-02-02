@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
-import LangInput from '../components/langInput'
+import LangInput from '../components/LangInput'
+import Selection from '../components/Selection'
 import styles from '../styles/Home.module.css'
 import React, { useState, useEffect, useCallback } from 'react';
 import Kuroshiro from 'kuroshiro'
@@ -16,6 +17,7 @@ const Home: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [selection, setSelection] = useState<object | null>(null)
   const [showForm, setShowForm] = useState(true)
+  const [flashCards, setFlashCards] = useState([])
 
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
@@ -60,8 +62,12 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       {isLoading && 'loading...'}
       {(showForm && !isLoading) && <LangInput handleOutput={output => handleOutput(output)}></LangInput>}
-      {userInput && allSegments.map((segment, index) => <span key={`${Date.now()}${index}`} onClick={() => handleClick(segment.segment)}>{`${segment.segment}`}</span>)}
-      {selection && selection.hiragana}
+      <div className={styles.content}>
+        <div>
+        {userInput && allSegments.map((segment, index) => <span className={styles.segment} key={`${Date.now()}${index}`} onClick={() => handleClick(segment.segment)}>{`${segment.segment}`}</span>)}
+        </div>
+        {selection && <Selection word={selection} onAddToDeck={(card)=> setFlashCards([...flashCards, card]) }></Selection>}
+      </div>
     </div>
   )
 }
