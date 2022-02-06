@@ -5,7 +5,7 @@ interface SelectionProps {
     segment: string,
     hiragana: string,
   },
-  onAddToDeck(word: object):void;
+  onAddToDeck(word: object): void,
 }
 
 const Selection = (props: SelectionProps) => {

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import styles from '../styles/LangInput.module.css'
 
-const LangInput = ({ handleOutput }) => {
+interface LangInputProps {
+  handleOutput(output: string): void,
+}
+
+const LangInput = (props: LangInputProps) => {
+  const { handleOutput } = props
   const [input, setInput] = useState('')
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
