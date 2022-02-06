@@ -66,7 +66,7 @@ const Home: NextPage = () => {
         <div>
         {userInput && allSegments.map((segment, index) => <span className={styles.segment} key={`${Date.now()}${index}`} onClick={() => handleClick(segment.segment)}>{`${segment.segment}`}</span>)}
         </div>
-        {selection && <Selection word={selection} onAddToDeck={(card)=> setFlashCards([...flashCards, card]) }></Selection>}
+        {selection && <Selection whitelist={flashCards.map(segment => segment.segment)} word={selection} onAddToDeck={(card)=> setFlashCards([...flashCards, card]) }></Selection>}
       </div>
     </div>
   )
