@@ -2,11 +2,12 @@ import type { NextPage } from 'next'
 import LangInput from '../components/LangInput'
 import Selection from '../components/Selection'
 import styles from '../styles/Home.module.css'
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'
 import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
-
+import AnkiExport from 'anki-apkg-export'
+import { saveAs } from 'file-saver'
 const DICT_PATH = '/static/dict/'
 
 const Home: NextPage = () => {
@@ -58,15 +59,36 @@ const Home: NextPage = () => {
     }
   }
 
+  const exportAnkiDeck = async (flashcards) => {
+    let deckName = "testDeck"
+    const apkg = new AnkiExport(deckName)
+    // flashCards.forEach((card) => {
+    //   const {
+    //     segment: front,
+    //     hiragana: back,
+    //   } = card
+    //   apkg.addCard(front, back)
+    // });
+    // const zip = await apkg
+    //   .save()
+    //   .catch((err) => console.log(err.stack || err))
+    // saveAs(zip, `${deckName}.apkg`)
+    // console.log("done")
+  }
+
   return (
     <div className={styles.container}>
       {isLoading && 'loading...'}
       {(showForm && !isLoading) && <LangInput handleOutput={output => handleOutput(output)}></LangInput>}
       <div className={styles.content}>
         <div>
-        {userInput && allSegments.map((segment, index) => <span className={styles.segment} key={`${Date.now()}${index}`} onClick={() => handleClick(segment.segment)}>{`${segment.segment}`}</span>)}
+          {userInput && allSegments.map((segment, index) => <span className={styles.segment} key={`${Date.now()}${index}`} onClick={() => handleClick(segment.segment)}>{`${segment.segment}`}</span>)}
         </div>
-        {selection && <Selection whitelist={flashCards.map(segment => segment.segment)} word={selection} onAddToDeck={(card)=> setFlashCards([...flashCards, card]) }></Selection>}
+        {selection && <Selection whitelist={flashCards.map(segment => segment.segment)} word={selection} onAddToDeck={(card) => setFlashCards([...flashCards, card])}></Selection>}
+        <div>
+          {flashCards.length > 0 && flashCards.map(segment => <span>{segment.segment}</span>)}
+        </div>
+        <button onClick={()=>exportAnkiDeck(flashCards)}>create anki cards</button>
       </div>
     </div>
   )
