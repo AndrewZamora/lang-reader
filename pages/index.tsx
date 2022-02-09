@@ -6,8 +6,6 @@ import React, { useState, useEffect, useCallback } from 'react'
 import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
-import AnkiExport from 'anki-apkg-export'
-import { saveAs } from 'file-saver'
 const DICT_PATH = '/static/dict/'
 
 const Home: NextPage = () => {
@@ -60,8 +58,8 @@ const Home: NextPage = () => {
   }
 
   const exportAnkiDeck = async (flashcards) => {
-    let deckName = "testDeck"
-    const apkg = new AnkiExport(deckName)
+    // let deckName = "testDeck"
+    // const apkg = new AnkiExport(deckName)
     // flashCards.forEach((card) => {
     //   const {
     //     segment: front,
