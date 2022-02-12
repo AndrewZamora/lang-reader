@@ -31,9 +31,9 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const file = await exportAnkiDeck([{ segment: 'test', hiragana: 'てすと' }])
-  res.writeHead(200, {
-    "Content-Type": "application/octet-stream",
-    "Content-Disposition": "attachment; filename=" + 'test.apkg'
-  })
+  // res.writeHead(200, {
+  //   "Content-Type": "application/octet-stream",
+  //   "Content-Disposition": "attachment; filename=" + 'test.apkg'
+  // }).send(file)
   res.send(file)
 }

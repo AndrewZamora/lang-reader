@@ -6,6 +6,8 @@ import React, { useState, useEffect, useCallback } from 'react'
 import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
+import { saveAs } from 'file-saver'
+
 const DICT_PATH = '/static/dict/'
 
 const Home: NextPage = () => {
@@ -58,20 +60,10 @@ const Home: NextPage = () => {
   }
 
   const exportAnkiDeck = async (flashcards) => {
-    // let deckName = "testDeck"
-    // const apkg = new AnkiExport(deckName)
-    // flashCards.forEach((card) => {
-    //   const {
-    //     segment: front,
-    //     hiragana: back,
-    //   } = card
-    //   apkg.addCard(front, back)
-    // });
-    // const zip = await apkg
-    //   .save()
-    //   .catch((err) => console.log(err.stack || err))
-    // saveAs(zip, `${deckName}.apkg`)
-    // console.log("done")
+    const response = await fetch('api/ankicards')
+    console.log("response",response)
+    const blob = await response.blob()
+    saveAs(blob, "test.apkg")
   }
 
   return (
