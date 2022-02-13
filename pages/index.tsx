@@ -60,10 +60,11 @@ const Home: NextPage = () => {
   }
 
   const exportAnkiDeck = async (flashcards) => {
-    const response = await fetch('api/ankicards')
+    const deckName = "testdeckname"
+    const response = await fetch(`api/ankicards?deckName=${deckName}`)
     console.log("response",response)
     const blob = await response.blob()
-    saveAs(blob, "test.apkg")
+    saveAs(blob, `${deckName}.apkg`)
   }
 
   return (
