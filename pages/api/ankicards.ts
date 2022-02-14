@@ -6,10 +6,10 @@ type Data = {
   name: string
 }
 
-const exportAnkiDeck = async (flashcards, deckName) => {
+const exportAnkiDeck = async (flashCards, deckName) => {
   const apkg = new AnkiExport(deckName)
   console.log("apkg", apkg)
-  flashcards.forEach((card) => {
+  flashCards.forEach((card) => {
     const {
       segment: front,
       hiragana: back,
@@ -27,8 +27,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { deckName } = req.query
-  const file = await exportAnkiDeck([{ segment: 'test', hiragana: 'てすと' }], deckName)
+  const { deckName, flashCards } = req.body
+  console.log({flashCards, deckName})
+  const file = await exportAnkiDeck(flashCards, deckName)
   // res.writeHead(200, {
   //   "Content-Type": "application/octet-stream",
   //   "Content-Disposition": "attachment; filename=" + 'test.apkg'

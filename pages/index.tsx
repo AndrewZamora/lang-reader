@@ -28,7 +28,7 @@ const Home: NextPage = () => {
     }))
     setKuroshiro(newKuroshiro)
     // Can only use Intl.Segmenter on chrome
-    const newSegmenterJa = new Intl.Segmenter('ja-JP', { granularity: 'word' });
+    const newSegmenterJa = new Intl.Segmenter('ja-JP', { granularity: 'word' })
     setSegmenterJa(newSegmenterJa)
   }, [])
 
@@ -59,10 +59,18 @@ const Home: NextPage = () => {
     }
   }
 
-  const exportAnkiDeck = async (flashcards) => {
-    const deckName = "testdeckname"
-    const response = await fetch(`api/ankicards?deckName=${deckName}`)
-    console.log("response",response)
+  const exportAnkiDeck = async (flashCards) => {
+    const deckName = "testdeckname2"
+    const url = `api/ankicards`
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({ flashCards, deckName }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    const response = await fetch(url, options).catch(error => console.log(error))
+    console.log("response", response)
     const blob = await response.blob()
     saveAs(blob, `${deckName}.apkg`)
   }
@@ -79,7 +87,7 @@ const Home: NextPage = () => {
         <div>
           {flashCards.length > 0 && flashCards.map(segment => <span>{segment.segment}</span>)}
         </div>
-        <button onClick={()=>exportAnkiDeck(flashCards)}>create anki cards</button>
+        <button onClick={() => exportAnkiDeck(flashCards)}>create anki cards</button>
       </div>
     </div>
   )
