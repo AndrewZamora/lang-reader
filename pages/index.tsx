@@ -18,7 +18,7 @@ const Home: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [selection, setSelection] = useState<object | null>(null)
   const [showForm, setShowForm] = useState(true)
-  const [flashCards, setFlashCards] = useState([])
+  const [flashCards, setFlashCards] = useState<{ segment: string, hiragana: string }[] | []>([])
 
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
@@ -59,7 +59,7 @@ const Home: NextPage = () => {
     }
   }
 
-  const exportAnkiDeck = async (flashCards) => {
+  const exportAnkiDeck = async (flashCards: { segment: string, hiragana: string }[]) => {
     const deckName = "testdeckname2"
     const url = `api/ankicards`
     const options = {
@@ -70,7 +70,6 @@ const Home: NextPage = () => {
       }
     }
     const response = await fetch(url, options).catch(error => console.log(error))
-    console.log("response", response)
     const blob = await response.blob()
     saveAs(blob, `${deckName}.apkg`)
   }
