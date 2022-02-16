@@ -18,6 +18,7 @@ const Home: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [selection, setSelection] = useState<object | null>(null)
   const [showForm, setShowForm] = useState(true)
+  const [deckName, setDeckName] = useState('')
   const [flashCards, setFlashCards] = useState<{ segment: string, hiragana: string }[] | []>([])
 
   const setUp = useCallback(async () => {
@@ -59,8 +60,7 @@ const Home: NextPage = () => {
     }
   }
 
-  const exportAnkiDeck = async (flashCards: { segment: string, hiragana: string }[]) => {
-    const deckName = "testdeckname2"
+  const exportAnkiDeck = async (flashCards: { segment: string, hiragana: string }[], deckName: string) => {
     const url = `api/ankicards`
     const options = {
       method: 'POST',
@@ -86,7 +86,7 @@ const Home: NextPage = () => {
         <div>
           {flashCards.length > 0 && flashCards.map(segment => <span>{segment.segment}</span>)}
         </div>
-        <button onClick={() => exportAnkiDeck(flashCards)}>create anki cards</button>
+        <button onClick={() => exportAnkiDeck(flashCards, deckName ? deckName : 'deck')}>create anki cards</button>
       </div>
     </div>
   )
