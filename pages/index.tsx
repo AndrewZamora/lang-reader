@@ -84,7 +84,7 @@ const Home: NextPage = () => {
         </div>
         {selection && <Selection whitelist={flashCards.map(segment => segment.segment)} word={selection} onAddToDeck={(card) => setFlashCards([...flashCards, card])}></Selection>}
         <div>
-          {flashCards.length > 0 && flashCards.map(segment => <span>{segment.segment}</span>)}
+          {flashCards.length > 0 && flashCards.map(segment => <span key={segment.segment}>{segment.segment}</span>)}
         </div>
         <button onClick={() => exportAnkiDeck(flashCards, deckName ? deckName : 'deck')}>create anki cards</button>
       </div>
