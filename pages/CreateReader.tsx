@@ -4,7 +4,7 @@ import LangInput from '../components/LangInput'
 import type { NextPage } from 'next'
 
 const CreateReader: NextPage = () => {
-  const [deckName, setDeckName] = useState('')
+  const [readerName, setReaderName] = useState('')
   const [showForm, setShowForm] = useState(false)
 
   const handleOutput = (output: string) => {
@@ -15,12 +15,12 @@ const CreateReader: NextPage = () => {
     setShowForm(true)
   }
 
-  const getDeckName = () => {
+  const getReaderName = () => {
     if (showForm) return
     return (
       <div>
         Deck Name
-        <input type="text" value={deckName} onChange={event => setDeckName(event.target.value)} />
+        <input type="text" value={readerName} onChange={event => setReaderName(event.target.value)} />
         <button onClick={() => handleOnClick() }>next</button>
       </div>
     )
@@ -28,7 +28,7 @@ const CreateReader: NextPage = () => {
 
   return (
     <div>
-      {getDeckName()}
+      {getReaderName()}
       {showForm && <LangInput handleOutput={output => handleOutput(output)}></LangInput>}
     </div>
   )

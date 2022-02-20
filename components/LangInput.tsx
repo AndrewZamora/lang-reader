@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styles from '../styles/LangInput.module.css'
 import DOMPurify from 'dompurify'
+import styles from '../styles/LangInput.module.css'
 interface LangInputProps {
   handleOutput(output: string): void,
 }
@@ -23,8 +23,8 @@ const LangInput = (props: LangInputProps) => {
   return (
     <div className={styles.container}>
       <form onSubmit={event => handleSubmit(event)}>
-        <input type="text" value={input} onChange={event => handleInput(event)} />
-        <button type="submit">click</button>
+        <textarea value={input} cols={50} rows={50} onChange={event => handleInput(event)}></textarea>
+        <button type="submit">Submit</button>
       </form>
     </div >
   )
