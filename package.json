@@ -8,6 +8,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.8.1",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.4.2",
     "anki-apkg-export": "^4.0.3",
     "dompurify": "^2.3.6",
     "file-saver": "^2.0.5",
