@@ -7,6 +7,8 @@ import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import { saveAs } from 'file-saver'
+import Button from '@mui/material/Button';
+
 
 const DICT_PATH = '/static/dict/'
 
@@ -76,6 +78,9 @@ const Home: NextPage = () => {
 
   return (
     <div className={styles.container}>
+      <Button color="secondary" variant="text">Text</Button>
+<Button color="primary" variant="contained">Contained</Button>
+<Button variant="outlined">Outlined</Button>
       {isLoading && 'loading...'}
       {(showForm && !isLoading) && <LangInput handleOutput={output => handleOutput(output)}></LangInput>}
       <div className={styles.content}>
