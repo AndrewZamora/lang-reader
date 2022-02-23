@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import LangInput from '../components/LangInput'
 import type { NextPage } from 'next'
+import Container from '@mui/material/Container'
 
 const CreateReader: NextPage = () => {
   const [readerName, setReaderName] = useState('')
@@ -27,10 +28,10 @@ const CreateReader: NextPage = () => {
   }
 
   return (
-    <div>
+ <Container maxWidth="lg">
       {getReaderName()}
       {showForm && <LangInput handleOutput={output => handleOutput(output)}></LangInput>}
-    </div>
+  </Container>
   )
 }
 

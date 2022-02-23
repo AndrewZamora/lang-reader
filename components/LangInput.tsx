@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import DOMPurify from 'dompurify'
 import styles from '../styles/LangInput.module.css'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 interface LangInputProps {
   handleOutput(output: string): void,
 }
@@ -21,12 +23,18 @@ const LangInput = (props: LangInputProps) => {
   }
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={event => handleSubmit(event)}>
-        <textarea value={input} cols={50} rows={50} onChange={event => handleInput(event)}></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div >
+    <form onSubmit={event => handleSubmit(event)}>
+      <TextField
+        id="filled-multiline-static"
+        label="Reader Text"
+        multiline
+        rows={50}
+        variant="filled"
+        onChange={event => handleInput(event)}
+        value={input}
+      />
+      <Button type="submit">Submit</Button>
+    </form>
   )
 }
 

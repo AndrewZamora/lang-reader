@@ -78,9 +78,6 @@ const Home: NextPage = () => {
 
   return (
     <div className={styles.container}>
-      <Button color="secondary" variant="text">Text</Button>
-<Button color="primary" variant="contained">Contained</Button>
-<Button variant="outlined">Outlined</Button>
       {isLoading && 'loading...'}
       {(showForm && !isLoading) && <LangInput handleOutput={output => handleOutput(output)}></LangInput>}
       <div className={styles.content}>
