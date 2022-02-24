@@ -28,7 +28,8 @@ const CreateReader: NextPage = () => {
   }
 
   return (
- <Container maxWidth="lg">
+  <Container maxWidth="lg">
+    <h2>Create Reader</h2>
       {getReaderName()}
       {showForm && <LangInput handleOutput={output => handleOutput(output)}></LangInput>}
   </Container>
