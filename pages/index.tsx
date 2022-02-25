@@ -8,6 +8,15 @@ import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import { saveAs } from 'file-saver'
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container'
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import PrintIcon from '@mui/icons-material/Print';
+import ShareIcon from '@mui/icons-material/Share';
+import { CreateSharp } from '@mui/icons-material'
 
 
 const DICT_PATH = '/static/dict/'
@@ -76,21 +85,42 @@ const Home: NextPage = () => {
     saveAs(blob, `${deckName}.apkg`)
   }
 
+  const actions = [
+  { icon: <CreateSharp />, name: 'Create Reader' },
+];
+
   return (
-    <div className={styles.container}>
-      {isLoading && 'loading...'}
-      {(showForm && !isLoading) && <LangInput handleOutput={output => handleOutput(output)}></LangInput>}
-      <div className={styles.content}>
-        <div>
-          {userInput && allSegments.map((segment, index) => <span className={styles.segment} key={`${Date.now()}${index}`} onClick={() => handleClick(segment.segment)}>{`${segment.segment}`}</span>)}
-        </div>
-        {selection && <Selection whitelist={flashCards.map(segment => segment.segment)} word={selection} onAddToDeck={(card) => setFlashCards([...flashCards, card])}></Selection>}
-        <div>
-          {flashCards.length > 0 && flashCards.map(segment => <span key={segment.segment}>{segment.segment}</span>)}
-        </div>
-        <button onClick={() => exportAnkiDeck(flashCards, deckName ? deckName : 'deck')}>create anki cards</button>
-      </div>
-    </div>
+    // <div className={styles.container}>
+    //   {isLoading && 'loading...'}
+    //   {(showForm && !isLoading) && <LangInput handleOutput={output => handleOutput(output)}></LangInput>}
+    //   <div className={styles.content}>
+    //     <div>
+    //       {userInput && allSegments.map((segment, index) => <span className={styles.segment} key={`${Date.now()}${index}`} onClick={() => handleClick(segment.segment)}>{`${segment.segment}`}</span>)}
+    //     </div>
+    //     {selection && <Selection whitelist={flashCards.map(segment => segment.segment)} word={selection} onAddToDeck={(card) => setFlashCards([...flashCards, card])}></Selection>}
+    //     <div>
+    //       {flashCards.length > 0 && flashCards.map(segment => <span key={segment.segment}>{segment.segment}</span>)}
+    //     </div>
+    //     <button onClick={() => exportAnkiDeck(flashCards, deckName ? deckName : 'deck')}>create anki cards</button>
+    //   </div>
+    // </div>
+
+    <Container maxWidth="lg">
+      <h2> All Readers</h2>
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: 'absolute', bottom: 16, right: 16 }}
+        icon={<SpeedDialIcon />}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+          />
+        ))}
+      </SpeedDial>
+    </Container>
   )
 }
 
