@@ -13,10 +13,8 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import PrintIcon from '@mui/icons-material/Print';
-import ShareIcon from '@mui/icons-material/Share';
 import { CreateSharp } from '@mui/icons-material'
+import { useRouter } from 'next/router'
 
 
 const DICT_PATH = '/static/dict/'
@@ -84,10 +82,10 @@ const Home: NextPage = () => {
     const blob = await response.blob()
     saveAs(blob, `${deckName}.apkg`)
   }
-
+  const router = useRouter()
   const actions = [
-  { icon: <CreateSharp />, name: 'Create Reader' },
-];
+  { icon: <CreateSharp />, name: 'Create Reader', onClick: ()=> { router.push('/CreateReader')} },
+]
 
   return (
     // <div className={styles.container}>
@@ -117,6 +115,7 @@ const Home: NextPage = () => {
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
+            onClick={()=>action.onClick()}
           />
         ))}
       </SpeedDial>
