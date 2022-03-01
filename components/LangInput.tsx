@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { makeStyles } from '@mui/styles'
 import { Grid } from '@mui/material'
+import FormControl from '@mui/material/FormControl'
 interface LangInputProps {
   handleOutput(output: string): void,
 }
@@ -12,6 +13,7 @@ interface LangInputProps {
 const LangInput = (props: LangInputProps) => {
   const { handleOutput } = props
   const [input, setInput] = useState('')
+  const [name, setName] = useState('')
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value)
@@ -35,22 +37,26 @@ const LangInput = (props: LangInputProps) => {
   return (
     <div>
       <form noValidate autoComplete='off' onSubmit={event => handleSubmit(event)}>
-        <TextField
-          id="filled-multiline-static"
-          label="Reader Text"
-          multiline
-          rows={50}
-          variant="outlined"
-          onChange={event => handleInput(event)}
-          value={input}
-          fullWidth
-        />
+        <FormControl fullWidth sx={{ m: 1 }}>
+          <TextField id="reader-name-input" label="Reader Name" variant="outlined" />
+          <TextField
+            id="filled-multiline-static"
+            label="Reader Text"
+            multiline
+            variant="outlined"
+            minRows={20}
+            onChange={event => handleInput(event)}
+            value={input}
+            fullWidth
+          />
+        </FormControl>
         <Grid
           container
           direction="row"
           justifyContent="flex-end"
         >
-          <Button  variant="outlined" className={classes.btn} type="submit">Submit</Button>
+          <Button variant="outlined" className={classes.btn}>Cancel</Button>
+          <Button variant="outlined" className={classes.btn} type="submit">Create</Button>
         </Grid>
       </form>
     </div>

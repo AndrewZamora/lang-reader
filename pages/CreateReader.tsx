@@ -5,11 +5,12 @@ import type { NextPage } from 'next'
 import Container from '@mui/material/Container'
 import Kuroshiro from 'kuroshiro'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 
 const DICT_PATH = '/static/dict/'
 
 const CreateReader: NextPage = () => {
-  const [readerName, setReaderName] = useState('')
   const [userInput, setUserInput] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [segmenterJa, setSegmenterJa] = useState<object | null>(null)
@@ -46,29 +47,18 @@ const CreateReader: NextPage = () => {
   const handleOutput = async (output: string) => {
     setUserInput(output)
     createSegments(output)
-    console.log({allSegments})
+    console.log({ allSegments })
   }
 
   const handleOnClick = () => {
     setShowForm(true)
   }
 
-  const getReaderName = () => {
-    if (showForm) return
-    return (
-      <div>
-        Deck Name
-        <input type="text" value={readerName} onChange={event => setReaderName(event.target.value)} />
-        <button onClick={() => handleOnClick()}>next</button>
-      </div>
-    )
-  }
 
   return (
     <Container maxWidth="lg">
       <h2>Create Reader</h2>
-      {getReaderName()}
-      {showForm && <LangInput handleOutput={output => handleOutput(output)}></LangInput>}
+      <LangInput handleOutput={output => handleOutput(output)}></LangInput>
     </Container>
   )
 }
