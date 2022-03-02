@@ -6,6 +6,7 @@ import Button from '@mui/material/Button'
 import { makeStyles } from '@mui/styles'
 import { Grid } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
+
 interface LangInputProps {
   handleOutput(output: string): void,
 }
@@ -18,10 +19,19 @@ const LangInput = (props: LangInputProps) => {
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value)
   }
+
+  const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value)
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (input) {
-      handleOutput(DOMPurify.sanitize(input))
+    if (input && name) {
+      const output = {
+        text: DOMPurify.sanitize(input),
+        name
+      }
+      handleOutput(output)
       setInput('')
     }
   }
@@ -38,7 +48,12 @@ const LangInput = (props: LangInputProps) => {
     <div>
       <form noValidate autoComplete='off' onSubmit={event => handleSubmit(event)}>
         <FormControl fullWidth sx={{ m: 1 }}>
-          <TextField id="reader-name-input" label="Reader Name" variant="outlined" />
+          <TextField
+          id="reader-name-input"
+          label="Reader Name"
+          variant="outlined"
+          onChange={event => handleName(event)}
+          />
           <TextField
             id="filled-multiline-static"
             label="Reader Text"

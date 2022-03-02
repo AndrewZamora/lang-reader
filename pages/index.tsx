@@ -19,6 +19,13 @@ import { useRouter } from 'next/router'
 
 const DICT_PATH = '/static/dict/'
 
+interface Reader {
+  name: string,
+  input: string,
+  lang: string,
+  segments: string[],
+}
+
 const Home: NextPage = () => {
   const [userInput, setUserInput] = useState('')
   const [segmenterJa, setSegmenterJa] = useState<object | null>(null)
@@ -29,6 +36,9 @@ const Home: NextPage = () => {
   const [showForm, setShowForm] = useState(true)
   const [deckName, setDeckName] = useState('')
   const [flashCards, setFlashCards] = useState<{ segment: string, hiragana: string }[] | []>([])
+  const [readers, setReaders] = useState<Reader[]>([])
+
+  setReaders([...readers, {name:'test',lang: 'ja', input:'', segments: []}])
 
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()

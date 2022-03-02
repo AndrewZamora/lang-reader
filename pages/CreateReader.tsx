@@ -43,17 +43,15 @@ const CreateReader: NextPage = () => {
       setAllSegments(Array.from(segments))
     }
   }
+  interface output {
+  text: string,
+  name: string
+}
 
-  const handleOutput = async (output: string) => {
-    setUserInput(output)
-    createSegments(output)
-    console.log({ allSegments })
+  const handleOutput = async (output: output) => {
+    setUserInput(output.text)
+    createSegments(output.text)
   }
-
-  const handleOnClick = () => {
-    setShowForm(true)
-  }
-
 
   return (
     <Container maxWidth="lg">
