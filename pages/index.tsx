@@ -36,9 +36,9 @@ const Home: NextPage = () => {
   const [showForm, setShowForm] = useState(true)
   const [deckName, setDeckName] = useState('')
   const [flashCards, setFlashCards] = useState<{ segment: string, hiragana: string }[] | []>([])
-  const [readers, setReaders] = useState<Reader[]>([])
+  const [readers, setReaders] = useState<Reader[]>([{name:'test',lang: 'ja', input:'', segments: []}])
 
-  setReaders([...readers, {name:'test',lang: 'ja', input:'', segments: []}])
+  // setReaders([...readers, {name:'test',lang: 'ja', input:'', segments: []}])
 
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
@@ -115,6 +115,9 @@ const Home: NextPage = () => {
 
     <Container maxWidth="lg">
       <h2> All Readers</h2>
+      {readers.map(reader => {
+        return <div>Name: {reader.name} Lang: {reader.lang}</div>
+      })}
       <SpeedDial
         ariaLabel="SpeedDial basic example"
         sx={{ position: 'absolute', bottom: 16, right: 16 }}
