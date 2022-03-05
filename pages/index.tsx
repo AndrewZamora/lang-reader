@@ -7,14 +7,10 @@ import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import { saveAs } from 'file-saver'
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container'
-import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import {Paper, Container, SpeedDial, SpeedDialIcon, SpeedDialAction,  } from '@mui/material/'
 import { CreateSharp } from '@mui/icons-material'
 import { useRouter } from 'next/router'
+import { makeStyles } from '@mui/styles'
 
 
 const DICT_PATH = '/static/dict/'
@@ -36,7 +32,7 @@ const Home: NextPage = () => {
   const [showForm, setShowForm] = useState(true)
   const [deckName, setDeckName] = useState('')
   const [flashCards, setFlashCards] = useState<{ segment: string, hiragana: string }[] | []>([])
-  const [readers, setReaders] = useState<Reader[]>([{name:'test',lang: 'ja', input:'', segments: []}])
+  const [readers, setReaders] = useState<Reader[]>([{ name: 'test', lang: 'ja', input: '', segments: [] }, { name: 'test2', lang: 'ja', input: '', segments: [] }])
 
   // setReaders([...readers, {name:'test',lang: 'ja', input:'', segments: []}])
 
@@ -94,9 +90,18 @@ const Home: NextPage = () => {
   }
   const router = useRouter()
   const actions = [
-  { icon: <CreateSharp />, name: 'Create Reader', onClick: ()=> { router.push('/CreateReader')} },
-]
-
+    { icon: <CreateSharp />, name: 'Create Reader', onClick: () => { router.push('/CreateReader') } },
+  ]
+  const useStyles = makeStyles({
+    readerItem: {
+      padding: '1em 1.5em',
+    },
+    readerContainer: {
+      marginBottom: '0.5em',
+      cursor: 'pointer'
+    }
+  })
+  const classes = useStyles()
   return (
     // <div className={styles.container}>
     //   {isLoading && 'loading...'}
@@ -116,7 +121,7 @@ const Home: NextPage = () => {
     <Container maxWidth="lg">
       <h2> All Readers</h2>
       {readers.map(reader => {
-        return <div>Name: {reader.name} Lang: {reader.lang}</div>
+        return <Paper className={classes.readerContainer} variant="outlined"><div className={classes.readerItem}>Name: {reader.name} Lang: {reader.lang}</div></Paper>
       })}
       <SpeedDial
         ariaLabel="SpeedDial basic example"
@@ -128,7 +133,7 @@ const Home: NextPage = () => {
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
-            onClick={()=>action.onClick()}
+            onClick={() => action.onClick()}
           />
         ))}
       </SpeedDial>
