@@ -1,11 +1,7 @@
 import React, { useState } from 'react'
 import DOMPurify from 'dompurify'
-import styles from '../styles/LangInput.module.css'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
 import { makeStyles } from '@mui/styles'
-import { Grid } from '@mui/material'
-import FormControl from '@mui/material/FormControl'
+import { Button, Grid, FormControl, TextField } from '@mui/material'
 
 interface LangInputProps {
   handleOutput(output: string): void,
@@ -49,10 +45,10 @@ const LangInput = (props: LangInputProps) => {
       <form noValidate autoComplete='off' onSubmit={event => handleSubmit(event)}>
         <FormControl fullWidth sx={{ m: 1 }}>
           <TextField
-          id="reader-name-input"
-          label="Reader Name"
-          variant="outlined"
-          onChange={event => handleName(event)}
+            id="reader-name-input"
+            label="Reader Name"
+            variant="outlined"
+            onChange={event => handleName(event)}
           />
           <TextField
             id="filled-multiline-static"

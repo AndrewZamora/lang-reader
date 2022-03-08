@@ -1,13 +1,10 @@
 import type { NextPage } from 'next'
-import LangInput from '../components/LangInput'
-import Selection from '../components/Selection'
-import styles from '../styles/Home.module.css'
 import React, { useState, useEffect, useCallback } from 'react'
 import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import { saveAs } from 'file-saver'
-import {Paper, Container, SpeedDial, SpeedDialIcon, SpeedDialAction,  } from '@mui/material/'
+import {Paper, Container, SpeedDial, SpeedDialIcon, SpeedDialAction,  } from '@mui/material'
 import { CreateSharp } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
@@ -103,21 +100,6 @@ const Home: NextPage = () => {
   })
   const classes = useStyles()
   return (
-    // <div className={styles.container}>
-    //   {isLoading && 'loading...'}
-    //   {(showForm && !isLoading) && <LangInput handleOutput={output => handleOutput(output)}></LangInput>}
-    //   <div className={styles.content}>
-    //     <div>
-    //       {userInput && allSegments.map((segment, index) => <span className={styles.segment} key={`${Date.now()}${index}`} onClick={() => handleClick(segment.segment)}>{`${segment.segment}`}</span>)}
-    //     </div>
-    //     {selection && <Selection whitelist={flashCards.map(segment => segment.segment)} word={selection} onAddToDeck={(card) => setFlashCards([...flashCards, card])}></Selection>}
-    //     <div>
-    //       {flashCards.length > 0 && flashCards.map(segment => <span key={segment.segment}>{segment.segment}</span>)}
-    //     </div>
-    //     <button onClick={() => exportAnkiDeck(flashCards, deckName ? deckName : 'deck')}>create anki cards</button>
-    //   </div>
-    // </div>
-
     <Container maxWidth="lg">
       <h2> All Readers</h2>
       {readers.map(reader => {
