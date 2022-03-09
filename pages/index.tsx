@@ -8,6 +8,7 @@ import {Paper, Container, SpeedDial, SpeedDialIcon, SpeedDialAction,  } from '@m
 import { CreateSharp } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
+import ListReaders from '../components/ListReaders'
 
 
 const DICT_PATH = '/static/dict/'
@@ -89,22 +90,10 @@ const Home: NextPage = () => {
   const actions = [
     { icon: <CreateSharp />, name: 'Create Reader', onClick: () => { router.push('/CreateReader') } },
   ]
-  const useStyles = makeStyles({
-    readerItem: {
-      padding: '1em 1.5em',
-    },
-    readerContainer: {
-      marginBottom: '0.5em',
-      cursor: 'pointer'
-    }
-  })
-  const classes = useStyles()
   return (
     <Container maxWidth="lg">
       <h2> All Readers</h2>
-      {readers.map(reader => {
-        return <Paper className={classes.readerContainer} variant="outlined"><div className={classes.readerItem}>Name: {reader.name} Lang: {reader.lang}</div></Paper>
-      })}
+      <ListReaders readers={readers}/>
       <SpeedDial
         ariaLabel="SpeedDial basic example"
         sx={{ position: 'absolute', bottom: 16, right: 16 }}
