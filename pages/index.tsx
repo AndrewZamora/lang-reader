@@ -32,8 +32,6 @@ const Home: NextPage = () => {
   const [flashCards, setFlashCards] = useState<{ segment: string, hiragana: string }[] | []>([])
   const [readers, setReaders] = useState<Reader[]>([{ name: 'test', lang: 'ja', input: '', segments: [] }, { name: 'test2', lang: 'ja', input: '', segments: [] }])
 
-  // setReaders([...readers, {name:'test',lang: 'ja', input:'', segments: []}])
-
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
     await newKuroshiro.init(new KuromojiAnalyzer({
@@ -90,12 +88,13 @@ const Home: NextPage = () => {
   const actions = [
     { icon: <CreateSharp />, name: 'Create Reader', onClick: () => { router.push('/CreateReader') } },
   ]
+
   return (
     <Container maxWidth="lg">
       <h2> All Readers</h2>
       <ListReaders readers={readers}/>
       <SpeedDial
-        ariaLabel="SpeedDial basic example"
+        ariaLabel="create reader"
         sx={{ position: 'absolute', bottom: 16, right: 16 }}
         icon={<SpeedDialIcon />}
       >

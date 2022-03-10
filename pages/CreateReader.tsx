@@ -41,6 +41,7 @@ const CreateReader: NextPage = () => {
     if (segmenterJa) {
       const segments = segmenterJa.segment(text)
       setAllSegments(Array.from(segments))
+      console.log({userInput, segments: allSegments})
     }
   }
   interface output {
