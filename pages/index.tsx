@@ -30,7 +30,7 @@ const Home: NextPage = () => {
   const [showForm, setShowForm] = useState(true)
   const [deckName, setDeckName] = useState('')
   const [flashCards, setFlashCards] = useState<{ segment: string, hiragana: string }[] | []>([])
-  const [readers, setReaders] = useState<Reader[]>([{ name: 'test', lang: 'ja', input: '', segments: [] }, { name: 'test2', lang: 'ja', input: '', segments: [] }])
+  const [readers, setReaders] = useState<Reader[]>([])
 
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
@@ -42,6 +42,14 @@ const Home: NextPage = () => {
     // Can only use Intl.Segmenter on chrome
     const newSegmenterJa = new Intl.Segmenter('ja-JP', { granularity: 'word' })
     setSegmenterJa(newSegmenterJa)
+  }, [])
+
+  useEffect(() => {
+    console.log("calls")
+    const storedReaders = localStorage.getItem('langReader')
+    if(storedReaders) {
+      setReaders(Object.values(JSON.parse(storedReaders)))
+    }
   }, [])
 
   useEffect(() => {

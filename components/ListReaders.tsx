@@ -20,7 +20,7 @@ export default function ListReaders(props: ListReadersProps) {
   const { readers } = props
   return readers.length ? (
     readers.map(reader => {
-      return <Paper className={classes.readerContainer} variant="outlined"><div className={classes.readerItem}>Name: {reader.name} Lang: {reader.lang}</div></Paper>
+      return <Paper key={reader.id} className={classes.readerContainer} variant="outlined"><div className={classes.readerItem}>Name: {reader.name} Lang: {reader.lang}</div></Paper>
     })
   ) : (<div>No readers</div>)
 }
