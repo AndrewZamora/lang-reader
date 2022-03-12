@@ -71,12 +71,16 @@ const Home: NextPage = () => {
     console.log(output)
   }
 
-  const handleClick = async (segment: string) => {
-    if (kuroshiro) {
-      console.log("kuroshiro", kuroshiro)
-      const hiragana = await kuroshiro.convert(segment, { mode: "normal", to: "hiragana" }).catch(err => console.log(err))
-      setSelection({ segment, hiragana })
-    }
+  // const handleClick = async (segment: string) => {
+  //   if (kuroshiro) {
+  //     console.log("kuroshiro", kuroshiro)
+  //     const hiragana = await kuroshiro.convert(segment, { mode: "normal", to: "hiragana" }).catch(err => console.log(err))
+  //     setSelection({ segment, hiragana })
+  //   }
+  // }
+
+  const handleClick = (id: string) => {
+    console.log(id)
   }
 
   const exportAnkiDeck = async (flashCards: { segment: string, hiragana: string }[], deckName: string) => {
@@ -100,7 +104,7 @@ const Home: NextPage = () => {
   return (
     <Container maxWidth="lg">
       <h2> All Readers</h2>
-      <ListReaders readers={readers}/>
+      <ListReaders readers={readers} handleClick={(id)=>handleClick(id)}/>
       <SpeedDial
         ariaLabel="create reader"
         sx={{ position: 'absolute', bottom: 16, right: 16 }}

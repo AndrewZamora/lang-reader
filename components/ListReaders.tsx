@@ -3,7 +3,8 @@ import { Paper } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 
 interface ListReadersProps {
-  readers: { name: string, lang: string, id: string }[]
+  readers: { name: string, lang: string, id: string }[],
+  handleClick: Function
 }
 
 export default function ListReaders(props: ListReadersProps) {
@@ -17,10 +18,10 @@ export default function ListReaders(props: ListReadersProps) {
     }
   })
   const classes = useStyles()
-  const { readers } = props
+  const { readers, handleClick } = props
   return readers.length ? (
     readers.map(reader => {
-      return <Paper key={reader.id} className={classes.readerContainer} variant="outlined"><div className={classes.readerItem}>Name: {reader.name} Lang: {reader.lang}</div></Paper>
+      return <Paper key={reader.id} onClick={()=>handleClick(reader.id)} className={classes.readerContainer} variant="outlined"><div className={classes.readerItem}>Name: {reader.name} Lang: {reader.lang}</div></Paper>
     })
   ) : (<div>No readers</div>)
 }
