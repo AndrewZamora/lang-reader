@@ -2,33 +2,22 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import type { NextPage } from 'next'
 import Container from '@mui/material/Container'
+import { useRouter } from 'next/router'
 
 
 const Reader: NextPage = () => {
+  const router = useRouter()
+  const { id } = router.query
+  const [reader, setReader] = useState<object | null>(null)
 
-const testData = {
-	"userInput": "知らんけど\n",
-		"segments": [
-			{
-				"segment": "知",
-				"index": 0,
-				"input": "知らんけど\n",
-				"isWordLike": true
-			},
-			{
-				"segment": "らん",
-				"index": 1,
-				"input": "知らんけど\n",
-				"isWordLike": true
-			},
-			{
-				"segment": "けど",
-				"index": 3,
-				"input": "知らんけど\n",
-				"isWordLike": true
-			}			
-		]
-}
+  useEffect(() => {
+    console.log("useEffect reader page")
+    const localData = localStorage.getItem(`langReader-${id}`)
+    const localReader  = JSON.parse(localData)
+    console.log(localReader)
+    setReader(localReader)
+  },[])
+
   return (
     <Container maxWidth="lg">
       <div>Reader Page</div>

@@ -31,6 +31,7 @@ const Home: NextPage = () => {
   const [deckName, setDeckName] = useState('')
   const [flashCards, setFlashCards] = useState<{ segment: string, hiragana: string }[] | []>([])
   const [readers, setReaders] = useState<Reader[]>([])
+  const [isSetUp, setIsSetUp] = useState(false)
 
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
@@ -42,20 +43,22 @@ const Home: NextPage = () => {
     // Can only use Intl.Segmenter on chrome
     const newSegmenterJa = new Intl.Segmenter('ja-JP', { granularity: 'word' })
     setSegmenterJa(newSegmenterJa)
+    setIsSetUp(true)
   }, [])
 
   useEffect(() => {
-    console.log("calls")
-    const storedReaders = localStorage.getItem('langReader')
+    console.log("useEffect 1 ")
+    const storedReaders = localStorage.getItem('langReaders')
     if(storedReaders) {
-      setReaders(Object.values(JSON.parse(storedReaders)))
+      setReaders(JSON.parse(storedReaders))
     }
   }, [])
 
   useEffect(() => {
+    console.log("useEffect 2")
     if (segmenterJa) return
     setUp()
-  })
+  }, [segmenterJa])
 
   const createSegments = (text: string) => {
     if (segmenterJa) {
@@ -81,6 +84,7 @@ const Home: NextPage = () => {
 
   const handleClick = (id: string) => {
     console.log(id)
+    router.push(`/Reader?id=${id}`)
   }
 
   const exportAnkiDeck = async (flashCards: { segment: string, hiragana: string }[], deckName: string) => {

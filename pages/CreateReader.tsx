@@ -8,6 +8,7 @@ import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { v4 as uuidv4 } from 'uuid'
+import { useRouter } from 'next/router'
 
 const DICT_PATH = '/static/dict/'
 
@@ -19,7 +20,7 @@ const CreateReader: NextPage = () => {
   const [kuroshiro, setKuroshiro] = useState<object | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [readerName, setReaderName] = useState('')
-
+  const router = useRouter()
   const setUp = useCallback(async () => {
     setIsLoading(true)
     const newKuroshiro = new Kuroshiro()
@@ -58,14 +59,16 @@ const CreateReader: NextPage = () => {
 
   useEffect(() => {
     // https://stackoverflow.com/questions/56247433/how-to-use-setstate-callback-on-react-hooks
-    console.log("useEffect RAN", allSegments)
     if (allSegments.length) {
       let readers 
       const reader = { name: readerName, lang: 'ja', input: userInput, segments: allSegments, id: uuidv4() }
-      const data = localStorage.getItem('langReader')
-      readers = data ? JSON.parse(data) : {}
-      readers[reader.id] = reader
-      localStorage.setItem('langReader', JSON.stringify(readers))
+      const {input, segments, ...readerNoInputOrSegments} = reader;
+      const data = localStorage.getItem('langReaders')
+      readers = data ? JSON.parse(data) : []
+      readers = [...readers, readerNoInputOrSegments]
+      localStorage.setItem('langReaders', JSON.stringify(readers))
+      localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(reader) )
+      router.push('/')
     }
   }, [allSegments])
 
