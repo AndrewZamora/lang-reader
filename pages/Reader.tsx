@@ -21,8 +21,9 @@ const Reader: NextPage = () => {
   const useStyles = makeStyles({
     segment: {
       border: 'lightblue solid 1px',
+      borderRadius: "5px",
       cursor: 'pointer',
-      fontSize: '20px',
+      fontSize: '30px',
       '&:hover': {
         background: 'lightblue'
       }
