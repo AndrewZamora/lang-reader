@@ -87,6 +87,15 @@ const Home: NextPage = () => {
     router.push(`/Reader?id=${id}`)
   }
 
+  const deleteReader = (id: string) => {
+    const storedReaders = localStorage.getItem('langReaders')
+    const readers = JSON.parse(storedReaders)
+    const updatedReaders = readers.filter(reader => reader.id !== id)
+    setReaders(updatedReaders)
+    localStorage.setItem('langReaders', JSON.stringify(updatedReaders))
+    localStorage.removeItem(`langReader-${id}`)
+  }
+
   const exportAnkiDeck = async (flashCards: { segment: string, hiragana: string }[], deckName: string) => {
     const url = `api/ankicards`
     const options = {
@@ -108,7 +117,7 @@ const Home: NextPage = () => {
   return (
     <Container maxWidth="lg">
       <h2> All Readers</h2>
-      <ListReaders readers={readers} handleClick={(id)=>handleClick(id)}/>
+      <ListReaders readers={readers} handleClick={(id)=>handleClick(id)} handleDelete={(id) => deleteReader(id)}/>
       <SpeedDial
         ariaLabel="create reader"
         sx={{ position: 'absolute', bottom: 16, right: 16 }}
