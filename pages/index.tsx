@@ -4,7 +4,7 @@ import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import { saveAs } from 'file-saver'
-import {Paper, Container, SpeedDial, SpeedDialIcon, SpeedDialAction,  } from '@mui/material'
+import { Paper, Container, SpeedDial, SpeedDialIcon, SpeedDialAction, } from '@mui/material'
 import { CreateSharp } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
@@ -18,6 +18,7 @@ interface Reader {
   input: string,
   lang: string,
   segments: string[],
+  id: string
 }
 
 const Home: NextPage = () => {
@@ -49,7 +50,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     console.log("useEffect 1 ")
     const storedReaders = localStorage.getItem('langReaders')
-    if(storedReaders) {
+    if (storedReaders) {
       setReaders(JSON.parse(storedReaders))
     }
   }, [])
@@ -117,7 +118,10 @@ const Home: NextPage = () => {
   return (
     <Container maxWidth="lg">
       <h2> All Readers</h2>
-      <ListReaders readers={readers} handleClick={(id)=>handleClick(id)} handleDelete={(id) => deleteReader(id)}/>
+      <ListReaders
+        readers={readers}
+        handleClick={(id: string) => handleClick(id)}
+        handleDelete={(id: string) => deleteReader(id)} />
       <SpeedDial
         ariaLabel="create reader"
         sx={{ position: 'absolute', bottom: 16, right: 16 }}

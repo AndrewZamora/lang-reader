@@ -29,17 +29,23 @@ export default function ListReaders(props: ListReadersProps) {
     handleDelete(id)
   }
   const classes = useStyles()
-  return readers.length ? (
-    readers.map(reader => {
-      return <Paper key={reader.id} onClick={() => handleClick(reader.id)} className={classes.readerContainer} variant="outlined">
+  const list = () => {
+    return readers.map(reader => {
+      return (<Paper key={reader.id}
+        onClick={() => handleClick(reader.id)}
+        className={classes.readerContainer}
+        variant="outlined">
         <div className={classes.readerItem}>Name: {reader.name} Lang: {reader.lang}
           <div>
-            <IconButton aria-label="delete forever" onClick={(event) => deleteReader(event, reader.id)}>
+            <IconButton
+              aria-label="delete forever"
+              onClick={(event) => deleteReader(event, reader.id)}>
               <DeleteForever />
             </IconButton>
           </div>
         </div>
-      </Paper>
+      </Paper>)
     })
-  ) : (<div>No readers</div>)
+  }
+  return (<>{readers.length ? list() : (<div>No readers</div>)}</>)
 }

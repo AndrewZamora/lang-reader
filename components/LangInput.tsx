@@ -66,7 +66,7 @@ const LangInput = (props: LangInputProps) => {
             label="Reader Source"
             variant="outlined"
             onChange={event => handleSource(event)}
-            value={name}
+            value={source}
           />
           <TextField
             className={classes.input}
