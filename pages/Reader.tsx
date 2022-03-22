@@ -7,17 +7,19 @@ import { makeStyles } from '@mui/styles'
 
 const Reader: NextPage = () => {
   const router = useRouter()
-  const { id } = router.query
   const [reader, setReader] = useState<object | null>(null)
   const [selection, setSelection] = useState('')
 
   useEffect(() => {
+    const { id } = router.query
     console.log("useEffect reader page")
-    const localData = localStorage.getItem(`langReader-${id}`)
-    const localReader = JSON.parse(localData)
-    console.log(localReader, id)
-    setReader(localReader)
-  }, [])
+    if (id) {
+      const localData = localStorage.getItem(`langReader-${id}`)
+      const localReader = JSON.parse(localData)
+      console.log(localReader, id)
+      setReader(localReader)
+    }
+  }, [router])
 
   const useStyles = makeStyles({
     segment: {
@@ -29,27 +31,37 @@ const Reader: NextPage = () => {
         background: 'lightblue'
       }
     },
-    h2: {
-      border: "pink solid 2px"
+    selection: {
+      fontSize: "40px"
+    },
+    selectionContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%'
     }
   })
 
   const classes = useStyles()
-  const handleClick = (segment: string) => {
+  const handleClick = (segment) => {
     console.log(segment)
-    setSelection(segment)
+    setSelection(segment.segment)
   }
   return (
     <Container maxWidth="lg">
       <div>Reader Page</div>
-      <Grid container spacing={1} >
-        <Grid item xs={5}>
+      <Grid container spacing={1} justifyContent="center" >
+        <Grid item xs={6}>
           <Paper>
-            {reader && reader.segments.map((segment, index) => <span className={segment.isWordLike ? classes.segment : undefined} onClick={(() => handleClick(segment.segment))} key={segment.segment + index}>{segment.segment}</span>)}
+            {reader && reader.segments.map((segment, index) => <span className={segment.isWordLike ? classes.segment : undefined} onClick={(() => handleClick(segment))} key={segment.segment + index}>{segment.segment}</span>)}
           </Paper>
         </Grid>
-        <Grid item xs={4}>
-          <h2>{selection}</h2>
+        <Grid item xs={6}>
+          <Paper className={classes.selectionContainer}>
+
+            {selection && <p className={classes.selection}>{selection}</p>}
+
+          </Paper>
         </Grid>
 
       </Grid>
