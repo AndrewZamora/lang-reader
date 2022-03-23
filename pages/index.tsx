@@ -1,17 +1,11 @@
 import type { NextPage } from 'next'
 import React, { useState, useEffect, useCallback } from 'react'
-import Kuroshiro from 'kuroshiro'
-import Kuromoji from 'kuromoji'
-import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import { saveAs } from 'file-saver'
 import { Paper, Container, SpeedDial, SpeedDialIcon, SpeedDialAction, } from '@mui/material'
 import { CreateSharp } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
 import ListReaders from '../components/ListReaders'
-
-
-const DICT_PATH = '/static/dict/'
 
 interface Reader {
   name: string,
@@ -35,12 +29,6 @@ const Home: NextPage = () => {
   const [isSetUp, setIsSetUp] = useState(false)
 
   const setUp = useCallback(async () => {
-    const newKuroshiro = new Kuroshiro()
-    await newKuroshiro.init(new KuromojiAnalyzer({
-      // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
-      dictPath: DICT_PATH,
-    }))
-    setKuroshiro(newKuroshiro)
     // Can only use Intl.Segmenter on chrome
     const newSegmenterJa = new Intl.Segmenter('ja-JP', { granularity: 'word' })
     setSegmenterJa(newSegmenterJa)

@@ -4,11 +4,32 @@ import type { NextPage } from 'next'
 import { Paper, Container, Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
+import Kuroshiro from 'kuroshiro'
+import Kuromoji from 'kuromoji'
+import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
+import { Segment } from '@mui/icons-material'
+const DICT_PATH = '/static/dict/'
 
 const Reader: NextPage = () => {
   const router = useRouter()
   const [reader, setReader] = useState<object | null>(null)
-  const [selection, setSelection] = useState('')
+  const [selection, setSelection] = useState<object | null>(null)
+  const [kuroshiro, setKuroshiro] = useState<object | null>(null)
+
+  const setUp = useCallback(async () => {
+    const newKuroshiro = new Kuroshiro()
+    await newKuroshiro.init(new KuromojiAnalyzer({
+      // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
+      dictPath: DICT_PATH,
+    }))
+    setKuroshiro(newKuroshiro)
+  }, [])
+
+  useEffect(() => {
+    console.log("useEffect reader")
+    if (kuroshiro) return
+    setUp()
+  }, [kuroshiro])
 
   useEffect(() => {
     const { id } = router.query
@@ -36,6 +57,7 @@ const Reader: NextPage = () => {
     },
     selectionContainer: {
       display: 'flex',
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       height: '100%'
@@ -43,10 +65,24 @@ const Reader: NextPage = () => {
   })
 
   const classes = useStyles()
-  const handleClick = (segment) => {
-    console.log(segment)
-    setSelection(segment.segment)
+  const getFurigana = async (segment) => {
+    if (kuroshiro) {
+      const furigana = await kuroshiro.convert(segment, { to: 'hiragana' })
+      return furigana
+    } else {
+      return segment
+    }
   }
+  const handleClick = async (segment) => {
+    const furigana = await getFurigana(segment.segment)
+    let newSelection = {
+      word: segment.segment,
+      furigana
+    }
+    setSelection(newSelection)
+
+  }
+
   return (
     <Container maxWidth="lg">
       <div>Reader Page</div>
@@ -58,9 +94,8 @@ const Reader: NextPage = () => {
         </Grid>
         <Grid item xs={6}>
           <Paper className={classes.selectionContainer}>
-
-            {selection && <p className={classes.selection}>{selection}</p>}
-
+            {selection && <p className={classes.selection}>{selection.word}</p>}
+            {selection && <div>{selection.furigana}</div>}
           </Paper>
         </Grid>
 
