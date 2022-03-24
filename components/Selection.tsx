@@ -6,15 +6,15 @@ interface SelectionProps {
     hiragana: string,
   },
   whitelist:string[],
-  onAddToDeck(word: object): void,
+  onClick(word: object): void,
 }
 
 const Selection = (props: SelectionProps) => {
-  const { word, whitelist, onAddToDeck } = props
+  const { word, onClick } = props
   return <div>
     <h2>{word.segment}</h2>
     <p><span>Reading: </span>{word.hiragana}</p>
-    {!whitelist.includes(word.segment) && <button onClick={() => onAddToDeck(word)}>Add to Anki Deck</button>}
+    <button onClick={() => onClick(word)}>Add to Anki Deck</button>
   </div>
 }
 

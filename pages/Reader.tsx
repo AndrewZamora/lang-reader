@@ -8,6 +8,8 @@ import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import { Segment } from '@mui/icons-material'
+import Selection from '../components/Selection'
+
 const DICT_PATH = '/static/dict/'
 
 const Reader: NextPage = () => {
@@ -65,22 +67,21 @@ const Reader: NextPage = () => {
   })
 
   const classes = useStyles()
-  const getFurigana = async (segment) => {
+  const getHiragana = async (segment) => {
     if (kuroshiro) {
-      const furigana = await kuroshiro.convert(segment, { to: 'hiragana' })
-      return furigana
+      const hiragana = await kuroshiro.convert(segment, { to: 'hiragana' })
+      return hiragana
     } else {
       return segment
     }
   }
   const handleClick = async (segment) => {
-    const furigana = await getFurigana(segment.segment)
+    const hiragana = await getHiragana(segment.segment)
     let newSelection = {
-      word: segment.segment,
-      furigana
+      segment: segment.segment,
+      hiragana
     }
     setSelection(newSelection)
-
   }
 
   return (
@@ -94,8 +95,7 @@ const Reader: NextPage = () => {
         </Grid>
         <Grid item xs={6}>
           <Paper className={classes.selectionContainer}>
-            {selection && <p className={classes.selection}>{selection.word}</p>}
-            {selection && <div>{selection.furigana}</div>}
+            {selection && <Selection word={selection} onClick={(word) => console.log(word)} />}
           </Paper>
         </Grid>
 
