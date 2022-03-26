@@ -17,6 +17,7 @@ const Reader: NextPage = () => {
   const [reader, setReader] = useState<object | null>(null)
   const [selection, setSelection] = useState<object | null>(null)
   const [kuroshiro, setKuroshiro] = useState<object | null>(null)
+  const [deck, setDeck] = useState([])
 
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
@@ -41,6 +42,9 @@ const Reader: NextPage = () => {
       const localReader = JSON.parse(localData)
       console.log(localReader, id)
       setReader(localReader)
+      if (localReader.deck) {
+        setDeck(localReader.deck)
+      }
     }
   }, [router])
 
@@ -84,6 +88,28 @@ const Reader: NextPage = () => {
     setSelection(newSelection)
   }
 
+  const addToDeck = (word) => {
+    const deckUpdate = [...deck, word]
+    setDeck(deckUpdate)
+    const readerUpdate = { ...reader, deck: deckUpdate }
+    localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(readerUpdate))
+    const localData = localStorage.getItem(`langReader-${reader.id}`)
+    const localReader = JSON.parse(localData)
+    setReader(localReader)
+  }
+
+  const removeFromDeck = (word) => {
+    if (deck.length) {
+      const deckUpdate = deck.filter(card => card.segment !== word.segment)
+      setDeck(deckUpdate)
+      const readerUpdate = { ...reader, deck: deckUpdate }
+      localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(readerUpdate))
+      const localData = localStorage.getItem(`langReader-${reader.id}`)
+      const localReader = JSON.parse(localData)
+      setReader(localReader)
+    }
+  }
+
   return (
     <Container maxWidth="lg">
       <div>Reader Page</div>
@@ -95,7 +121,7 @@ const Reader: NextPage = () => {
         </Grid>
         <Grid item xs={6}>
           <Paper className={classes.selectionContainer}>
-            {selection && <Selection word={selection} onClick={(word) => console.log(word)} />}
+            {selection && <Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} />}
           </Paper>
         </Grid>
 

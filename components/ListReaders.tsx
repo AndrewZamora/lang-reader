@@ -35,7 +35,8 @@ export default function ListReaders(props: ListReadersProps) {
         onClick={() => handleClick(reader.id)}
         className={classes.readerContainer}
         variant="outlined">
-        <div className={classes.readerItem}>Name: {reader.name} Lang: {reader.lang}
+        <div className={classes.readerItem}>
+          <div>Name: {reader.name} Lang: {reader.lang}</div>
           <div>
             <IconButton
               aria-label="delete forever"
