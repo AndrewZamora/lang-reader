@@ -17,7 +17,7 @@ const Selection = (props: SelectionProps) => {
     <div>
       <h2>{word.segment}</h2>
       <p><span>Reading: </span>{word.hiragana}</p>
-      {deck.includes(word.segment) ? <Button variant="outlined" onClick={() => onRemove(word)}>Remove from Anki Deck</Button> : <Button variant="outlined" onClick={() => onAdd(word)}>Add to Anki Deck</Button>}
+      {deck.includes(word.segment) ? <Button variant="outlined" onClick={() => onRemove(word)}>Remove from flashcards</Button> : <Button variant="outlined" onClick={() => onAdd(word)}>Add to flashcards</Button>}
     </div>
   )
 }

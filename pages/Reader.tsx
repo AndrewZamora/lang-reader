@@ -1,13 +1,12 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
 import type { NextPage } from 'next'
-import { Paper, Container, Grid } from '@mui/material'
+import { Paper, Container, Grid, Tabs, Tab, Box  } from '@mui/material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
 import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
-import { Segment } from '@mui/icons-material'
 import Selection from '../components/Selection'
 
 const DICT_PATH = '/static/dict/'
@@ -18,6 +17,7 @@ const Reader: NextPage = () => {
   const [selection, setSelection] = useState<object | null>(null)
   const [kuroshiro, setKuroshiro] = useState<object | null>(null)
   const [deck, setDeck] = useState([])
+  const [tab, setTab] = useState(0)
 
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
@@ -110,9 +110,27 @@ const Reader: NextPage = () => {
     }
   }
 
+  const handleTab =(event, newTab) => {
+    setTab(newTab)
+  }
+
+  function a11yProps(index: number) {
+  return {
+    id: `reader-tab-${index}`,
+    'aria-controls': `reader-tabpanel-${index}`,
+  };
+}
+
   return (
     <Container maxWidth="lg">
-      <div>Reader Page</div>
+      <Box sx={{ width: '100%', paddingBottom: '20px' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={tab} onChange={handleTab} aria-label="reader tabs">
+          <Tab label="reader" {...a11yProps(0)} />
+          <Tab label="flashcards" {...a11yProps(1)} />
+        </Tabs>
+      </Box>
+      </Box>
       <Grid container spacing={1} justifyContent="center" >
         <Grid item xs={6}>
           <Paper>
