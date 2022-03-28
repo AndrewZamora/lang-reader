@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
 import type { NextPage } from 'next'
-import { Paper, Container, Grid, Tabs, Tab, Box  } from '@mui/material'
+import { Paper, Container, Grid, Tabs, Tab, Box } from '@mui/material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
 import Kuroshiro from 'kuroshiro'
@@ -110,40 +110,46 @@ const Reader: NextPage = () => {
     }
   }
 
-  const handleTab =(event, newTab) => {
+  const handleTab = (event, newTab) => {
     setTab(newTab)
   }
 
   function a11yProps(index: number) {
-  return {
-    id: `reader-tab-${index}`,
-    'aria-controls': `reader-tabpanel-${index}`,
-  };
-}
+    return {
+      id: `reader-tab-${index}`,
+      'aria-controls': `reader-tabpanel-${index}`,
+    };
+  }
 
   return (
     <Container maxWidth="lg">
       <Box sx={{ width: '100%', paddingBottom: '20px' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={tab} onChange={handleTab} aria-label="reader tabs">
-          <Tab label="reader" {...a11yProps(0)} />
-          <Tab label="flashcards" {...a11yProps(1)} />
-        </Tabs>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={tab} onChange={handleTab} aria-label="reader tabs">
+            <Tab label="reader" {...a11yProps(0)} />
+            <Tab label="flashcards" {...a11yProps(1)} />
+          </Tabs>
+        </Box>
       </Box>
-      </Box>
-      <Grid container spacing={1} justifyContent="center" >
-        <Grid item xs={6}>
-          <Paper>
-            {reader && reader.segments.map((segment, index) => <span className={segment.isWordLike ? classes.segment : undefined} onClick={(() => handleClick(segment))} key={segment.segment + index}>{segment.segment}</span>)}
-          </Paper>
+      { tab === 0 &&
+        <Grid container spacing={1} justifyContent="center" >
+          <Grid item xs={6}>
+            <Paper>
+              {reader && reader.segments.map((segment, index) => <span className={segment.isWordLike ? classes.segment : undefined} onClick={(() => handleClick(segment))} key={segment.segment + index}>{segment.segment}</span>)}
+            </Paper>
+          </Grid>
+          <Grid item xs={6}>
+            <Paper className={classes.selectionContainer}>
+              {selection && <Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} />}
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.selectionContainer}>
-            {selection && <Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} />}
-          </Paper>
-        </Grid>
-
-      </Grid>
+      }
+      {tab === 1 && 
+      <div>
+        {deck.map(card => card.segment)}
+      </div>
+      }
     </Container>
   )
 }
