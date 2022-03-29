@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
 import type { NextPage } from 'next'
-import { Paper, Container, Grid, Tabs, Tab, Box } from '@mui/material'
+import { Paper, Container, Grid, Tabs, Tab, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
 import Kuroshiro from 'kuroshiro'
@@ -131,7 +131,7 @@ const Reader: NextPage = () => {
           </Tabs>
         </Box>
       </Box>
-      { tab === 0 &&
+      {tab === 0 &&
         <Grid container spacing={1} justifyContent="center" >
           <Grid item xs={6}>
             <Paper>
@@ -145,10 +145,30 @@ const Reader: NextPage = () => {
           </Grid>
         </Grid>
       }
-      {tab === 1 && 
-      <div>
-        {deck.map(card => card.segment)}
-      </div>
+      {tab === 1 &&
+        <div>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left">Segment</TableCell>
+                  <TableCell align="left">Reading</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {deck.map((card) => (
+                  <TableRow
+                    key={card.segment}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell align="left">{card.segment}</TableCell>
+                    <TableCell align="left">{card.hiragana}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
       }
     </Container>
   )
