@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
 import type { NextPage } from 'next'
-import { Paper, Container, Grid, Tabs, Tab, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Quiz, Download } from '@mui/icons-material'
+import { Paper, Container, Grid, Tabs, Tab, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
 import Kuroshiro from 'kuroshiro'
@@ -67,6 +68,13 @@ const Reader: NextPage = () => {
       justifyContent: 'center',
       alignItems: 'center',
       height: '100%'
+    },
+    flashcardButtons: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+    flashcardButton: {
+      margin: '5px 5px 0 0'
     }
   })
 
@@ -148,6 +156,15 @@ const Reader: NextPage = () => {
       {tab === 1 &&
         <div>
           <TableContainer component={Paper}>
+            <div className={classes.flashcardButtons}>
+              <Button className={classes.flashcardButton} variant="contained" endIcon={<Quiz />}>
+                Review
+              </Button>
+              <Button className={classes.flashcardButton} variant="contained" endIcon={<Download />}>
+                Download
+              </Button>
+            </div>
+
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
