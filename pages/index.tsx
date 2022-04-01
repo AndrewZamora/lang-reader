@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import React, { useState, useEffect, useCallback } from 'react'
-import { saveAs } from 'file-saver'
 import { Paper, Container, SpeedDial, SpeedDialIcon, SpeedDialAction, } from '@mui/material'
 import { CreateSharp } from '@mui/icons-material'
 import { useRouter } from 'next/router'
@@ -85,19 +84,6 @@ const Home: NextPage = () => {
     localStorage.removeItem(`langReader-${id}`)
   }
 
-  const exportAnkiDeck = async (flashCards: { segment: string, hiragana: string }[], deckName: string) => {
-    const url = `api/ankicards`
-    const options = {
-      method: 'POST',
-      body: JSON.stringify({ flashCards, deckName }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-    const response = await fetch(url, options).catch(error => console.log(error))
-    const blob = await response.blob()
-    saveAs(blob, `${deckName}.apkg`)
-  }
   const router = useRouter()
   const actions = [
     { icon: <CreateSharp />, name: 'Create Reader', onClick: () => { router.push('/CreateReader') } },

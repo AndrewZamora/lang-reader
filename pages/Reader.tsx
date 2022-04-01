@@ -9,6 +9,8 @@ import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import Selection from '../components/Selection'
+import { saveAs } from 'file-saver'
+import { read } from 'fs'
 
 const DICT_PATH = '/static/dict/'
 
@@ -74,7 +76,7 @@ const Reader: NextPage = () => {
       justifyContent: 'flex-end',
     },
     flashcardButton: {
-      margin: '5px 5px 0 0'
+      margin: '5px 5px 5px 0'
     }
   })
 
@@ -129,6 +131,19 @@ const Reader: NextPage = () => {
     };
   }
 
+  const exportAnkiDeck = async (flashCards: { segment: string, hiragana: string }[], deckName: string) => {
+    const url = `api/ankicards`
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({ flashCards, deckName }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    const response = await fetch(url, options).catch(error => console.log(error))
+    const blob = await response.blob()
+    saveAs(blob, `${deckName}.apkg`)
+  }
   return (
     <Container maxWidth="lg">
       <Box sx={{ width: '100%', paddingBottom: '20px' }}>
@@ -155,16 +170,15 @@ const Reader: NextPage = () => {
       }
       {tab === 1 &&
         <div>
+          <div className={classes.flashcardButtons}>
+            {/* <Button className={classes.flashcardButton} variant="contained" endIcon={<Quiz />}>
+              Review
+            </Button> */}
+            <Button className={classes.flashcardButton} onClick={()=> exportAnkiDeck(deck, reader.name)} variant="contained" endIcon={<Download />}>
+              Download
+            </Button>
+          </div>
           <TableContainer component={Paper}>
-            <div className={classes.flashcardButtons}>
-              <Button className={classes.flashcardButton} variant="contained" endIcon={<Quiz />}>
-                Review
-              </Button>
-              <Button className={classes.flashcardButton} variant="contained" endIcon={<Download />}>
-                Download
-              </Button>
-            </div>
-
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
