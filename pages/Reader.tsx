@@ -2,15 +2,15 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import type { NextPage } from 'next'
 import { Quiz, Download } from '@mui/icons-material'
-import { Paper, Container, Grid, Tabs, Tab, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material'
+import { Paper, Container, Grid, Tabs, Tab, Box, Button } from '@mui/material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
 import Kuroshiro from 'kuroshiro'
 import Kuromoji from 'kuromoji'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import Selection from '../components/Selection'
+import WordTable from '../components/WordTable'
 import { saveAs } from 'file-saver'
-import { read } from 'fs'
 
 const DICT_PATH = '/static/dict/'
 
@@ -174,31 +174,11 @@ const Reader: NextPage = () => {
             {/* <Button className={classes.flashcardButton} variant="contained" endIcon={<Quiz />}>
               Review
             </Button> */}
-            <Button className={classes.flashcardButton} onClick={()=> exportAnkiDeck(deck, reader.name)} variant="contained" endIcon={<Download />}>
+            <Button className={classes.flashcardButton} onClick={() => exportAnkiDeck(deck, reader.name)} variant="contained" endIcon={<Download />}>
               Download
             </Button>
           </div>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="left">Segment</TableCell>
-                  <TableCell align="left">Reading</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {deck.map((card) => (
-                  <TableRow
-                    key={card.segment}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell align="left">{card.segment}</TableCell>
-                    <TableCell align="left">{card.hiragana}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <WordTable deck={deck}/>
         </div>
       }
     </Container>
