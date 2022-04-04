@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'next/router'
+import * as cheerio from 'cheerio';
 
 const DICT_PATH = '/static/dict/'
 
@@ -57,6 +58,14 @@ const CreateReader: NextPage = () => {
     setReaderName(output.name)
   }
 
+  const test = async() => {
+    const response = fetch('https://jisho.org/api/v1/search/words')
+    const done = await response
+    console.log({done})
+  //   const $ = cheerio.load('https://jisho.org/api/v1/search/words');
+  //  console.log( $.html());
+  }
+
   useEffect(() => {
     // https://stackoverflow.com/questions/56247433/how-to-use-setstate-callback-on-react-hooks
     if (allSegments.length) {
@@ -76,6 +85,7 @@ const CreateReader: NextPage = () => {
     <Container maxWidth="lg">
       <h2>Create Reader</h2>
       <LangInput handleOutput={output => handleOutput(output)}></LangInput>
+      <button onClick={test}>askdjflksa</button>
     </Container>
   )
 }
