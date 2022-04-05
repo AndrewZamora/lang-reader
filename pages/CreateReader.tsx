@@ -59,9 +59,11 @@ const CreateReader: NextPage = () => {
   }
 
   const test = async() => {
-    const response = fetch('https://jisho.org/api/v1/search/words')
-    const done = await response
-    console.log({done})
+    const word = ''
+    const response = fetch(`http://localhost:3000/definition/${word}`).catch(error => console.log(error))
+    console.log(await response)
+    // const {} = await (await response).json()
+    // console.log({done})
   //   const $ = cheerio.load('https://jisho.org/api/v1/search/words');
   //  console.log( $.html());
   }
