@@ -58,10 +58,11 @@ const CreateReader: NextPage = () => {
     setReaderName(output.name)
   }
 
-  const test = async() => {
-    const word = ''
-    const response = fetch(`http://localhost:3000/definition/${word}`).catch(error => console.log(error))
-    console.log(await response)
+  const test = async(search: string) => {
+    const word = encodeURIComponent(search)
+    const response = fetch(`api/definition?word=${word}`).catch(error => console.log(error))
+    const json = await (await response).json()
+    console.log({json})
     // const {} = await (await response).json()
     // console.log({done})
   //   const $ = cheerio.load('https://jisho.org/api/v1/search/words');
@@ -87,7 +88,7 @@ const CreateReader: NextPage = () => {
     <Container maxWidth="lg">
       <h2>Create Reader</h2>
       <LangInput handleOutput={output => handleOutput(output)}></LangInput>
-      <button onClick={test}>askdjflksa</button>
+      <button onClick={test}>test</button>
     </Container>
   )
 }
