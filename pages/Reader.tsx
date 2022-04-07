@@ -95,6 +95,9 @@ const Reader: NextPage = () => {
       segment: segment.segment,
       hiragana
     }
+    if(segment.definition) {
+      newSelection.definition = segment.definition
+    }
     setSelection(newSelection)
   }
 

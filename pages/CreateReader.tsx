@@ -9,7 +9,6 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'next/router'
-import * as cheerio from 'cheerio';
 
 const DICT_PATH = '/static/dict/'
 
@@ -44,7 +43,7 @@ const CreateReader: NextPage = () => {
   const createSegments = (text: string) => {
     if (segmenterJa) {
       const segments = segmenterJa.segment(text)
-      setAllSegments(Array.from(segments))
+      return Array.from(segments)
     }
   }
   interface output {
@@ -52,34 +51,41 @@ const CreateReader: NextPage = () => {
     name: string
   }
 
-  const handleOutput = async (output: output) => {
-    setUserInput(output.text)
-    createSegments(output.text)
-    setReaderName(output.name)
-  }
-
-  const test = async(search: string) => {
+  const getDefinition = async (search: string) => {
     const word = encodeURIComponent(search)
     const response = fetch(`api/definition?word=${word}`).catch(error => console.log(error))
     const json = await (await response).json()
-    console.log({json})
-    // const {} = await (await response).json()
-    // console.log({done})
-  //   const $ = cheerio.load('https://jisho.org/api/v1/search/words');
-  //  console.log( $.html());
+    console.log({ json })
+    return json.data
   }
+
+  const handleOutput = async (output: output) => {
+    setUserInput(output.text)
+    setReaderName(output.name)
+    const segments = createSegments(output.text)
+    const segmentDefRequests = segments?.map(async (segment) => {
+      const definition = await getDefinition(segment.segment)
+      if (segment.isWordLike) {
+        segment.definition = definition[0]['senses'][0]['english_definitions'][0]
+      }
+      return segment
+    })
+    const segmentsWithDef = await Promise.all(segmentDefRequests).catch(err => console.log(err))
+    setAllSegments(segmentsWithDef)
+  }
+
 
   useEffect(() => {
     // https://stackoverflow.com/questions/56247433/how-to-use-setstate-callback-on-react-hooks
     if (allSegments.length) {
-      let readers 
+      let readers
       const reader = { name: readerName, lang: 'ja', input: userInput, segments: allSegments, id: uuidv4() }
-      const {input, segments, ...readerNoInputOrSegments} = reader;
+      const { input, segments, ...readerNoInputOrSegments } = reader;
       const data = localStorage.getItem('langReaders')
       readers = data ? JSON.parse(data) : []
       readers = [...readers, readerNoInputOrSegments]
       localStorage.setItem('langReaders', JSON.stringify(readers))
-      localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(reader) )
+      localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(reader))
       router.push('/')
     }
   }, [allSegments])
@@ -88,7 +94,6 @@ const CreateReader: NextPage = () => {
     <Container maxWidth="lg">
       <h2>Create Reader</h2>
       <LangInput handleOutput={output => handleOutput(output)}></LangInput>
-      <button onClick={test}>test</button>
     </Container>
   )
 }
