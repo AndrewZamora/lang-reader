@@ -6,6 +6,7 @@ interface WordTableProps {
   deck: {
     segment: string,
     hiragana: string,
+    definition: string
   }[],
 }
 
@@ -18,6 +19,7 @@ const WordTable = (props: WordTableProps) => {
           <TableRow>
             <TableCell align="left">Segment</TableCell>
             <TableCell align="left">Reading</TableCell>
+            <TableCell align="left">Definition</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -28,6 +30,7 @@ const WordTable = (props: WordTableProps) => {
             >
               <TableCell align="left">{card.segment}</TableCell>
               <TableCell align="left">{card.hiragana}</TableCell>
+              <TableCell align="left">{card.definition}</TableCell>
             </TableRow>
           ))}
         </TableBody>
