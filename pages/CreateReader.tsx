@@ -55,7 +55,6 @@ const CreateReader: NextPage = () => {
     const word = encodeURIComponent(search)
     const response = fetch(`api/definition?word=${word}`).catch(error => console.log(error))
     const json = await (await response).json()
-    console.log({ json })
     return json.data
   }
 
@@ -64,9 +63,9 @@ const CreateReader: NextPage = () => {
     setReaderName(output.name)
     const segments = createSegments(output.text)
     const segmentDefRequests = segments?.map(async (segment) => {
-      const definition = await getDefinition(segment.segment)
       if (segment.isWordLike) {
-        segment.definition = definition[0]['senses'][0]['english_definitions'][0]
+        const definition = await getDefinition(segment.segment)
+        segment.definition = definition[0] && definition[0]['senses'][0] && definition[0]['senses'][0] && ['english_definitions'][0] ? definition[0]['senses'][0]['english_definitions'][0] : null
       }
       return segment
     })
