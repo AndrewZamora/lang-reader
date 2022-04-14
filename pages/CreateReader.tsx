@@ -51,6 +51,25 @@ const CreateReader: NextPage = () => {
     name: string
   }
 
+  const asyncQueue = async (array, queueAmount: number, callback) => {
+    let queue = [];
+    let queueIndex = 0;
+    let results = [];
+    for (let i = 0; i < array.length; i++) {
+      if (queue[queueIndex]) {
+        queue[queueIndex].push(callback(array[i]));
+        if (queue[queueIndex].length === queueAmount || array.length - 1 === i) {
+          results[queueIndex] = await Promise.all(queue[queueIndex])
+          console.log(results[queueIndex])
+          queueIndex += 1
+        }
+      } else {
+        queue[queueIndex] = [callback(array[i])]
+      }
+    }
+    return results
+  }
+
   const getDefinition = async (search: string) => {
     const word = encodeURIComponent(search)
     const response = fetch(`api/definition?word=${word}`).catch(error => console.log(error))

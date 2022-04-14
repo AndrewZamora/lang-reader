@@ -5,8 +5,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { word } = req.query
-  console.log()
   const response = fetch(`https://jisho.org/api/v1/search/words?keyword=${word}`).catch(error => console.log(error))
-  const json = await (await response).json()
-  res.json(json)
+  const result = await response
+  try {
+    const json = await result.json()
+    res.json(json)
+  } catch (error) {
+    console.log({error})
+  }
 }
