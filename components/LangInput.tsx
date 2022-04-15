@@ -5,10 +5,11 @@ import { Button, Grid, FormControl, TextField } from '@mui/material'
 
 interface LangInputProps {
   handleOutput(output: string): void,
+  cancel():void,
 }
 
 const LangInput = (props: LangInputProps) => {
-  const { handleOutput } = props
+  const { handleOutput, cancel } = props
   const [input, setInput] = useState('')
   const [name, setName] = useState('')
   const [source, setSource] = useState('')
@@ -85,7 +86,7 @@ const LangInput = (props: LangInputProps) => {
           direction="row"
           justifyContent="flex-end"
         >
-          <Button variant="outlined" className={classes.btn}>Cancel</Button>
+          <Button variant="outlined" className={classes.btn} onClick={()=> cancel()}>Cancel</Button>
           <Button variant="outlined" className={classes.btn} type="submit">Create</Button>
         </Grid>
       </form>

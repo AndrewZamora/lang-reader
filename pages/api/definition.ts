@@ -11,6 +11,7 @@ export default async function handler(
     const json = await result.json()
     res.json(json)
   } catch (error) {
+    console.log(result)
     console.log({error})
   }
 }

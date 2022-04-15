@@ -2,11 +2,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import LangInput from '../components/LangInput'
 import type { NextPage } from 'next'
-import Container from '@mui/material/Container'
+import {Container,  CircularProgress, Box } from '@mui/material'
 import Kuroshiro from 'kuroshiro'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
 import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'next/router'
 
@@ -52,15 +50,16 @@ const CreateReader: NextPage = () => {
   }
 
   const asyncQueue = async (array, queueAmount: number, callback) => {
-    let queue = [];
-    let queueIndex = 0;
-    let results = [];
+    let queue = []
+    let queueIndex = 0
+    let results = []
+    const timeout = () => new Promise(resolve => setTimeout(resolve, 3000))
     for (let i = 0; i < array.length; i++) {
       if (queue[queueIndex]) {
         queue[queueIndex].push(callback(array[i]));
         if (queue[queueIndex].length === queueAmount || array.length - 1 === i) {
-          results[queueIndex] = await Promise.all(queue[queueIndex])
-          console.log(results[queueIndex])
+          results = [...results, ...await Promise.all(queue[queueIndex])]
+          await timeout()
           queueIndex += 1
         }
       } else {
@@ -78,18 +77,24 @@ const CreateReader: NextPage = () => {
   }
 
   const handleOutput = async (output: output) => {
+    setIsLoading(true)
     setUserInput(output.text)
     setReaderName(output.name)
     const segments = createSegments(output.text)
-    const segmentDefRequests = segments?.map(async (segment) => {
+    const handleDefinitions = async segment => {
       if (segment.isWordLike) {
         const definition = await getDefinition(segment.segment)
         segment.definition = definition[0] && definition[0]['senses'][0] && definition[0]['senses'][0] && ['english_definitions'][0] ? definition[0]['senses'][0]['english_definitions'][0] : null
       }
+      segment.id =  uuidv4()
       return segment
-    })
-    const segmentsWithDef = await Promise.all(segmentDefRequests).catch(err => console.log(err))
+    }
+    const segmentsWithDef = await asyncQueue(segments, 8, handleDefinitions)
     setAllSegments(segmentsWithDef)
+  }
+
+  const handleCancel = () => {
+    router.push('/')
   }
 
 
@@ -111,7 +116,7 @@ const CreateReader: NextPage = () => {
   return (
     <Container maxWidth="lg">
       <h2>Create Reader</h2>
-      <LangInput handleOutput={output => handleOutput(output)}></LangInput>
+      { isLoading ? <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}><CircularProgress size={80} /></Box>  : <LangInput handleOutput={output => handleOutput(output)} cancel={()=> handleCancel()}></LangInput>}
     </Container>
   )
 }

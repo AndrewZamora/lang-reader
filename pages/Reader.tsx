@@ -53,6 +53,7 @@ const Reader: NextPage = () => {
 
   const useStyles = makeStyles({
     segment: {
+      display: 'inline-block',
       border: 'lightblue solid 1px',
       borderRadius: "5px",
       cursor: 'pointer',
@@ -161,7 +162,7 @@ const Reader: NextPage = () => {
         <Grid container spacing={1} justifyContent="center" >
           <Grid item xs={6}>
             <Paper>
-              {reader && reader.segments.map((segment, index) => <span className={segment.isWordLike ? classes.segment : undefined} onClick={(() => handleClick(segment))} key={segment.segment + index}>{segment.segment}</span>)}
+              {reader && reader.segments.map((segment, index) => <span className={segment.isWordLike ? classes.segment : undefined} onClick={(() => handleClick(segment))} key={segment.id}>{segment.segment}</span>)}
             </Paper>
           </Grid>
           <Grid item xs={6}>
