@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import LangInput from '../components/LangInput'
 import type { NextPage } from 'next'
-import {Container,  CircularProgress, Box } from '@mui/material'
+import { Container, CircularProgress, Box } from '@mui/material'
 import Kuroshiro from 'kuroshiro'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import { v4 as uuidv4 } from 'uuid'
@@ -21,12 +21,12 @@ const CreateReader: NextPage = () => {
   const router = useRouter()
   const setUp = useCallback(async () => {
     setIsLoading(true)
-    const newKuroshiro = new Kuroshiro()
-    await newKuroshiro.init(new KuromojiAnalyzer({
-      // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
-      dictPath: DICT_PATH,
-    }))
-    setKuroshiro(newKuroshiro)
+    // const newKuroshiro = new Kuroshiro()
+    // await newKuroshiro.init(new KuromojiAnalyzer({
+    // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
+    // dictPath: DICT_PATH,
+    // }))
+    // setKuroshiro(newKuroshiro)
     // Can only use Intl.Segmenter on chrome
     const newSegmenterJa = new Intl.Segmenter('ja-JP', { granularity: 'word' })
     setSegmenterJa(newSegmenterJa)
@@ -86,7 +86,7 @@ const CreateReader: NextPage = () => {
         const definition = await getDefinition(segment.segment)
         segment.definition = definition[0] && definition[0]['senses'][0] && definition[0]['senses'][0] && ['english_definitions'][0] ? definition[0]['senses'][0]['english_definitions'][0] : null
       }
-      segment.id =  uuidv4()
+      segment.id = uuidv4()
       return segment
     }
     const segmentsWithDef = await asyncQueue(segments, 8, handleDefinitions)
