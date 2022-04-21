@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import DOMPurify from 'dompurify'
 import { makeStyles } from '@mui/styles'
 import { Button, Grid, FormControl, TextField, Box, Modal } from '@mui/material'
+const { createWorker } = require('tesseract.js')
 
 interface LangInputProps {
   handleOutput(output: string): void,
@@ -14,8 +15,13 @@ const LangInput = (props: LangInputProps) => {
   const [name, setName] = useState('')
   const [source, setSource] = useState('')
   const [openModal, setOpenModal] = useState(false)
+  const [worker, setWorker] = useState(null)
 
-  const handleOpen = () => setOpenModal(true)
+  const handleOpen = () => {
+    const newWorker = createWorker();
+    setWorker(newWorker)
+    setOpenModal(true)
+  }
   const handleClose = () => setOpenModal(false)
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,22 +50,14 @@ const LangInput = (props: LangInputProps) => {
 
   const handleFile = async (event) => {
     console.log(event)
-    if (event.target.files && event.target.files[0]) {
+    if (event.target.files && event.target.files[0] && worker) {
       const file = event.target.files[0]
-      const FR = new FileReader()
-      FR.addEventListener("load", async function (e) {
-        const url = `api/imageToText`
-        const options = {
-          method: 'POST',
-          body: e.target.result,
-          headers: {
-          }
-        }
-        const response = await fetch(url, options).catch(error => console.log({error}))
-        const {text} = await response.json()
-        setInput(text.replace(/\s/g,''))
-      })
-      FR.readAsDataURL(file)
+      await worker.load();
+      await worker.loadLanguage('jpn');
+      await worker.initialize('jpn');
+      const { data: { text } } = await worker.recognize(file);
+      await worker.terminate();
+      setInput(text.replace(/\s/g,''))
     }
   }
 
