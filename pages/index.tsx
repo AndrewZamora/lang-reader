@@ -5,6 +5,7 @@ import { CreateSharp } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
 import ListReaders from '../components/ListReaders'
+import Layout from '../components/Layout'
 
 interface Reader {
   name: string,
@@ -90,6 +91,7 @@ const Home: NextPage = () => {
   ]
 
   return (
+    <Layout>
     <Container maxWidth="lg">
       <h2> All Readers</h2>
       <ListReaders
@@ -111,6 +113,7 @@ const Home: NextPage = () => {
         ))}
       </SpeedDial>
     </Container>
+    </Layout>
   )
 }
 

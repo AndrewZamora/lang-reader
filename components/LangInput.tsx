@@ -68,13 +68,16 @@ const LangInput = (props: LangInputProps) => {
     input: {
       marginBottom: '10px'
     },
+    imageTextBtn: {
+      marginLeft: '9px'
+    }
   })
 
   const classes = useStyles()
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleOpen}>Import Image Text</Button>
+      <Button variant="outlined" className={classes.imageTextBtn} onClick={handleOpen}>Import Image Text</Button>
       <form noValidate autoComplete='off' onSubmit={event => handleSubmit(event)}>
         <FormControl fullWidth sx={{ m: 1 }}>
           <TextField
