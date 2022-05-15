@@ -16,9 +16,9 @@ const initTokenizer = (): Promise<object> => {
     })
   });
 }
+
 const CreateReader: NextPage = () => {
   const [userInput, setUserInput] = useState('')
-  const [showForm, setShowForm] = useState(false)
   const [allSegments, setAllSegments] = useState([])
   const [segmenter, setSegmenter] = useState<object | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -41,7 +41,13 @@ const CreateReader: NextPage = () => {
     if (segmenter) {
       const segments = segmenter.tokenize(text)
       console.log(segments)
-      return segments
+      return segments.map(segment => {
+        const notWords = ['記号']
+        return {
+          segment: segment.surface_form,
+          isWordLike: !notWords.includes(segment.pos)
+        }
+      })
     }
   }
   interface output {
@@ -116,7 +122,6 @@ const CreateReader: NextPage = () => {
   return (
     <Container maxWidth="lg">
       <h2>Create Reader</h2>
-      <button onClick={()=> createSegments("テストです")}>test</button>
       {isLoading ? <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}><CircularProgress size={80} /></Box> : <LangInput handleOutput={output => handleOutput(output)} cancel={() => handleCancel()}></LangInput>}
     </Container>
   )
