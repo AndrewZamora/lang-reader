@@ -3,45 +3,45 @@ import React, { useState, useEffect, useCallback } from 'react'
 import LangInput from '../components/LangInput'
 import type { NextPage } from 'next'
 import { Container, CircularProgress, Box } from '@mui/material'
-import Kuroshiro from 'kuroshiro'
-import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'next/router'
-
+import Kuromoji from 'kuromoji'
 const DICT_PATH = '/static/dict/'
 
+const initTokenizer = (): Promise<object> => {
+  return new Promise((resolve, reject) => {
+    Kuromoji.builder({ dicPath: DICT_PATH }).build((error, tokenizer) => {
+      if (error) return reject(error)
+      resolve(tokenizer)
+    })
+  });
+}
 const CreateReader: NextPage = () => {
   const [userInput, setUserInput] = useState('')
   const [showForm, setShowForm] = useState(false)
-  const [segmenterJa, setSegmenterJa] = useState<object | null>(null)
   const [allSegments, setAllSegments] = useState([])
-  const [kuroshiro, setKuroshiro] = useState<object | null>(null)
+  const [segmenter, setSegmenter] = useState<object | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [readerName, setReaderName] = useState('')
   const router = useRouter()
   const setUp = useCallback(async () => {
     setIsLoading(true)
-    // const newKuroshiro = new Kuroshiro()
-    // await newKuroshiro.init(new KuromojiAnalyzer({
-    // https://github.com/hexenq/kuroshiro/issues/38#issuecomment-441419030
-    // dictPath: DICT_PATH,
-    // }))
-    // setKuroshiro(newKuroshiro)
-    // Can only use Intl.Segmenter on chrome
-    const newSegmenterJa = new Intl.Segmenter('ja-JP', { granularity: 'word' })
-    setSegmenterJa(newSegmenterJa)
+    const tokenizer = await initTokenizer()
+    setSegmenter(tokenizer)
     setIsLoading(false)
   }, [])
 
   useEffect(() => {
-    if (segmenterJa) return
+    if (segmenter) return
+    console.log("useEffect called")
     setUp()
   })
 
   const createSegments = (text: string) => {
-    if (segmenterJa) {
-      const segments = segmenterJa.segment(text)
-      return Array.from(segments)
+    if (segmenter) {
+      const segments = segmenter.tokenize(text)
+      console.log(segments)
+      return segments
     }
   }
   interface output {
@@ -116,7 +116,8 @@ const CreateReader: NextPage = () => {
   return (
     <Container maxWidth="lg">
       <h2>Create Reader</h2>
-      { isLoading ? <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}><CircularProgress size={80} /></Box>  : <LangInput handleOutput={output => handleOutput(output)} cancel={()=> handleCancel()}></LangInput>}
+      <button onClick={()=> createSegments("テストです")}>test</button>
+      {isLoading ? <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}><CircularProgress size={80} /></Box> : <LangInput handleOutput={output => handleOutput(output)} cancel={() => handleCancel()}></LangInput>}
     </Container>
   )
 }

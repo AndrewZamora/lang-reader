@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
-import Head from 'next/head'
 import {AppBar, Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem,ListItemIcon,ListItemText,Toolbar,Typography} from '@mui/material'
 import {GitHub, Menu} from '@mui/icons-material'
-import { jsx } from '@emotion/react'
 
 
 const drawerWidth = 240
