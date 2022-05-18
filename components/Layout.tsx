@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material'
 import { GitHub, Menu, Create } from '@mui/icons-material'
-
+import Link from 'next/link'
 
 const drawerWidth = 240
 interface Props {
@@ -24,13 +24,15 @@ export default function Layout(props) {
       <Toolbar />
       <Divider />
       <List>
-        {[{ text: 'Create Reader', icon: <Create /> }, { text: 'Github', icon: <GitHub /> },].map((icon, index) => (
-          <ListItem button key={icon.text}>
-            <ListItemIcon>
-              {icon.icon}
-            </ListItemIcon>
-            <ListItemText primary={icon.text} />
-          </ListItem>
+        {[{ text: 'Create Reader', icon: <Create />, url: '/CreateReader' }, { text: 'Github', icon: <GitHub />, url: '' },].map((icon, index) => (
+          <Link href={icon.url}>
+            <ListItem button key={icon.text}>
+              <ListItemIcon>
+                {icon.icon}
+              </ListItemIcon>
+              <ListItemText primary={icon.text} />
+            </ListItem>
+          </Link>
         ))}
       </List>
     </div>
