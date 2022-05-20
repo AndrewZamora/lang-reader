@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
 import type { NextPage } from 'next'
-import { Quiz, Download } from '@mui/icons-material'
-import { Paper, Container, Grid, Tabs, Tab, Box, Button } from '@mui/material'
+import { Quiz, Download, Edit as EditIcon } from '@mui/icons-material'
+import { Paper, Container, Grid, Tabs, Tab, Box, Button, IconButton } from '@mui/material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
 import Kuroshiro from 'kuroshiro'
@@ -62,13 +62,15 @@ const Reader: NextPage = () => {
       }
     },
     selection: {
-      fontSize: "40px"
+      display: 'flex',
+      justifyContent: 'center'
     },
     selectionContainer: {
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
+      // justifyContent: 'center',
+      // alignItems: 'center',
+      width: '100%',
       height: '100%'
     },
     flashcardButtons: {
@@ -77,6 +79,12 @@ const Reader: NextPage = () => {
     },
     flashcardButton: {
       margin: '5px 5px 5px 0'
+    },
+    settingsIconContainer: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      width: '100%',
+      padding: '10px 10px 0 0'
     }
   })
 
@@ -95,7 +103,7 @@ const Reader: NextPage = () => {
       segment: segment.segment,
       hiragana
     }
-    if(segment.definition) {
+    if (segment.definition) {
       newSelection.definition = segment.definition
     }
     setSelection(newSelection)
@@ -166,7 +174,12 @@ const Reader: NextPage = () => {
           </Grid>
           <Grid item xs={6}>
             <Paper className={classes.selectionContainer}>
-              {selection && <Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} />}
+              <div className={classes.settingsIconContainer}>
+                <IconButton aria-label="settings" size="small">
+                  <EditIcon fontSize="inherit" />
+                </IconButton>
+              </div>
+              {selection && <div className={classes.selection}><Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} /></div>}
             </Paper>
           </Grid>
         </Grid>
@@ -181,7 +194,7 @@ const Reader: NextPage = () => {
               Download
             </Button>
           </div>
-          <WordTable deck={deck}/>
+          <WordTable deck={deck} />
         </div>
       }
     </Container>
