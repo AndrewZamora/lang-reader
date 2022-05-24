@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import type { NextPage } from 'next'
 import { Quiz, Download, Edit as EditIcon } from '@mui/icons-material'
-import { Paper, Container, Grid, Tabs, Tab, Box, Button} from '@mui/material'
+import { Paper, Container, Grid, Tabs, Tab, Box, Button } from '@mui/material'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@mui/styles'
 import Kuroshiro from 'kuroshiro'
@@ -131,6 +131,10 @@ const Reader: NextPage = () => {
     }
   }
 
+  const editSegment = (word) => {
+    console.log(word,"word")
+  }
+
   const handleTab = (event, newTab) => {
     setTab(newTab)
   }
@@ -174,7 +178,7 @@ const Reader: NextPage = () => {
           </Grid>
           <Grid item xs={6}>
             <Paper className={classes.selectionContainer}>
-              {selection && <div className={classes.selection}><Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} /></div>}
+              {selection && <div className={classes.selection}><Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} onEdit={(word) => editSegment(word)} /></div>}
             </Paper>
           </Grid>
         </Grid>
