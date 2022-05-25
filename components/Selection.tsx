@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, IconButton, FormControl, TextField, } from '@mui/material'
 import { Edit as EditIcon } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles'
@@ -19,6 +19,13 @@ const Selection = (props: SelectionProps) => {
   const { word, deck, onRemove, onAdd, onEdit } = props
   const [showEditInputs, setShowEditInputs] = useState(false)
   const [update, setUpdate] = useState({})
+
+  useEffect(() => {
+    if (showEditInputs) {
+      setShowEditInputs(false)
+    }
+  }, [word])
+
   const useStyles = makeStyles({
     selectionContainer: {
       width: '100%',
@@ -63,7 +70,7 @@ const Selection = (props: SelectionProps) => {
         <h2 className={classes.segment}>{word.segment}</h2>
         <p><span>Reading: </span>{word.hiragana}</p>
         {word.definition && <p><span>Definition: </span>{word.definition}</p>}
-      {deck.includes(word.segment) ? <Button variant="outlined" className={classes.button} onClick={() => onRemove(word)}>Remove from flashcards</Button> : <Button variant="outlined" className={classes.button} onClick={() => onAdd(word)}>Add to flashcards</Button>}
+        {deck.includes(word.segment) ? <Button variant="outlined" className={classes.button} onClick={() => onRemove(word)}>Remove from flashcards</Button> : <Button variant="outlined" className={classes.button} onClick={() => onAdd(word)}>Add to flashcards</Button>}
       </div>}
       {showEditInputs && <form>
 
