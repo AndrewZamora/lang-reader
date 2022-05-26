@@ -24,6 +24,7 @@ const Selection = (props: SelectionProps) => {
     if (showEditInputs) {
       setShowEditInputs(false)
     }
+    setUpdate(word)
   }, [word])
 
   const useStyles = makeStyles({
@@ -51,13 +52,18 @@ const Selection = (props: SelectionProps) => {
     },
     inputsContainer: {
       padding: "20px"
+    },
+    formBtn: {
+      marginLeft: "auto"
     }
   })
 
   const classes = useStyles()
 
-  const handleEdit = () => {
-
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    onEdit(word)
+    setShowEditInputs(false)
   }
   return (
     <div className={classes.selectionContainer}>
@@ -72,7 +78,7 @@ const Selection = (props: SelectionProps) => {
         {word.definition && <p><span>Definition: </span>{word.definition}</p>}
         {deck.includes(word.segment) ? <Button variant="outlined" className={classes.button} onClick={() => onRemove(word)}>Remove from flashcards</Button> : <Button variant="outlined" className={classes.button} onClick={() => onAdd(word)}>Add to flashcards</Button>}
       </div>}
-      {showEditInputs && <form>
+      {showEditInputs && <form onSubmit={event => handleSubmit(event)}>
 
         <FormControl fullWidth sx={{ m: 1 }} className={classes.inputsContainer}>
           <TextField
@@ -80,19 +86,23 @@ const Selection = (props: SelectionProps) => {
             variant="outlined"
             value={word.segment}
             className={classes.inputs}
+            onChange={event => useState({...update, segment: event})}
           />
           <TextField
             label="Reading"
             variant="outlined"
             value={word.hiragana}
             className={classes.inputs}
+            onChange={event => useState({...update, hiragana: event})}
           />
           <TextField
             label="Definition"
             variant="outlined"
             value={word.definition ? word.definition : ''}
             className={classes.inputs}
+            onChange={event => useState({...update, definition: event})}
           />
+          <Button className={classes.formBtn} variant="outlined" type="submit">Update</Button>
         </FormControl>
       </form>}
     </div>
