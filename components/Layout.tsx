@@ -25,8 +25,8 @@ export default function Layout(props) {
       <Divider />
       <List>
         {[{ text: 'Create Reader', icon: <Create />, url: '/CreateReader' }, { text: 'Github', icon: <GitHub />, url: '' },].map((icon, index) => (
-          <Link href={icon.url}>
-            <ListItem button key={icon.text}>
+          <Link href={icon.url} key={icon.text}>
+            <ListItem button >
               <ListItemIcon>
                 {icon.icon}
               </ListItemIcon>
