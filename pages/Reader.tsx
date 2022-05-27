@@ -99,11 +99,7 @@ const Reader: NextPage = () => {
   }
   const handleClick = async (segment) => {
     const hiragana = await getHiragana(segment.segment)
-    let newSelection = {
-      segment: segment.segment,
-      hiragana,
-      id: segment.id
-    }
+    let newSelection = {...segment, hiragana}
     if (segment.definition) {
       newSelection.definition = segment.definition
     }
