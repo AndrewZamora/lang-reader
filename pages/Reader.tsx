@@ -143,6 +143,7 @@ const Reader: NextPage = () => {
     const localData = localStorage.getItem(`langReader-${reader.id}`)
     const localReader = JSON.parse(localData)
     setReader(localReader)
+    setSelection(word)
   }
 
   const handleTab = (event, newTab) => {
