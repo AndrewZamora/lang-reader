@@ -99,7 +99,7 @@ const Reader: NextPage = () => {
   }
   const handleClick = async (segment) => {
     const hiragana = await getHiragana(segment.segment)
-    let newSelection = {...segment, hiragana}
+    let newSelection = { ...segment, hiragana }
     if (segment.definition) {
       newSelection.definition = segment.definition
     }
@@ -129,15 +129,20 @@ const Reader: NextPage = () => {
   }
 
   const editSegment = (word) => {
-    console.log(word,"word")
+    console.log(word, "word")
     const updatedSegments = reader.segments.map(segment => {
-      if(segment.id === word.id) {
+      if (segment.id === word.id) {
         console.log(segment, word)
         return word
       }
       return segment
     })
-    console.log(updatedSegments)
+    const readerUpdate = { ...reader }
+    readerUpdate.segments = updatedSegments
+    localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(readerUpdate))
+    const localData = localStorage.getItem(`langReader-${reader.id}`)
+    const localReader = JSON.parse(localData)
+    setReader(localReader)
   }
 
   const handleTab = (event, newTab) => {

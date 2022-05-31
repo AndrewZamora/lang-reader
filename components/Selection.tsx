@@ -62,9 +62,10 @@ const Selection = (props: SelectionProps) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    onEdit(word)
+    onEdit(update)
     setShowEditInputs(false)
   }
+
   return (
     <div className={classes.selectionContainer}>
       <div className={classes.settingsIconContainer}>
@@ -84,23 +85,23 @@ const Selection = (props: SelectionProps) => {
           <TextField
             label="Segment"
             variant="outlined"
-            value={word.segment}
+            value={update.segment}
             className={classes.inputs}
-            onChange={event => useState({...update, segment: event})}
+            onChange={event => setUpdate({...update, segment: event.target.value})}
           />
           <TextField
             label="Reading"
             variant="outlined"
-            value={word.hiragana}
+            value={update.hiragana}
             className={classes.inputs}
-            onChange={event => useState({...update, hiragana: event})}
+            onChange={event => setUpdate({...update, hiragana: event.target.value})}
           />
           <TextField
             label="Definition"
             variant="outlined"
-            value={word.definition ? word.definition : ''}
+            value={update.definition ? update.definition : ''}
             className={classes.inputs}
-            onChange={event => useState({...update, definition: event})}
+            onChange={event => setUpdate({...update, definition: event.target.value})}
           />
           <Button className={classes.formBtn} variant="outlined" type="submit">Update</Button>
         </FormControl>
