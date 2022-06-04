@@ -146,6 +146,19 @@ const Reader: NextPage = () => {
     setSelection(word)
   }
 
+  const deleteSegment = (word) => {
+    console.log(word, "word")
+    const updatedSegments = reader.segments.filter(segment => segment.id !== word.id)
+    const readerUpdate = { ...reader }
+    readerUpdate.segments = updatedSegments
+    console.log(updatedSegments.length, reader.segments.length)
+    localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(readerUpdate))
+    const localData = localStorage.getItem(`langReader-${reader.id}`)
+    const localReader = JSON.parse(localData)
+    setReader(localReader)
+    setSelection(null)
+  }
+
   const handleTab = (event, newTab) => {
     setTab(newTab)
   }
@@ -189,7 +202,7 @@ const Reader: NextPage = () => {
           </Grid>
           <Grid item xs={6}>
             <Paper className={classes.selectionContainer}>
-              {selection && <div className={classes.selection}><Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} onEdit={(word) => editSegment(word)} /></div>}
+              {selection && <div className={classes.selection}><Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} onEdit={(word) => editSegment(word)} onDelete={(word)=> deleteSegment(word)}/></div>}
             </Paper>
           </Grid>
         </Grid>

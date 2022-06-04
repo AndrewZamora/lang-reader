@@ -13,10 +13,11 @@ interface SelectionProps {
   onAdd(word: object): void,
   onRemove(word: object): void,
   onEdit(word: object): void,
+  onDelete(word: object): void,
 }
 
 const Selection = (props: SelectionProps) => {
-  const { word, deck, onRemove, onAdd, onEdit } = props
+  const { word, deck, onRemove, onAdd, onEdit, onDelete } = props
   const [showEditInputs, setShowEditInputs] = useState(false)
   const [update, setUpdate] = useState({})
 
@@ -66,6 +67,11 @@ const Selection = (props: SelectionProps) => {
     setShowEditInputs(false)
   }
 
+  const handleDelete = (event) => {
+    onDelete(update)
+    setShowEditInputs(false)
+  }
+
   return (
     <div className={classes.selectionContainer}>
       <div className={classes.settingsIconContainer}>
@@ -104,6 +110,7 @@ const Selection = (props: SelectionProps) => {
             onChange={event => setUpdate({...update, definition: event.target.value})}
           />
           <Button className={classes.formBtn} variant="outlined" type="submit">Update</Button>
+          <Button className={classes.formBtn} onClick={()=>handleDelete(update)} variant="outlined">Delete</Button>
         </FormControl>
       </form>}
     </div>
