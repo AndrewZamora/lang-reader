@@ -14,10 +14,11 @@ interface SelectionProps {
   onRemove(word: object): void,
   onEdit(word: object): void,
   onDelete(word: object): void,
+  onMerge(word: object, direction: string): void,
 }
 
 const Selection = (props: SelectionProps) => {
-  const { word, deck, onRemove, onAdd, onEdit, onDelete } = props
+  const { word, deck, onRemove, onAdd, onEdit, onDelete, onMerge } = props
   const [showEditInputs, setShowEditInputs] = useState(false)
   const [update, setUpdate] = useState({})
 
@@ -111,6 +112,8 @@ const Selection = (props: SelectionProps) => {
           />
           <Button className={classes.formBtn} variant="outlined" type="submit">Update</Button>
           <Button className={classes.formBtn} onClick={()=>handleDelete(update)} variant="outlined">Delete</Button>
+          <Button className={classes.formBtn} onClick={()=>onMerge(update,'right')} variant="outlined">Merge Right</Button>
+          <Button className={classes.formBtn} onClick={()=>onMerge(update,'left')} variant="outlined">Merge left</Button>
         </FormControl>
       </form>}
     </div>
