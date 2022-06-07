@@ -128,7 +128,7 @@ const Reader: NextPage = () => {
     }
   }
 
-  const mergeSegment = (word: object, direction: string) => {
+  const mergeSegment = async (word: object, direction: string) => {
     console.log({ word })
     const wordIndex = reader.segments.findIndex(segment => segment.id === word.id)
     const directions = { right: 1, left: -1 }
@@ -137,6 +137,8 @@ const Reader: NextPage = () => {
     if (mergeSelection.isWordLike) {
       let mergedWord = { ...word }
       mergedWord.segment = direction === 'right' ? `${mergedWord.segment}${mergeSelection.segment}` : `${mergeSelection.segment}${mergedWord.segment}`
+      const hiragana = await getHiragana(mergedWord.segment)
+      mergedWord.hiragana = hiragana
       let readerUpdate = { ...reader }
       readerUpdate.segments[wordIndex] = mergedWord
       readerUpdate.segments = readerUpdate.segments.filter(segment => segment.id !== mergeSelection.id)
@@ -144,7 +146,7 @@ const Reader: NextPage = () => {
       const localData = localStorage.getItem(`langReader-${reader.id}`)
       const localReader = JSON.parse(localData)
       setReader(localReader)
-      setSelection(word)
+      setSelection(mergedWord)
     }
   }
 
