@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import DOMPurify from 'dompurify'
-import { makeStyles } from '@mui/styles'
 import { Button, Grid, FormControl, TextField, Box, Modal } from '@mui/material'
 const { createWorker } = require('tesseract.js')
+import styles from './LangInput.module.css'
 
 interface LangInputProps {
   handleOutput(output: string): void,
@@ -61,27 +61,13 @@ const LangInput = (props: LangInputProps) => {
     }
   }
 
-  const useStyles = makeStyles({
-    btn: {
-      marginTop: '20px'
-    },
-    input: {
-      marginBottom: '10px'
-    },
-    imageTextBtn: {
-      marginLeft: '9px'
-    }
-  })
-
-  const classes = useStyles()
-
   return (
     <div>
-      <Button variant="outlined" className={classes.imageTextBtn} onClick={handleOpen}>Import Image Text</Button>
+      <Button variant="outlined" className={styles.imageTextBtn} onClick={handleOpen}>Import Image Text</Button>
       <form noValidate autoComplete='off' onSubmit={event => handleSubmit(event)}>
         <FormControl fullWidth sx={{ m: 1 }}>
           <TextField
-            className={classes.input}
+            className={styles.input}
             id="reader-name-input"
             label="Reader Name"
             variant="outlined"
@@ -89,7 +75,7 @@ const LangInput = (props: LangInputProps) => {
             value={name}
           />
           <TextField
-            className={classes.input}
+            className={styles.input}
             id="reader-source-input"
             label="Reader Source"
             variant="outlined"
@@ -97,7 +83,7 @@ const LangInput = (props: LangInputProps) => {
             value={source}
           />
           <TextField
-            className={classes.input}
+            className={styles.input}
             id="reader-text-input"
             label="Reader Text"
             multiline
@@ -113,8 +99,8 @@ const LangInput = (props: LangInputProps) => {
           direction="row"
           justifyContent="flex-end"
         >
-          <Button variant="outlined" className={classes.btn} onClick={() => cancel()}>Cancel</Button>
-          <Button variant="outlined" className={classes.btn} type="submit">Create</Button>
+          <Button variant="outlined" className={styles.btn} onClick={() => cancel()}>Cancel</Button>
+          <Button variant="outlined" className={styles.btn} type="submit">Create</Button>
         </Grid>
       </form>
 
