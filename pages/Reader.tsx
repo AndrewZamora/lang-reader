@@ -4,12 +4,12 @@ import type { NextPage } from 'next'
 import { Quiz, Download, Edit as EditIcon } from '@mui/icons-material'
 import { Paper, Container, Grid, Tabs, Tab, Box, Button } from '@mui/material'
 import { useRouter } from 'next/router'
-import { makeStyles } from '@mui/styles'
 import Kuroshiro from 'kuroshiro'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import Selection from '../components/Selection'
 import WordTable from '../components/WordTable'
 import { saveAs } from 'file-saver'
+import styles from './Reader.module.css'
 
 const DICT_PATH = '/static/dict/'
 
@@ -50,45 +50,7 @@ const Reader: NextPage = () => {
     }
   }, [router])
 
-  const useStyles = makeStyles({
-    segment: {
-      display: 'inline-block',
-      border: 'lightblue solid 1px',
-      borderRadius: "5px",
-      cursor: 'pointer',
-      fontSize: '30px',
-      '&:hover': {
-        background: 'lightblue'
-      }
-    },
-    selection: {
-      display: 'flex',
-      justifyContent: 'center'
-    },
-    selectionContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      // justifyContent: 'center',
-      // alignItems: 'center',
-      width: '100%',
-      height: '100%'
-    },
-    flashcardButtons: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-    },
-    flashcardButton: {
-      margin: '5px 5px 5px 0'
-    },
-    settingsIconContainer: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      width: '100%',
-      padding: '10px 10px 0 0'
-    }
-  })
 
-  const classes = useStyles()
   const getHiragana = async (segment) => {
     if (kuroshiro) {
       const hiragana = await kuroshiro.convert(segment, { to: 'hiragana' })
@@ -219,23 +181,23 @@ const Reader: NextPage = () => {
         <Grid container spacing={1} justifyContent="center" >
           <Grid item xs={6}>
             <Paper>
-              {reader && reader.segments.map((segment, index) => <span className={segment.isWordLike ? classes.segment : undefined} onClick={(() => handleClick(segment))} key={segment.id}>{segment.segment}</span>)}
+              {reader && reader.segments.map((segment, index) => <span className={segment.isWordLike ? styles.segment : undefined} onClick={(() => handleClick(segment))} key={segment.id}>{segment.segment}</span>)}
             </Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.selectionContainer}>
-              {selection && <div className={classes.selection}><Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} onEdit={(word) => editSegment(word)} onDelete={(word) => deleteSegment(word)} onMerge={(word, direction) => mergeSegment(word, direction)} /></div>}
+            <Paper className={styles.selectionContainer}>
+              {selection && <div className={styles.selection}><Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} onEdit={(word) => editSegment(word)} onDelete={(word) => deleteSegment(word)} onMerge={(word, direction) => mergeSegment(word, direction)} /></div>}
             </Paper>
           </Grid>
         </Grid>
       }
       {tab === 1 &&
         <div>
-          <div className={classes.flashcardButtons}>
-            {/* <Button className={classes.flashcardButton} variant="contained" endIcon={<Quiz />}>
+          <div className={styles.flashcardButtons}>
+            {/* <Button className={styles.flashcardButton} variant="contained" endIcon={<Quiz />}>
               Review
             </Button> */}
-            <Button className={classes.flashcardButton} onClick={() => exportAnkiDeck(deck, reader.name)} variant="contained" endIcon={<Download />}>
+            <Button className={styles.flashcardButton} onClick={() => exportAnkiDeck(deck, reader.name)} variant="contained" endIcon={<Download />}>
               Download
             </Button>
           </div>

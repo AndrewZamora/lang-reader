@@ -1,0 +1,39 @@
+    .segment {
+        display: inline-block;
+        border: lightblue solid 1px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 30px;
+    }
+
+    .segment:hover {
+        background: lightblue;
+    }
+
+    .selection {
+        display: flex;
+        justify-content: center;
+    }
+
+    .selectionContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+
+    .flashcardButtons {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .flashcardButton {
+        margin: 5px 5px 5px 0;
+    }
+
+    .settingsIconContainer {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        padding: 10px 10px 0 0;
+    }
