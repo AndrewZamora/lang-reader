@@ -1,0 +1,35 @@
+.selectionContainer {
+    width: 100%;
+
+}
+
+.settingsIconContainer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 10px 0 0;
+}
+
+.selectionContent {
+    margin: 0 10%;
+}
+
+.segment {
+    text-align: center;
+}
+
+.button {
+    margin: 0 auto;
+    display: block;
+}
+
+.inputs {
+    padding-bottom: 10px;
+}
+
+.inputsContainer {
+    padding: 20px;
+}
+
+.formBtn {
+    margin-left: auto;
+}

@@ -1,0 +1,11 @@
+
+    .readerItem {
+      padding: 1em 1.5em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .readerContainer{
+      margin-bottom: 0.5em;
+      cursor: pointer;
+    }

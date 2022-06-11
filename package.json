@@ -13,7 +13,6 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.4.2",
     "@mui/material": "^5.4.2",
-    "@mui/styles": "^5.4.2",
     "anki-apkg-export": "^4.0.3",
     "dompurify": "^2.3.6",
     "file-saver": "^2.0.5",
