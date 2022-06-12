@@ -55,7 +55,7 @@ const CreateReader: NextPage = () => {
     name: string
   }
 
-  const asyncQueue = async (array, queueAmount: number, callback) => {
+  const asyncQueue = async (array: [], queueAmount: number, callback:()=>[]) => {
     let queue = []
     let queueIndex = 0
     let results = []
