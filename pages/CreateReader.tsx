@@ -59,7 +59,7 @@ const CreateReader: NextPage = () => {
     let queue = []
     let queueIndex = 0
     let results = []
-    const timeout = () => new Promise(resolve => setTimeout(resolve, 3000))
+    const timeout = () => new Promise(resolve => setTimeout(resolve, 10000))
     for (let i = 0; i < array.length; i++) {
       if (queue[queueIndex]) {
         queue[queueIndex].push(callback(array[i]));
@@ -95,7 +95,9 @@ const CreateReader: NextPage = () => {
       segment.id = uuidv4()
       return segment
     }
-    const segmentsWithDef = await asyncQueue(segments, 8, handleDefinitions)
+    // https://jisho.org/forum/607ba7c9d5dda7783f000000-rate-limiting-on-api-and-search
+    // Will need to find a better solution
+    const segmentsWithDef = await asyncQueue(segments, 9, handleDefinitions)
     setAllSegments(segmentsWithDef)
   }
 
