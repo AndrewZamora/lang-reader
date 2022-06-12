@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import DOMPurify from 'dompurify'
 import { Button, Grid, FormControl, TextField, Box, Modal } from '@mui/material'
-const { createWorker } = require('tesseract.js')
+import { createWorker } from 'tesseract.js'
 import styles from './LangInput.module.css'
 
 interface LangInputProps {
@@ -22,6 +22,7 @@ const LangInput = (props: LangInputProps) => {
     setWorker(newWorker)
     setOpenModal(true)
   }
+
   const handleClose = () => setOpenModal(false)
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,16 +49,17 @@ const LangInput = (props: LangInputProps) => {
     }
   }
 
-  const handleFile = async (event) => {
+  const handleFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event)
     if (event.target.files && event.target.files[0] && worker) {
+      setOpenModal(false)
       const file = event.target.files[0]
       await worker.load();
       await worker.loadLanguage('jpn');
       await worker.initialize('jpn');
       const { data: { text } } = await worker.recognize(file);
       await worker.terminate();
-      setInput(text.replace(/\s/g,''))
+      setInput(text.replace(/\s/g, ''))
     }
   }
 
