@@ -41,11 +41,13 @@ const Reader: NextPage = () => {
     console.log("useEffect reader page")
     if (id) {
       const localData = localStorage.getItem(`langReader-${id}`)
-      const localReader = JSON.parse(localData)
-      console.log(localReader, id)
-      setReader(localReader)
-      if (localReader.deck) {
-        setDeck(localReader.deck)
+      if (localData) {
+        const localReader = JSON.parse(localData)
+        console.log(localReader, id)
+        setReader(localReader)
+        if (localReader.deck) {
+          setDeck(localReader.deck)
+        }
       }
     }
   }, [router])
@@ -59,6 +61,7 @@ const Reader: NextPage = () => {
       return segment
     }
   }
+  
   const handleClick = async (segment) => {
     const hiragana = await getHiragana(segment.segment)
     let newSelection = { ...segment, hiragana }
@@ -143,7 +146,7 @@ const Reader: NextPage = () => {
     setSelection(null)
   }
 
-  const handleTab = (event, newTab) => {
+  const handleTab = (newTab) => {
     setTab(newTab)
   }
 

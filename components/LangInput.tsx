@@ -71,7 +71,7 @@ const LangInput = (props: LangInputProps) => {
             id="reader-name-input"
             label="Reader Name"
             variant="outlined"
-            onChange={event => handleName(event)}
+            onChange={handleName}
             value={name}
           />
           <TextField
@@ -79,7 +79,7 @@ const LangInput = (props: LangInputProps) => {
             id="reader-source-input"
             label="Reader Source"
             variant="outlined"
-            onChange={event => handleSource(event)}
+            onChange={handleSource}
             value={source}
           />
           <TextField
@@ -89,7 +89,7 @@ const LangInput = (props: LangInputProps) => {
             multiline
             variant="outlined"
             minRows={20}
-            onChange={event => handleInput(event)}
+            onChange={handleInput}
             value={input}
             fullWidth
           />
@@ -99,7 +99,7 @@ const LangInput = (props: LangInputProps) => {
           direction="row"
           justifyContent="flex-end"
         >
-          <Button variant="outlined" className={styles.btn} onClick={() => cancel()}>Cancel</Button>
+          <Button variant="outlined" className={styles.btn} onClick={cancel}>Cancel</Button>
           <Button variant="outlined" className={styles.btn} type="submit">Create</Button>
         </Grid>
       </form>
