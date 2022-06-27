@@ -61,7 +61,23 @@ const Reader: NextPage = () => {
       return segment
     }
   }
-  
+
+  const getDefinition = async (search: string) => {
+    const word = encodeURIComponent(search)
+    const response = fetch(`api/definition?word=${word}`).catch(error => console.log(error))
+    const json = await (await response).json()
+    return json.data
+  }
+
+  const handleDefine = async (segment) => {
+    const definition = await getDefinition(segment.segment)
+    if (definition.length && definition[0] && definition[0].senses.length && definition[0].senses[0].english_definitions.length) {
+      let newSelection = { ...segment }
+      newSelection.definition = definition[0].senses[0].english_definitions[0]
+      setSelection(newSelection)
+    }
+  }
+
   const handleClick = async (segment) => {
     const hiragana = await getHiragana(segment.segment)
     let newSelection = { ...segment, hiragana }
@@ -146,7 +162,7 @@ const Reader: NextPage = () => {
     setSelection(null)
   }
 
-  const handleTab = (event:React.SyntheticEvent<Element, Event>, newTab: number) => {
+  const handleTab = (event: React.SyntheticEvent<Element, Event>, newTab: number) => {
     setTab(newTab)
   }
 
@@ -189,7 +205,7 @@ const Reader: NextPage = () => {
           </Grid>
           <Grid item xs={6}>
             <Paper className={styles.selectionContainer}>
-              {selection && <div className={styles.selection}><Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} onEdit={(word) => editSegment(word)} onDelete={(word) => deleteSegment(word)} onMerge={(word, direction) => mergeSegment(word, direction)} /></div>}
+              {selection && <div className={styles.selection}><Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} onEdit={(word) => editSegment(word)} onDefine={(word) => handleDefine(word)} onDelete={(word) => deleteSegment(word)} onMerge={(word, direction) => mergeSegment(word, direction)} /></div>}
             </Paper>
           </Grid>
         </Grid>
