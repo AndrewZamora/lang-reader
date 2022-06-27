@@ -146,7 +146,7 @@ const Reader: NextPage = () => {
     setSelection(null)
   }
 
-  const handleTab = (newTab) => {
+  const handleTab = (event:React.SyntheticEvent<Element, Event>, newTab: number) => {
     setTab(newTab)
   }
 
