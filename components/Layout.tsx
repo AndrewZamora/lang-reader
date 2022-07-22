@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material'
-import { GitHub, Menu, Create } from '@mui/icons-material'
+import { GitHub, Menu, Create, Style } from '@mui/icons-material'
 import Link from 'next/link'
 
 const drawerWidth = 240
@@ -24,7 +24,7 @@ export default function Layout(props) {
       <Toolbar />
       <Divider />
       <List>
-        {[{ text: 'Create Reader', icon: <Create />, url: '/CreateReader' }, { text: 'Github', icon: <GitHub />, url: '' },].map((icon, index) => (
+        {[{ text: 'Create Reader', icon: <Create />, url: '/CreateReader' }, { text: 'Github', icon: <GitHub />, url: '' },{ text: 'All Flashcards', icon: <Style />, url: 'Flashcards' }].map((icon, index) => (
           <Link href={icon.url} key={icon.text}>
             <ListItem button >
               <ListItemIcon>
