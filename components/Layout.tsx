@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material'
 import { GitHub, Menu, Create, Style } from '@mui/icons-material'
 import Link from 'next/link'
+import styles from './Layout.module.css'
 
 const drawerWidth = 240
 interface Props {
@@ -62,7 +63,7 @@ export default function Layout(props) {
           </IconButton>
           <Typography variant="h6" noWrap component="div">
             <Link href="/">
-              Lang Reader
+              <a className={styles.anchor}>Lang Reader</a>
             </Link>
           </Typography>
         </Toolbar>

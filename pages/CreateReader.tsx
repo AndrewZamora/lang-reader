@@ -6,6 +6,7 @@ import { Container, CircularProgress, Box } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'next/router'
 import Kuromoji from 'kuromoji'
+import Layout from '../components/Layout'
 const DICT_PATH = '/static/dict/'
 
 const initTokenizer = (): Promise<object> => {
@@ -55,7 +56,7 @@ const CreateReader: NextPage = () => {
     name: string
   }
 
-  const asyncQueue = async (array: [], queueAmount: number, callback:()=>[]) => {
+  const asyncQueue = async (array: [], queueAmount: number, callback: () => []) => {
     let queue = []
     let queueIndex = 0
     let results = []
@@ -122,10 +123,12 @@ const CreateReader: NextPage = () => {
   }, [allSegments])
 
   return (
-    <Container maxWidth="lg">
-      <h2>Create Reader</h2>
-      {isLoading ? <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}><CircularProgress size={80} /></Box> : <LangInput handleOutput={output => handleOutput(output)} cancel={() => handleCancel()}></LangInput>}
-    </Container>
+    <Layout>
+      <Container maxWidth="lg">
+        <h2>Create Reader</h2>
+        {isLoading ? <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}><CircularProgress size={80} /></Box> : <LangInput handleOutput={output => handleOutput(output)} cancel={() => handleCancel()}></LangInput>}
+      </Container>
+    </Layout>
   )
 }
 
