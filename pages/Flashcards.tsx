@@ -11,9 +11,14 @@ const Flashcards: NextPage = () => {
     let flashcards = []
     ids.forEach(id => {
       const storedReader = localStorage.getItem(`langReader-${id}`)
-      flashcards = [...flashcards, ...JSON.parse(storedReader).deck]
+      const parsedReader = JSON.parse(storedReader)
+      if (parsedReader.deck && parsedReader.deck.length) {
+        flashcards = [...flashcards, ...parsedReader.deck]
+      }
     })
-    setCards(flashcards)
+    if (flashcards.length) {
+      setCards(flashcards)
+    }
   }
 
   useEffect(() => {
