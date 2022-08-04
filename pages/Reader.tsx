@@ -10,6 +10,7 @@ import Selection from '../components/Selection'
 import WordTable from '../components/WordTable'
 import { saveAs } from 'file-saver'
 import styles from './Reader.module.css'
+import Layout from '../components/Layout'
 
 const DICT_PATH = '/static/dict/'
 
@@ -187,43 +188,45 @@ const Reader: NextPage = () => {
     saveAs(blob, `${deckName}.apkg`)
   }
   return (
-    <Container maxWidth="lg">
-      <Box sx={{ width: '100%', paddingBottom: '20px' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={tab} onChange={handleTab} aria-label="reader tabs">
-            <Tab label="reader" {...a11yProps(0)} />
-            <Tab label="flashcards" {...a11yProps(1)} />
-          </Tabs>
+    <Layout>
+      <Container maxWidth="lg">
+        <Box sx={{ width: '100%', paddingBottom: '20px' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={tab} onChange={handleTab} aria-label="reader tabs">
+              <Tab label="reader" {...a11yProps(0)} />
+              <Tab label="flashcards" {...a11yProps(1)} />
+            </Tabs>
+          </Box>
         </Box>
-      </Box>
-      {tab === 0 &&
-        <Grid container spacing={1} justifyContent="center" >
-          <Grid item xs={6}>
-            <Paper>
-              {reader && reader.segments.map((segment, index) => <span className={segment.isWordLike ? styles.segment : undefined} onClick={(() => handleClick(segment))} key={segment.id}>{segment.segment}</span>)}
-            </Paper>
+        {tab === 0 &&
+          <Grid container spacing={1} justifyContent="center" >
+            <Grid item xs={6}>
+              <Paper>
+                {reader && reader.segments.map((segment, index) => <span className={segment.isWordLike ? styles.segment : undefined} onClick={(() => handleClick(segment))} key={segment.id}>{segment.segment}</span>)}
+              </Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper className={styles.selectionContainer}>
+                {selection && <div className={styles.selection}><Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} onEdit={(word) => editSegment(word)} onDefine={(word) => handleDefine(word)} onDelete={(word) => deleteSegment(word)} onMerge={(word, direction) => mergeSegment(word, direction)} /></div>}
+              </Paper>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <Paper className={styles.selectionContainer}>
-              {selection && <div className={styles.selection}><Selection word={selection} deck={deck.map((item) => item && item.segment)} onAdd={(word) => addToDeck(word)} onRemove={(word) => removeFromDeck(word)} onEdit={(word) => editSegment(word)} onDefine={(word) => handleDefine(word)} onDelete={(word) => deleteSegment(word)} onMerge={(word, direction) => mergeSegment(word, direction)} /></div>}
-            </Paper>
-          </Grid>
-        </Grid>
-      }
-      {tab === 1 &&
-        <div>
-          <div className={styles.flashcardButtons}>
-            {/* <Button className={styles.flashcardButton} variant="contained" endIcon={<Quiz />}>
+        }
+        {tab === 1 &&
+          <div>
+            <div className={styles.flashcardButtons}>
+              {/* <Button className={styles.flashcardButton} variant="contained" endIcon={<Quiz />}>
               Review
             </Button> */}
-            <Button className={styles.flashcardButton} onClick={() => exportAnkiDeck(deck, reader.name)} variant="contained" endIcon={<Download />}>
-              Download
-            </Button>
+              <Button className={styles.flashcardButton} onClick={() => exportAnkiDeck(deck, reader.name)} variant="contained" endIcon={<Download />}>
+                Download
+              </Button>
+            </div>
+            <WordTable deck={deck} />
           </div>
-          <WordTable deck={deck} />
-        </div>
-      }
-    </Container>
+        }
+      </Container>
+    </Layout>
   )
 }
 
