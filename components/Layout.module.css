@@ -1,4 +1,15 @@
  .anchor {
-    text-decoration: none;
-    color: inherit;
+   text-decoration: none;
+   color: inherit;
+ }
+
+ .githubLink {
+   margin-top: auto;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
+ }
+
+ .githubLink a {
+  padding-left: 10px;
  }

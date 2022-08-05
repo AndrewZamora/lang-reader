@@ -25,7 +25,7 @@ export default function Layout(props) {
       <Toolbar />
       <Divider />
       <List>
-        {[{ text: 'Create Reader', icon: <Create />, url: '/CreateReader' }, { text: 'Github', icon: <GitHub />, url: 'https://github.com/AndrewZamora' }, { text: 'All Flashcards', icon: <Style />, url: 'Flashcards' }].map((icon, index) => (
+        {[{ text: 'Create Reader', icon: <Create />, url: '/CreateReader' }, { text: 'All Flashcards', icon: <Style />, url: 'Flashcards' }].map((icon, index) => (
           <Link href={icon.url} key={icon.text}>
             <ListItem button >
               <ListItemIcon>
@@ -98,6 +98,9 @@ export default function Layout(props) {
           open
         >
           {drawer}
+          <div className={styles.githubLink}>
+            Code by <Link href="https://github.com/AndrewZamora"><a className={styles.anchor}><GitHub/></a></Link>
+          </div>
         </Drawer>
       </Box>
       <Box
