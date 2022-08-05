@@ -88,17 +88,20 @@ const CreateReader: NextPage = () => {
     setUserInput(output.text)
     setReaderName(output.name)
     const segments = createSegments(output.text)
-    const handleDefinitions = async segment => {
+    // const handleDefinitions = async segment => {
+    const handleDefinitions = segment => {
       if (segment.isWordLike) {
-        const definition = await getDefinition(segment.segment)
-        segment.definition = definition[0] && definition[0]['senses'][0] && definition[0]['senses'][0] && ['english_definitions'][0] ? definition[0]['senses'][0]['english_definitions'][0] : null
+        // const definition = await getDefinition(segment.segment)
+        // segment.definition = definition[0] && definition[0]['senses'][0] && definition[0]['senses'][0] && ['english_definitions'][0] ? definition[0]['senses'][0]['english_definitions'][0] : null
+        segment.definition = ''
       }
       segment.id = uuidv4()
       return segment
     }
     // https://jisho.org/forum/607ba7c9d5dda7783f000000-rate-limiting-on-api-and-search
     // Will need to find a better solution
-    const segmentsWithDef = await asyncQueue(segments, 9, handleDefinitions)
+    // const segmentsWithDef = await asyncQueue(segments, 9, handleDefinitions)
+    const segmentsWithDef = segments.map((segment)=> handleDefinitions(segment))
     setAllSegments(segmentsWithDef)
   }
 
