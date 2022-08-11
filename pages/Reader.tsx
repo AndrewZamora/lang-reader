@@ -187,6 +187,16 @@ const Reader: NextPage = () => {
     const blob = await response.blob()
     saveAs(blob, `${deckName}.apkg`)
   }
+
+  const handelSegmentElement = (segment) => {
+    if (segment.isWordLike) {
+      return (<span className={styles.segment}
+        onClick={(() => handleClick(segment))}
+        key={segment.id}>{segment.segment}</span>)
+    }
+    return (<span key={segment.id}>{segment.segment}</span>)
+  }
+
   return (
     <Layout>
       <Container maxWidth="lg">
@@ -202,7 +212,7 @@ const Reader: NextPage = () => {
           <Grid container spacing={1} justifyContent="center" >
             <Grid item xs={6}>
               <Paper>
-                {reader && reader.segments.map((segment, index) => <span className={segment.isWordLike ? styles.segment : undefined} onClick={(() => handleClick(segment))} key={segment.id}>{segment.segment}</span>)}
+                {reader && reader.segments.map((segment) => handelSegmentElement(segment))}
               </Paper>
             </Grid>
             <Grid item xs={6}>
