@@ -188,7 +188,7 @@ const Reader: NextPage = () => {
     saveAs(blob, `${deckName}.apkg`)
   }
 
-  const handelSegmentElement = (segment) => {
+  const handleSegmentElement = (segment) => {
     if (segment.isWordLike) {
       return (<span className={styles.segment}
         onClick={(() => handleClick(segment))}
@@ -212,7 +212,7 @@ const Reader: NextPage = () => {
           <Grid container spacing={1} justifyContent="center" >
             <Grid item xs={6}>
               <Paper>
-                {reader && reader.segments.map((segment) => handelSegmentElement(segment))}
+                {reader && reader.segments.map((segment) => handleSegmentElement(segment))}
               </Paper>
             </Grid>
             <Grid item xs={6}>
