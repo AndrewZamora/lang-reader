@@ -21,6 +21,7 @@ const Reader: NextPage = () => {
   const [kuroshiro, setKuroshiro] = useState<object | null>(null)
   const [deck, setDeck] = useState([])
   const [tab, setTab] = useState(0)
+  const [page, setPage] = useState(0)
 
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
@@ -197,9 +198,30 @@ const Reader: NextPage = () => {
     return (<span key={segment.id}>{segment.segment}</span>)
   }
 
+  const handlePage = () => {
+    let segmentsBefore = 0
+    let pageWordCount = 50
+    let currentWordCount = 0
+    let previousIndex = null
+    reader.segments.forEach((segment, index) => {
+      if (segment.segment === '。') {
+        const wordCount = index - segmentsBefore
+        currentWordCount = wordCount
+        segmentsBefore = index
+        if (index) {
+
+        }
+        console.log({ index, segment, wordCount })
+        console.log({ segmentsBefore })
+      }
+    })
+
+  }
+
   return (
     <Layout>
       <Container maxWidth="lg">
+        <button onClick={handlePage}>click</button>
         <Box sx={{ width: '100%', paddingBottom: '20px' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={tab} onChange={handleTab} aria-label="reader tabs">
