@@ -21,7 +21,7 @@ const Reader: NextPage = () => {
   const [kuroshiro, setKuroshiro] = useState<object | null>(null)
   const [deck, setDeck] = useState([])
   const [tab, setTab] = useState(0)
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState<object | null>(null)
 
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
@@ -203,19 +203,21 @@ const Reader: NextPage = () => {
     let pageWordCount = 50
     let currentWordCount = 0
     let previousIndex = null
-    reader.segments.forEach((segment, index) => {
+    let newSegments = []
+    for (const [index, segment] of reader.segments.entries()) {
       if (segment.segment === '。') {
         const wordCount = index - segmentsBefore
         currentWordCount = wordCount
-        segmentsBefore = index
-        if (index) {
-
+        if (index > pageWordCount) {
+          previousIndex = segmentsBefore
+          break
         }
+        segmentsBefore = index
         console.log({ index, segment, wordCount })
         console.log({ segmentsBefore })
       }
-    })
-
+    }
+    setPage(reader.segments.slice(0, 34))
   }
 
   return (
@@ -234,7 +236,7 @@ const Reader: NextPage = () => {
           <Grid container spacing={1} justifyContent="center" >
             <Grid item xs={6}>
               <Paper>
-                {reader && reader.segments.map((segment) => handleSegmentElement(segment))}
+                {page && page.map((segment) => handleSegmentElement(segment))}
               </Paper>
             </Grid>
             <Grid item xs={6}>
