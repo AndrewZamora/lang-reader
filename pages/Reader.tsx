@@ -22,6 +22,7 @@ const Reader: NextPage = () => {
   const [deck, setDeck] = useState([])
   const [tab, setTab] = useState(0)
   const [page, setPage] = useState<object | null>(null)
+  const [pageIndex, setPageIndex] = useState(0)
 
   const setUp = useCallback(async () => {
     const newKuroshiro = new Kuroshiro()
@@ -199,25 +200,43 @@ const Reader: NextPage = () => {
   }
 
   const handlePage = () => {
-    let segmentsBefore = 0
-    let pageWordCount = 50
-    let currentWordCount = 0
-    let previousIndex = null
-    let newSegments = []
+    let previousIndex = 0
+    let sentenceCount = 0
+    let previousSentenceCount = 0
+    let currentPage = 0
+    let pages = {}
+    let limit = 50
     for (const [index, segment] of reader.segments.entries()) {
       if (segment.segment === '。') {
-        const wordCount = index - segmentsBefore
-        currentWordCount = wordCount
-        if (index > pageWordCount) {
-          previousIndex = segmentsBefore
-          break
-        }
-        segmentsBefore = index
-        console.log({ index, segment, wordCount })
-        console.log({ segmentsBefore })
+        sentenceCount = index - previousIndex
+        console.log({ index, previousIndex, sentenceCount, previousSentenceCount })
+        // if(sentenceCount > limit || )
+        pages[`${currentPage}`] = reader.segments.slice(previousIndex, index)
+        previousIndex = index;
+        previousSentenceCount = sentenceCount
       }
     }
-    setPage(reader.segments.slice(0, 34))
+    console.log(pages)
+    // let segmentsBefore = 0
+    // let pageWordCount = 50
+    // let currentWordCount = 0
+    // let previousIndex = null
+    // let newSegments = []
+    // for (const [index, segment] of reader.segments.entries()) {
+    //   if (segment.segment === '。') {
+    //     const wordCount = index - segmentsBefore
+    //     currentWordCount = wordCount + currentWordCount
+    //     if (currentWordCount > pageWordCount) {
+    //       console.log("hey")
+    //       previousIndex =  currentWordCount
+    //       break
+    //     }
+    //     segmentsBefore = index
+    //     console.log({ index, segment, wordCount })
+    //   }
+    // }
+    //     console.log({ segmentsBefore })
+    // setPage(reader.segments.slice(0, previousIndex+ 1))
   }
 
   return (
@@ -236,7 +255,7 @@ const Reader: NextPage = () => {
           <Grid container spacing={1} justifyContent="center" >
             <Grid item xs={6}>
               <Paper>
-                {page && page.map((segment) => handleSegmentElement(segment))}
+                {reader && reader.segments.map((segment) => handleSegmentElement(segment))}
               </Paper>
             </Grid>
             <Grid item xs={6}>
