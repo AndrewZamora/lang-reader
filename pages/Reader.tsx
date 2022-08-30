@@ -220,14 +220,22 @@ const Reader: NextPage = () => {
     return (<span key={segment.id}>{segment.segment}</span>)
   }
 
-  const handlePage = () => {
-    setPageIndex(pageIndex + 1)
+  const nextPage = () => {
+    if (pages[`${pageIndex + 1}`]) {
+      setPageIndex(pageIndex + 1)
+    }
+  }
+
+  const previousPage = () => {
+    if (pages[`${pageIndex - 1}`]) {
+      setPageIndex(pageIndex - 1)
+    }
   }
 
   return (
     <Layout>
       <Container maxWidth="lg">
-        <button onClick={handlePage}>click</button>
+
         <Box sx={{ width: '100%', paddingBottom: '20px' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={tab} onChange={handleTab} aria-label="reader tabs">
@@ -242,6 +250,10 @@ const Reader: NextPage = () => {
               <Paper>
                 {(pages[`${pageIndex}`] && pages[`${pageIndex}`].length) && pages[`${pageIndex}`].map((segment) => handleSegmentElement(segment))}
               </Paper>
+              <div>
+                <button onClick={nextPage}>Next</button>
+                <button onClick={previousPage}>Previous</button>
+              </div>
             </Grid>
             <Grid item xs={6}>
               <Paper className={styles.selectionContainer}>
