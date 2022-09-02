@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import type { NextPage } from 'next'
 import { Quiz, Download, Edit as EditIcon } from '@mui/icons-material'
-import { Paper, Container, Grid, Tabs, Tab, Box, Button } from '@mui/material'
+import { Paper, Container, Grid, Tabs, Tab, Box, Button, Pagination } from '@mui/material'
 import { useRouter } from 'next/router'
 import Kuroshiro from 'kuroshiro'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
@@ -250,9 +250,8 @@ const Reader: NextPage = () => {
               <Paper>
                 {(pages[`${pageIndex}`] && pages[`${pageIndex}`].length) && pages[`${pageIndex}`].map((segment) => handleSegmentElement(segment))}
               </Paper>
-              <div>
-                <button onClick={nextPage}>Next</button>
-                <button onClick={previousPage}>Previous</button>
+              <div className={styles.pagination}>
+                {Object.keys(pages).length && <Pagination count={Object.keys(pages).length} variant="outlined" shape="rounded" />}
               </div>
             </Grid>
             <Grid item xs={6}>
