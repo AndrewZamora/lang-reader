@@ -220,16 +220,8 @@ const Reader: NextPage = () => {
     return (<span key={segment.id}>{segment.segment}</span>)
   }
 
-  const nextPage = () => {
-    if (pages[`${pageIndex + 1}`]) {
-      setPageIndex(pageIndex + 1)
-    }
-  }
-
-  const previousPage = () => {
-    if (pages[`${pageIndex - 1}`]) {
-      setPageIndex(pageIndex - 1)
-    }
+  const handlePageChange = (page: number) => {
+    setPageIndex(page -1)
   }
 
   return (
@@ -251,7 +243,7 @@ const Reader: NextPage = () => {
                 {(pages[`${pageIndex}`] && pages[`${pageIndex}`].length) && pages[`${pageIndex}`].map((segment) => handleSegmentElement(segment))}
               </Paper>
               <div className={styles.pagination}>
-                {Object.keys(pages).length && <Pagination count={Object.keys(pages).length} variant="outlined" shape="rounded" />}
+                {Object.keys(pages).length && <Pagination onChange={(event, page)=> handlePageChange(page)} count={Object.keys(pages).length} variant="outlined" shape="rounded" />}
               </div>
             </Grid>
             <Grid item xs={6}>
