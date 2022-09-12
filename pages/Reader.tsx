@@ -243,7 +243,7 @@ const Reader: NextPage = () => {
                 {(pages[`${pageIndex}`] && pages[`${pageIndex}`].length) && pages[`${pageIndex}`].map((segment) => handleSegmentElement(segment))}
               </Paper>
               <div className={styles.pagination}>
-                {Object.keys(pages).length && <Pagination onChange={(event, page)=> handlePageChange(page)} count={Object.keys(pages).length} variant="outlined" shape="rounded" />}
+                {Object.keys(pages).length > 1 && <Pagination onChange={(event, page)=> handlePageChange(page)} count={Object.keys(pages).length} variant="outlined" shape="rounded" />}
               </div>
             </Grid>
             <Grid item xs={6}>
