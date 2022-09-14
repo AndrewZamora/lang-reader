@@ -52,7 +52,7 @@ const Home: NextPage = () => {
           readers={readers}
           handleClick={(id: string) => handleClick(id)}
           handleDelete={(id: string) => deleteReader(id)} />
-        <SpeedDial
+        {/* <SpeedDial
           ariaLabel="create reader"
           sx={{ position: 'absolute', bottom: 16, right: 16 }}
           icon={<SpeedDialIcon />}
@@ -65,7 +65,7 @@ const Home: NextPage = () => {
               onClick={() => action.onClick()}
             />
           ))}
-        </SpeedDial>
+        </SpeedDial> */}
       </Container>
     </Layout>
   )

@@ -70,12 +70,12 @@ const Reader: NextPage = () => {
     }
     setPages(pages)
   }
+
   useEffect(() => {
     if (reader) {
-
       handlePages()
     }
-  }, [deck])
+  }, [deck,reader])
 
   const getHiragana = async (segment) => {
     if (kuroshiro) {
