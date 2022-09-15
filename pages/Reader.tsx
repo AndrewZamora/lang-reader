@@ -61,14 +61,11 @@ const Reader: NextPage = () => {
     let limit = 50
     for (const [index, segment] of reader.segments.entries()) {
       if (!pages[`${currentPage}`]) {
-        console.log(index, "YO")
         pages[`${currentPage}`] = []
         pages[`${currentPage}`].push(index)
         console.log(pages)
       }
-      // pages[`${currentPage}`].push(segment)
       if (segment.segment === '。' && (index - pages[`${currentPage}`][0]) >= limit) {
-        console.log(index, "HEY")
         pages[`${currentPage}`].push(index)
         currentPage += 1
       }
