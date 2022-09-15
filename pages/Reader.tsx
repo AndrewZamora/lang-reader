@@ -61,10 +61,15 @@ const Reader: NextPage = () => {
     let limit = 50
     for (const [index, segment] of reader.segments.entries()) {
       if (!pages[`${currentPage}`]) {
+        console.log(index, "YO")
         pages[`${currentPage}`] = []
+        pages[`${currentPage}`].push(index)
+        console.log(pages)
       }
-      pages[`${currentPage}`].push(segment)
-      if (segment.segment === '。' && pages[`${currentPage}`].length >= limit) {
+      // pages[`${currentPage}`].push(segment)
+      if (segment.segment === '。' && (index - pages[`${currentPage}`][0]) >= limit) {
+        console.log(index, "HEY")
+        pages[`${currentPage}`].push(index)
         currentPage += 1
       }
     }
@@ -240,7 +245,7 @@ const Reader: NextPage = () => {
           <Grid container spacing={1} justifyContent="center" >
             <Grid item xs={6}>
               <Paper>
-                {(pages[`${pageIndex}`] && pages[`${pageIndex}`].length) && pages[`${pageIndex}`].map((segment) => handleSegmentElement(segment))}
+                {(pages[`${pageIndex}`] && pages[`${pageIndex}`].length && reader) && reader.segments.slice(pages[`${pageIndex}`][0],pages[`${pageIndex}`][1]).map((segment) => handleSegmentElement(segment))}
               </Paper>
               <div className={styles.pagination}>
                 {Object.keys(pages).length > 1 && <Pagination onChange={(event, page)=> handlePageChange(page)} count={Object.keys(pages).length} variant="outlined" shape="rounded" />}
