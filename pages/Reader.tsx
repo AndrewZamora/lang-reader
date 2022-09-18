@@ -229,7 +229,7 @@ const Reader: NextPage = () => {
   return (
     <Layout>
       <Container maxWidth="lg">
-
+        <h2>{reader && reader.name && reader.name}</h2>
         <Box sx={{ width: '100%', paddingBottom: '20px' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={tab} onChange={handleTab} aria-label="reader tabs">
