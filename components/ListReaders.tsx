@@ -14,7 +14,9 @@ export default function ListReaders(props: ListReadersProps) {
   const { readers, handleClick, handleDelete } = props
   const deleteReader = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     event.stopPropagation()
-    handleDelete(id)
+    if(window.confirm("ARE YOU SURE YOU WANT TO DELETE THIS READER?")){
+      handleDelete(id)
+    }
   }
   const list = () => {
     return readers.map(reader => {
