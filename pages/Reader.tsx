@@ -98,9 +98,7 @@ const Reader: NextPage = () => {
   const handleDefine = async (segment) => {
     const definition = await getDefinition(segment.segment)
     if (definition.length && definition[0] && definition[0].senses.length && definition[0].senses[0].english_definitions.length) {
-      let newSelection = { ...segment }
-      newSelection.definition = definition[0].senses[0].english_definitions[0]
-      setSelection(newSelection)
+      return definition[0].senses[0].english_definitions[0]
     }
   }
 

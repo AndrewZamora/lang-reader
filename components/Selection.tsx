@@ -43,8 +43,9 @@ const Selection = (props: SelectionProps) => {
     setShowEditInputs(false)
   }
 
-  const getDefinition = (update) => {
-    onDefine(update)
+  const getDefinition = async(update) => {
+   const definition = await onDefine(update)
+   setUpdate({ ...update, definition})
   }
 
   return (
