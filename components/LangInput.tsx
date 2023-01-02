@@ -42,7 +42,8 @@ const LangInput = (props: LangInputProps) => {
     if (input && name) {
       const output = {
         text: DOMPurify.sanitize(input),
-        name
+        name,
+        source
       }
       handleOutput(output)
       setInput('')

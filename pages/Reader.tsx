@@ -77,7 +77,7 @@ const Reader: NextPage = () => {
     if (reader) {
       handlePages()
     }
-  }, [deck,reader])
+  }, [deck, reader])
 
   const getHiragana = async (segment) => {
     if (kuroshiro) {
@@ -221,7 +221,7 @@ const Reader: NextPage = () => {
   }
 
   const handlePageChange = (page: number) => {
-    setPageIndex(page -1)
+    setPageIndex(page - 1)
   }
 
   return (
@@ -240,10 +240,10 @@ const Reader: NextPage = () => {
           <Grid container spacing={1} justifyContent="center" >
             <Grid item xs={6}>
               <Paper>
-                {(pages[`${pageIndex}`] && pages[`${pageIndex}`].length && reader) && reader.segments.slice(pages[`${pageIndex}`][0],pages[`${pageIndex}`][1]).map((segment) => handleSegmentElement(segment))}
+                {(pages[`${pageIndex}`] && pages[`${pageIndex}`].length && reader) && reader.segments.slice(pages[`${pageIndex}`][0], pages[`${pageIndex}`][1]).map((segment) => handleSegmentElement(segment))}
               </Paper>
               <div className={styles.pagination}>
-                {Object.keys(pages).length > 1 && <Pagination onChange={(event, page)=> handlePageChange(page)} count={Object.keys(pages).length} variant="outlined" shape="rounded" />}
+                {Object.keys(pages).length > 1 && <Pagination onChange={(event, page) => handlePageChange(page)} count={Object.keys(pages).length} variant="outlined" shape="rounded" />}
               </div>
             </Grid>
             <Grid item xs={6}>
@@ -267,6 +267,19 @@ const Reader: NextPage = () => {
           </div>
         }
       </Container>
+      {reader && reader.source &&
+
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+        >
+          <Button variant="outlined" href={reader.source}>
+            Source
+          </Button>
+        </Grid>
+      }
     </Layout>
   )
 }

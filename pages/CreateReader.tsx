@@ -24,6 +24,7 @@ const CreateReader: NextPage = () => {
   const [segmenter, setSegmenter] = useState<object | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [readerName, setReaderName] = useState('')
+  const [readerSource, setReaderSource] = useState('')
   const router = useRouter()
   const setUp = useCallback(async () => {
     setIsLoading(true)
@@ -87,6 +88,7 @@ const CreateReader: NextPage = () => {
     setIsLoading(true)
     setUserInput(output.text)
     setReaderName(output.name)
+    setReaderSource(output.source)
     const segments = createSegments(output.text)
     // const handleDefinitions = async segment => {
     const handleDefinitions = segment => {
@@ -114,7 +116,7 @@ const CreateReader: NextPage = () => {
     // https://stackoverflow.com/questions/56247433/how-to-use-setstate-callback-on-react-hooks
     if (allSegments.length) {
       let readers
-      const reader = { name: readerName, lang: 'ja', input: userInput, segments: allSegments, id: uuidv4() }
+      const reader = { name: readerName, lang: 'ja', input: userInput, segments: allSegments, id: uuidv4(), source: readerSource }
       const { input, segments, ...readerNoInputOrSegments } = reader;
       const data = localStorage.getItem('langReaders')
       readers = data ? JSON.parse(data) : []
