@@ -63,7 +63,6 @@ const Reader: NextPage = () => {
       if (!pages[`${currentPage}`]) {
         pages[`${currentPage}`] = []
         pages[`${currentPage}`].push(index)
-        console.log(pages)
       }
       if (segment.segment === '。' && (index - pages[`${currentPage}`][0]) >= limit) {
         pages[`${currentPage}`].push(index)
@@ -79,7 +78,7 @@ const Reader: NextPage = () => {
     }
   }, [deck, reader])
 
-  const getHiragana = async (segment) => {
+  const getHiragana = async (segment: object) => {
     if (kuroshiro) {
       const hiragana = await kuroshiro.convert(segment, { to: 'hiragana' })
       return hiragana
@@ -95,14 +94,24 @@ const Reader: NextPage = () => {
     return json.data
   }
 
-  const handleDefine = async (segment) => {
+  const handleDefine = async (segment: object) => {
     const definition = await getDefinition(segment.segment)
     if (definition.length && definition[0] && definition[0].senses.length && definition[0].senses[0].english_definitions.length) {
       return definition[0].senses[0].english_definitions[0]
     }
   }
 
-  const handleClick = async (segment) => {
+  const updateReader = (id: string, update: object) => {
+    const readerId = `langReader-${id}`
+    localStorage.setItem(readerId, JSON.stringify(update))
+    const localData = localStorage.getItem(readerId)
+    if (localData) {
+      const localReader = JSON.parse(localData)
+      setReader(localReader)
+    }
+  }
+
+  const handleClick = async (segment: object) => {
     const hiragana = await getHiragana(segment.segment)
     let newSelection = { ...segment, hiragana }
     if (segment.definition) {
@@ -111,30 +120,23 @@ const Reader: NextPage = () => {
     setSelection(newSelection)
   }
 
-  const addToDeck = (word) => {
+  const addToDeck = (word: object) => {
     const deckUpdate = [...deck, word]
     setDeck(deckUpdate)
     const readerUpdate = { ...reader, deck: deckUpdate }
-    localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(readerUpdate))
-    const localData = localStorage.getItem(`langReader-${reader.id}`)
-    const localReader = JSON.parse(localData)
-    setReader(localReader)
+    updateReader(reader.id, readerUpdate)
   }
 
-  const removeFromDeck = (word) => {
+  const removeFromDeck = (word: object) => {
     if (deck.length) {
       const deckUpdate = deck.filter(card => card.segment !== word.segment)
       setDeck(deckUpdate)
       const readerUpdate = { ...reader, deck: deckUpdate }
-      localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(readerUpdate))
-      const localData = localStorage.getItem(`langReader-${reader.id}`)
-      const localReader = JSON.parse(localData)
-      setReader(localReader)
+      updateReader(reader.id, readerUpdate)
     }
   }
 
   const mergeSegment = async (word: object, direction: string) => {
-    console.log({ word })
     const wordIndex = reader.segments.findIndex(segment => segment.id === word.id)
     const directions = { right: 1, left: -1 }
     const selectionIndex = `${wordIndex + directions[direction]}`
@@ -147,42 +149,29 @@ const Reader: NextPage = () => {
       let readerUpdate = { ...reader }
       readerUpdate.segments[wordIndex] = mergedWord
       readerUpdate.segments = readerUpdate.segments.filter(segment => segment.id !== mergeSelection.id)
-      localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(readerUpdate))
-      const localData = localStorage.getItem(`langReader-${reader.id}`)
-      const localReader = JSON.parse(localData)
-      setReader(localReader)
+      updateReader(reader.id, readerUpdate)
       setSelection(mergedWord)
     }
   }
 
   const editSegment = (word) => {
-    console.log(word, "word")
     const updatedSegments = reader.segments.map(segment => {
       if (segment.id === word.id) {
-        console.log(segment, word)
         return word
       }
       return segment
     })
     const readerUpdate = { ...reader }
     readerUpdate.segments = updatedSegments
-    localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(readerUpdate))
-    const localData = localStorage.getItem(`langReader-${reader.id}`)
-    const localReader = JSON.parse(localData)
-    setReader(localReader)
+    updateReader(reader.id, readerUpdate)
     setSelection(word)
   }
 
   const deleteSegment = (word) => {
-    console.log(word, "word")
     const updatedSegments = reader.segments.filter(segment => segment.id !== word.id)
     const readerUpdate = { ...reader }
     readerUpdate.segments = updatedSegments
-    console.log(updatedSegments.length, reader.segments.length)
-    localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(readerUpdate))
-    const localData = localStorage.getItem(`langReader-${reader.id}`)
-    const localReader = JSON.parse(localData)
-    setReader(localReader)
+    updateReader(reader.id, readerUpdate)
     setSelection(null)
   }
 
@@ -268,7 +257,6 @@ const Reader: NextPage = () => {
         }
       </Container>
       {reader && reader.source &&
-
         <Grid
           container
           direction="row"
