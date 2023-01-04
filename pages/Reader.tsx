@@ -213,6 +213,13 @@ const Reader: NextPage = () => {
     setPageIndex(page - 1)
   }
 
+  const createReaderPage = () => {
+    const page = pages[`${pageIndex}`]
+    if ( page && page.length && reader) {
+      return reader.segments.slice(page[0], page[1]).map((segment) => handleSegmentElement(segment))
+    }
+  }
+
   return (
     <Layout>
       <Container maxWidth="lg">
@@ -229,7 +236,7 @@ const Reader: NextPage = () => {
           <Grid container spacing={1} justifyContent="center" >
             <Grid item xs={6}>
               <Paper>
-                {(pages[`${pageIndex}`] && pages[`${pageIndex}`].length && reader) && reader.segments.slice(pages[`${pageIndex}`][0], pages[`${pageIndex}`][1]).map((segment) => handleSegmentElement(segment))}
+                {createReaderPage()}
               </Paper>
               <div className={styles.pagination}>
                 {Object.keys(pages).length > 1 && <Pagination onChange={(event, page) => handlePageChange(page)} count={Object.keys(pages).length} variant="outlined" shape="rounded" />}
