@@ -42,7 +42,6 @@ const CreateReader: NextPage = () => {
   const createSegments = (text: string) => {
     if (segmenter) {
       const segments = segmenter.tokenize(text)
-      console.log(segments)
       return segments.map(segment => {
         const notWords = ['記号']
         return {
@@ -57,33 +56,6 @@ const CreateReader: NextPage = () => {
     name: string
   }
 
-  const asyncQueue = async (array: [], queueAmount: number, callback: () => []) => {
-    let queue = []
-    let queueIndex = 0
-    let results = []
-    const timeout = () => new Promise(resolve => setTimeout(resolve, 10000))
-    for (let i = 0; i < array.length; i++) {
-      if (queue[queueIndex]) {
-        queue[queueIndex].push(callback(array[i]));
-        if (queue[queueIndex].length === queueAmount || array.length - 1 === i) {
-          results = [...results, ...await Promise.all(queue[queueIndex])]
-          await timeout()
-          queueIndex += 1
-        }
-      } else {
-        queue[queueIndex] = [callback(array[i])]
-      }
-    }
-    return results
-  }
-
-  const getDefinition = async (search: string) => {
-    const word = encodeURIComponent(search)
-    const response = fetch(`api/definition?word=${word}`).catch(error => console.log(error))
-    const json = await (await response).json()
-    return json.data
-  }
-
   const handleOutput = async (output: output) => {
     setIsLoading(true)
     setUserInput(output.text)
@@ -93,8 +65,6 @@ const CreateReader: NextPage = () => {
     // const handleDefinitions = async segment => {
     const handleDefinitions = segment => {
       if (segment.isWordLike) {
-        // const definition = await getDefinition(segment.segment)
-        // segment.definition = definition[0] && definition[0]['senses'][0] && definition[0]['senses'][0] && ['english_definitions'][0] ? definition[0]['senses'][0]['english_definitions'][0] : null
         segment.definition = ''
       }
       segment.id = uuidv4()
