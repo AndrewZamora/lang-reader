@@ -23,35 +23,32 @@ const Selection = (props: SelectionProps) => {
   const [showEditInputs, setShowEditInputs] = useState(false)
   const [update, setUpdate] = useState({})
 
-  useEffect(() => {
-    if (showEditInputs) {
-      setShowEditInputs(false)
-    }
-    setUpdate(word)
-  }, [word])
-
-
-
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     onEdit(update)
     setShowEditInputs(false)
   }
 
-  const handleDelete = (event) => {
+  const handleDelete = () => {
     onDelete(update)
     setShowEditInputs(false)
   }
 
-  const getDefinition = async (update) => {
+  const getDefinition = async (update: object) => {
+    // TODO: Need to look into a better way of handling await here
     const definition = await onDefine(update)
     setUpdate({ ...update, definition })
+  }
+
+  const handleEdit = () => {
+    setShowEditInputs(!showEditInputs)
+    setUpdate(word)
   }
 
   return (
     <div className={styles.selectionContainer}>
       <div className={styles.settingsIconContainer}>
-        <IconButton aria-label="settings" size="small" onClick={() => setShowEditInputs(!showEditInputs)}>
+        <IconButton aria-label="settings" size="small" onClick={() => handleEdit()}>
           <EditIcon fontSize="inherit" />
         </IconButton>
       </div>
@@ -86,7 +83,7 @@ const Selection = (props: SelectionProps) => {
             onChange={event => setUpdate({ ...update, definition: event.target.value })}
           />
           <Button className={styles.formBtn} variant="outlined" type="submit">Update</Button>
-          <Button className={styles.formBtn} onClick={() => handleDelete(update)} variant="outlined">Delete</Button>
+          <Button className={styles.formBtn} onClick={() => handleDelete()} variant="outlined">Delete</Button>
           <Button className={styles.formBtn} onClick={() => onMerge(update, 'right')} variant="outlined">Merge Right</Button>
           <Button className={styles.formBtn} onClick={() => onMerge(update, 'left')} variant="outlined">Merge left</Button>
           <Button className={styles.formBtn} onClick={() => getDefinition(update)} variant="outlined">Define</Button>
