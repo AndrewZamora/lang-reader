@@ -5,7 +5,7 @@ import { createWorker } from 'tesseract.js'
 import styles from './LangInput.module.css'
 
 interface LangInputProps {
-  handleOutput(output: string): void,
+  handleOutput(output: object): void,
   cancel(): void,
 }
 

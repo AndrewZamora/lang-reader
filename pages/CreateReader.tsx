@@ -19,12 +19,8 @@ const initTokenizer = (): Promise<object> => {
 }
 
 const CreateReader: NextPage = () => {
-  const [userInput, setUserInput] = useState('')
-  const [allSegments, setAllSegments] = useState([])
   const [segmenter, setSegmenter] = useState<object | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [readerName, setReaderName] = useState('')
-  const [readerSource, setReaderSource] = useState('')
   const router = useRouter()
   const setUp = useCallback(async () => {
     setIsLoading(true)
@@ -44,64 +40,57 @@ const CreateReader: NextPage = () => {
       const segments = segmenter.tokenize(text)
       return segments.map(segment => {
         const notWords = ['記号']
-        return {
+        const isWordLike = !notWords.includes(segment.pos)
+        let result = {
           segment: segment.surface_form,
-          isWordLike: !notWords.includes(segment.pos)
+          isWordLike,
+          id: uuidv4(),
         }
+        if (isWordLike) {
+          // https://jisho.org/forum/607ba7c9d5dda7783f000000-rate-limiting-on-api-and-search
+          // Will need to find a better solution
+          result.definition = ''
+        }
+        return result
       })
     }
   }
   interface output {
     text: string,
-    name: string
+    name: string,
+    source: string,
+  }
+
+  const createReader = (reader: object) => {
+    let readers
+    const { input, segments, ...readerNoInputOrSegments } = reader;
+    const data = localStorage.getItem('langReaders')
+    readers = data ? JSON.parse(data) : []
+    readers = [...readers, readerNoInputOrSegments]
+    localStorage.setItem('langReaders', JSON.stringify(readers))
+    localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(reader))
   }
 
   const handleOutput = async (output: output) => {
     setIsLoading(true)
-    setUserInput(output.text)
-    setReaderName(output.name)
-    setReaderSource(output.source)
+    const { source, name, text } = output
     const segments = createSegments(output.text)
-    // const handleDefinitions = async segment => {
-    const handleDefinitions = segment => {
-      if (segment.isWordLike) {
-        segment.definition = ''
-      }
-      segment.id = uuidv4()
-      return segment
+    if (segments.length) {
+      const reader = { name, lang: 'ja', input: text, segments, id: uuidv4(), source }
+      createReader(reader)
+      router.push('/')
     }
-    // https://jisho.org/forum/607ba7c9d5dda7783f000000-rate-limiting-on-api-and-search
-    // Will need to find a better solution
-    // const segmentsWithDef = await asyncQueue(segments, 9, handleDefinitions)
-    const segmentsWithDef = segments.map((segment)=> handleDefinitions(segment))
-    setAllSegments(segmentsWithDef)
   }
 
   const handleCancel = () => {
     router.push('/')
   }
 
-
-  useEffect(() => {
-    // https://stackoverflow.com/questions/56247433/how-to-use-setstate-callback-on-react-hooks
-    if (allSegments.length) {
-      let readers
-      const reader = { name: readerName, lang: 'ja', input: userInput, segments: allSegments, id: uuidv4(), source: readerSource }
-      const { input, segments, ...readerNoInputOrSegments } = reader;
-      const data = localStorage.getItem('langReaders')
-      readers = data ? JSON.parse(data) : []
-      readers = [...readers, readerNoInputOrSegments]
-      localStorage.setItem('langReaders', JSON.stringify(readers))
-      localStorage.setItem(`langReader-${reader.id}`, JSON.stringify(reader))
-      router.push('/')
-    }
-  }, [allSegments])
-
   return (
     <Layout>
       <Container maxWidth="lg">
         <h2>Create Reader</h2>
-        {isLoading ? <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}><CircularProgress size={80} /></Box> : <LangInput handleOutput={output => handleOutput(output)} cancel={() => handleCancel()}></LangInput>}
+        {isLoading ? <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '50px' }}><CircularProgress size={80} /></Box> : <LangInput handleOutput={(output: output) => handleOutput(output)} cancel={() => handleCancel()}></LangInput>}
       </Container>
     </Layout>
   )
