@@ -45,6 +45,11 @@ const Selection = (props: SelectionProps) => {
     setUpdate(word)
   }
 
+  const handleMerge = (update: object, direction: string) => {
+    onMerge(update, direction)
+    setShowEditInputs(false)
+  }
+
   return (
     <div className={styles.selectionContainer}>
       <div className={styles.settingsIconContainer}>
@@ -84,8 +89,8 @@ const Selection = (props: SelectionProps) => {
           />
           <Button className={styles.formBtn} variant="outlined" type="submit">Update</Button>
           <Button className={styles.formBtn} onClick={() => handleDelete()} variant="outlined">Delete</Button>
-          <Button className={styles.formBtn} onClick={() => onMerge(update, 'right')} variant="outlined">Merge Right</Button>
-          <Button className={styles.formBtn} onClick={() => onMerge(update, 'left')} variant="outlined">Merge left</Button>
+          <Button className={styles.formBtn} onClick={() => handleMerge(update, 'right')} variant="outlined">Merge Right</Button>
+          <Button className={styles.formBtn} onClick={() => handleMerge(update, 'left')} variant="outlined">Merge left</Button>
           <Button className={styles.formBtn} onClick={() => getDefinition(update)} variant="outlined">Define</Button>
         </FormControl>
       </form>}
