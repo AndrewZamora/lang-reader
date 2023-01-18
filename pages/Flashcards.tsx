@@ -4,35 +4,36 @@ import WordTable from '../components/WordTable'
 import type { NextPage } from 'next'
 import Layout from '../components/Layout'
 
-const Flashcards: NextPage = () => {
-  const [cards, setCards] = useState<[] | object[] >([])
-
-  const getAllFlashcards = (ids: [string]) => {
-    let flashcards: Array<object> = []
-    ids.forEach((id: string) => {
-      const storedReader = localStorage.getItem(`langReader-${id}`)
-      const parsedReader = storedReader ? JSON.parse(storedReader) : null
-      if (parsedReader.deck && parsedReader.deck.length) {
-        flashcards = [...flashcards, ...parsedReader.deck]
-      }
-    })
-    if (flashcards.length) {
-      setCards(flashcards)
+const getAllFlashcards = (ids: [string]) => {
+  let flashcards: Array<object> = []
+  ids.forEach((id: string) => {
+    const storedReader = localStorage.getItem(`langReader-${id}`)
+    const parsedReader = storedReader ? JSON.parse(storedReader) : null
+    if (parsedReader.deck && parsedReader.deck.length) {
+      flashcards = [...flashcards, ...parsedReader.deck]
     }
+  })
+  return flashcards.length ? flashcards : []
+}
+const createCards = () => {
+  const storedReaders = localStorage.getItem('langReaders')
+  if (storedReaders) {
+    const ids = JSON.parse(storedReaders).map((reader: object) => reader.id)
+    const allCards = getAllFlashcards(ids)
+    return allCards
   }
-
-  useEffect(() => {
-    const storedReaders = localStorage.getItem('langReaders')
-    if (storedReaders) {
-      const ids = JSON.parse(storedReaders).map((reader: object) => reader.id)
-      getAllFlashcards(ids)
-    }
-  }, [])
+  return []
+}
+const Flashcards: NextPage = () => {
+  const createTable = () => {
+    const deck = createCards()
+    return (deck?.length ? <WordTable deck={deck} /> : <h2>No flashcards have been added.</h2>)
+  }
 
   return (
     <Layout>
       <Container maxWidth="lg">
-        {cards.length ? <WordTable deck={cards} /> : <h2>No flashcards have been added.</h2>}
+        {createTable()}
       </Container>
     </Layout>
   )
