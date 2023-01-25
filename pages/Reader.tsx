@@ -33,27 +33,26 @@ const Reader: NextPage = () => {
     setKuroshiro(newKuroshiro)
   }, [])
 
-  useEffect(() => {
-    console.log("useEffect reader")
-    if (kuroshiro) return
-    setUp()
-  }, [kuroshiro])
-
-  useEffect(() => {
+  const getReader = () => {
     const { id } = router.query
-    console.log("useEffect reader page")
     if (id) {
       const localData = localStorage.getItem(`langReader-${id}`)
       if (localData) {
         const localReader = JSON.parse(localData)
-        console.log(localReader, id)
         setReader(localReader)
         if (localReader.deck) {
           setDeck(localReader.deck)
         }
       }
     }
-  }, [router])
+  }
+
+  useEffect(() => {
+    console.log("useEffect reader")
+    if (kuroshiro) return
+    setUp()
+    getReader()
+  }, [kuroshiro])
 
   const handlePages = () => {
     let pages = {}
@@ -215,7 +214,7 @@ const Reader: NextPage = () => {
 
   const createReaderPage = () => {
     const page = pages[`${pageIndex}`]
-    if ( page && page.length && reader) {
+    if (page && page.length && reader) {
       return reader.segments.slice(page[0], page[1]).map((segment) => handleSegmentElement(segment))
     }
   }
