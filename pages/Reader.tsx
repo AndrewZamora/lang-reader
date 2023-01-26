@@ -71,11 +71,15 @@ const Reader: NextPage = () => {
     setPages(pages)
   }
 
-  useEffect(() => {
+  const createReaderPage = () => {
+    const page = pages[`${pageIndex}`]
+    if (page && page.length && reader) {
+      return reader.segments.slice(page[0], page[1]).map((segment) => handleSegmentElement(segment))
+    }
     if (reader) {
       handlePages()
     }
-  }, [deck, reader])
+  }
 
   const getHiragana = async (segment: object) => {
     if (kuroshiro) {
@@ -212,12 +216,6 @@ const Reader: NextPage = () => {
     setPageIndex(page - 1)
   }
 
-  const createReaderPage = () => {
-    const page = pages[`${pageIndex}`]
-    if (page && page.length && reader) {
-      return reader.segments.slice(page[0], page[1]).map((segment) => handleSegmentElement(segment))
-    }
-  }
 
   return (
     <Layout>
