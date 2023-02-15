@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Paper, Container, SpeedDial, SpeedDialIcon, SpeedDialAction, } from '@mui/material'
 import { CreateSharp } from '@mui/icons-material'
 import { useRouter } from 'next/router'
@@ -14,19 +14,19 @@ interface Reader {
   id: string
 }
 
-const getReaders = () => {
-  if (typeof window !== 'undefined') {
-    const storedReaders = localStorage.getItem('langReaders')
-    if (storedReaders) {
-      return JSON.parse(storedReaders)
-    }
-  }
-  return []
-}
 
 const Home: NextPage = () => {
   const [readers, setReaders] = useState<Reader[]>([])
-
+  const getReaders = () => {
+    if (typeof window !== 'undefined') {
+      const storedReaders = localStorage.getItem('langReaders')
+      if (storedReaders) {
+        return setReaders(JSON.parse(storedReaders))
+      }
+    }
+    return []
+  }
+  const readersList = readers.length ? readers : getReaders()
   const handleClick = (id: string) => {
     router.push(`/Reader?id=${id}`)
   }
@@ -44,21 +44,14 @@ const Home: NextPage = () => {
     { icon: <CreateSharp />, name: 'Create Reader', onClick: () => { router.push('/CreateReader') } },
   ]
 
-  const createReaderList = () => {
-    const readersList = readers.length ? readers : getReaders()
-    return (
-      <ListReaders
-        readers={readersList}
-        handleClick={(id: string) => handleClick(id)}
-        handleDelete={(id: string) => deleteReader(id)} />
-    )
-  }
-
   return (
     <Layout>
       <Container maxWidth="lg">
         <h2> All Readers</h2>
-        {createReaderList()}
+        <ListReaders
+          readers={readersList}
+          handleClick={(id: string) => handleClick(id)}
+          handleDelete={(id: string) => deleteReader(id)} />
         {/* <SpeedDial
           ariaLabel="create reader"
           sx={{ position: 'absolute', bottom: 16, right: 16 }}
