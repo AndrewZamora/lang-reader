@@ -11,6 +11,7 @@ import WordTable from '../components/WordTable'
 import { saveAs } from 'file-saver'
 import styles from './Reader.module.css'
 import Layout from '../components/Layout'
+import { jsonToCsv } from '../utilities/createFile.js'
 
 const DICT_PATH = '/static/dict/'
 
@@ -203,6 +204,20 @@ const Reader: NextPage = () => {
     saveAs(blob, `${deckName}.apkg`)
   }
 
+  const handleDownload = async (flashCards: { segment: string, hiragana: string, definition: string }[], deckName: string) => {
+    const json = flashCards.map((card) => {
+      const {
+        segment,
+        hiragana,
+        definition
+      } = card
+      return { segment, reading: hiragana, definition }
+    })
+    const csv = jsonToCsv(json)
+    const blob = new Blob([csv], { type: 'text/csv' })
+    saveAs(blob, `${deckName}.csv`)
+  }
+
   const handleSegmentElement = (segment) => {
     if (segment.isWordLike) {
       return (<span className={styles.segment}
@@ -252,8 +267,8 @@ const Reader: NextPage = () => {
               {/* <Button className={styles.flashcardButton} variant="contained" endIcon={<Quiz />}>
               Review
             </Button> */}
-              <Button className={styles.flashcardButton} onClick={() => exportAnkiDeck(deck, reader.name)} variant="contained" endIcon={<Download />}>
-                Download
+              <Button className={styles.flashcardButton} onClick={() => handleDownload(deck, reader.name)} variant="contained" endIcon={<Download />}>
+                Export to CSV
               </Button>
             </div>
             <WordTable deck={deck} />
