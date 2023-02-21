@@ -11,7 +11,7 @@ import WordTable from '../components/WordTable'
 import { saveAs } from 'file-saver'
 import styles from './Reader.module.css'
 import Layout from '../components/Layout'
-import { jsonToCsv } from '../utilities/createFile.js'
+import { jsonToCsv } from '../utilities/createFile'
 
 const DICT_PATH = '/static/dict/'
 
@@ -188,20 +188,6 @@ const Reader: NextPage = () => {
       id: `reader-tab-${index}`,
       'aria-controls': `reader-tabpanel-${index}`,
     };
-  }
-
-  const exportAnkiDeck = async (flashCards: { segment: string, hiragana: string }[], deckName: string) => {
-    const url = `api/ankicards`
-    const options = {
-      method: 'POST',
-      body: JSON.stringify({ flashCards, deckName }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-    const response = await fetch(url, options).catch(error => console.log(error))
-    const blob = await response.blob()
-    saveAs(blob, `${deckName}.apkg`)
   }
 
   const handleDownload = async (flashCards: { segment: string, hiragana: string, definition: string }[], deckName: string) => {
