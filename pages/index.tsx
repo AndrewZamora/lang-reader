@@ -48,10 +48,11 @@ const Home: NextPage = () => {
     <Layout>
       <Container maxWidth="lg">
         <h2> All Readers</h2>
+        {(readersList && readersList.length) ? 
         <ListReaders
           readers={readersList}
           handleClick={(id: string) => handleClick(id)}
-          handleDelete={(id: string) => deleteReader(id)} />
+          handleDelete={(id: string) => deleteReader(id)} /> : <div>No Readers</div>}
         {/* <SpeedDial
           ariaLabel="create reader"
           sx={{ position: 'absolute', bottom: 16, right: 16 }}

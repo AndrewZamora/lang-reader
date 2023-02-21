@@ -14,13 +14,15 @@ export default function ListReaders(props: ListReadersProps) {
   const { readers, handleClick, handleDelete } = props
   const deleteReader = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     event.stopPropagation()
-    if(window.confirm("ARE YOU SURE YOU WANT TO DELETE THIS READER?")){
+    if (window.confirm("ARE YOU SURE YOU WANT TO DELETE THIS READER?")) {
       handleDelete(id)
     }
   }
-  const list = () => {
-    return readers.map(reader => {
-      return (<Paper key={reader.id}
+
+
+    const readerList = readers.map(reader => {
+      return (<Paper
+        key={reader.id}
         onClick={() => handleClick(reader.id)}
         className={styles.readerContainer}
         variant="outlined">
@@ -34,8 +36,7 @@ export default function ListReaders(props: ListReadersProps) {
             </IconButton>
           </div>
         </div>
-      </Paper>)
-    })
-  }
-  return (<>{readers.length ? list() : (<div>No readers</div>)}</>)
+      </Paper>)})
+    return (<>{readerList}</>)
+
 }
