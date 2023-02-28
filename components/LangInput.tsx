@@ -15,7 +15,7 @@ const LangInput = (props: LangInputProps) => {
   const [name, setName] = useState('')
   const [source, setSource] = useState('')
   const [openModal, setOpenModal] = useState(false)
-  const [worker, setWorker] = useState(null)
+  const [worker, setWorker] = useState(null || Object)
 
   const handleOpen = () => {
     const newWorker = createWorker();
