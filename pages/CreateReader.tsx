@@ -24,7 +24,8 @@ interface Reader {
   input: string,
   lang: string,
   segments: object[],
-  id: string
+  id: string,
+  source?: string, 
 }
 interface Word {
   segment: string,
