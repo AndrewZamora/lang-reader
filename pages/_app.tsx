@@ -10,7 +10,13 @@ import createEmotionCache from "./createEmotionCache";
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-export default function MyApp(props) {
+// TODO: REMOVE ANY
+interface Props {
+  Component: any,
+  emotionCache: any,
+  pageProps: any,
+}
+export default function MyApp(props: Props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 console.log({theme})
   return (
