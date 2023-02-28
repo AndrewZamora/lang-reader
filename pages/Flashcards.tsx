@@ -4,8 +4,13 @@ import WordTable from '../components/WordTable'
 import type { NextPage } from 'next'
 import Layout from '../components/Layout'
 
+interface Deck{
+    segment: string,
+    hiragana: string,
+    definition: string
+}
 const getAllFlashcards = (ids: [string]) => {
-  let flashcards: Array<object> = []
+  let flashcards: Array<Deck> = []
   ids.forEach((id: string) => {
     const storedReader = localStorage.getItem(`langReader-${id}`)
     const parsedReader = storedReader ? JSON.parse(storedReader) : null
@@ -18,7 +23,7 @@ const getAllFlashcards = (ids: [string]) => {
 const createCards = () => {
   const storedReaders = localStorage.getItem('langReaders')
   if (storedReaders) {
-    const ids = JSON.parse(storedReaders).map((reader: object) => reader.id)
+    const ids = JSON.parse(storedReaders).map((reader: { id: string }) => reader.id)
     const allCards = getAllFlashcards(ids)
     return allCards
   }
