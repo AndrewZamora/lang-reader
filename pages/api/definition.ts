@@ -14,7 +14,6 @@ export default async function handler(
     } 
     res.json(json)
   } catch (error) {
-    console.log(result)
     console.log({error})
   }
 }
