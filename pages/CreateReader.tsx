@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'next/router'
 import Kuromoji from 'kuromoji'
 import Layout from '../components/Layout'
+import Reader from './Reader'
 const DICT_PATH = '/static/dict/'
 
 const initTokenizer = (): Promise<object> => {
@@ -18,8 +19,23 @@ const initTokenizer = (): Promise<object> => {
   });
 }
 
+interface Reader {
+  name: string,
+  input: string,
+  lang: string,
+  segments: object[],
+  id: string
+}
+interface Word {
+  segment: string,
+  isWordLike: boolean,
+  id: string,
+  definition?: string
+}
+
 const CreateReader: NextPage = () => {
-  const [segmenter, setSegmenter] = useState<object | null>(null)
+  // TODO: REMOVE ANY
+  const [segmenter, setSegmenter] = useState<any | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const setUp = useCallback(async () => {
@@ -35,13 +51,13 @@ const CreateReader: NextPage = () => {
     setUp()
   }, [])
 
-  const createSegments = (text: string) => {
+  const createSegments = (text: string): object[] => {
     if (segmenter) {
       const segments = segmenter.tokenize(text)
-      return segments.map(segment => {
+      return segments.map((segment: { pos: string; surface_form: string }) => {
         const notWords = ['記号']
         const isWordLike = !notWords.includes(segment.pos)
-        let result = {
+        let result: Word = {
           segment: segment.surface_form,
           isWordLike,
           id: uuidv4(),
@@ -54,6 +70,7 @@ const CreateReader: NextPage = () => {
         return result
       })
     }
+    return []
   }
   interface output {
     text: string,
@@ -61,7 +78,7 @@ const CreateReader: NextPage = () => {
     source: string,
   }
 
-  const createReader = (reader: object) => {
+  const createReader = (reader: Reader) => {
     let readers
     const { input, segments, ...readerNoInputOrSegments } = reader;
     const data = localStorage.getItem('langReaders')
@@ -75,8 +92,8 @@ const CreateReader: NextPage = () => {
     setIsLoading(true)
     const { source, name, text } = output
     const segments = createSegments(output.text)
-    if (segments.length) {
-      const reader = { name, lang: 'ja', input: text, segments, id: uuidv4(), source }
+    if (segments?.length) {
+      const reader: Reader = { name, lang: 'ja', input: text, segments, id: uuidv4(), source }
       createReader(reader)
       router.push('/')
     }
