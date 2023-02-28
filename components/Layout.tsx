@@ -3,6 +3,7 @@ import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, 
 import { GitHub, Menu, Create, Style } from '@mui/icons-material'
 import Link from 'next/link'
 import styles from './Layout.module.css'
+import { ReactJSXElementAttributesProperty } from '@emotion/react/types/jsx-namespace'
 
 const drawerWidth = 240
 interface Props {
@@ -10,9 +11,10 @@ interface Props {
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
-  window?: () => Window
+  window?: () => Window,
+  children: ReactJSXElementAttributesProperty 
 }
-export default function Layout(props) {
+export default function Layout(props: Props) {
   const { window, children } = props
   const [mobileOpen, setMobileOpen] = useState(false)
 

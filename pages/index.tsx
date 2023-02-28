@@ -21,7 +21,8 @@ const Home: NextPage = () => {
     if (typeof window !== 'undefined') {
       const storedReaders = localStorage.getItem('langReaders')
       if (storedReaders) {
-        return setReaders(JSON.parse(storedReaders))
+        setReaders(JSON.parse(storedReaders))
+        return JSON.parse(storedReaders)
       }
     }
     return []
@@ -33,7 +34,7 @@ const Home: NextPage = () => {
 
   const deleteReader = (id: string) => {
     const readers = getReaders()
-    const updatedReaders = readers.filter(reader => reader.id !== id)
+    const updatedReaders = readers.filter((reader: { id: string }) => reader.id !== id)
     setReaders(updatedReaders)
     localStorage.setItem('langReaders', JSON.stringify(updatedReaders))
     localStorage.removeItem(`langReader-${id}`)
