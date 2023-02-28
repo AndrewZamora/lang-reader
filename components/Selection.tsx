@@ -21,7 +21,7 @@ interface SelectionProps {
 const Selection = (props: SelectionProps) => {
   const { word, deck, onRemove, onAdd, onEdit, onDelete, onMerge, onDefine } = props
   const [showEditInputs, setShowEditInputs] = useState(false)
-  const [update, setUpdate] = useState({})
+  const [update, setUpdate] = useState<SelectionProps["word"]>({hiragana:'', segment: '', definition:''})
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -34,7 +34,7 @@ const Selection = (props: SelectionProps) => {
     setShowEditInputs(false)
   }
 
-  const getDefinition = async (update: object) => {
+  const getDefinition = async () => {
     // TODO: Need to look into a better way of handling await here
     const definition = await onDefine(update)
     setUpdate({ ...update, definition })
@@ -91,7 +91,7 @@ const Selection = (props: SelectionProps) => {
           <Button className={styles.formBtn} onClick={() => handleDelete()} variant="outlined">Delete</Button>
           <Button className={styles.formBtn} onClick={() => handleMerge(update, 'right')} variant="outlined">Merge Right</Button>
           <Button className={styles.formBtn} onClick={() => handleMerge(update, 'left')} variant="outlined">Merge left</Button>
-          <Button className={styles.formBtn} onClick={() => getDefinition(update)} variant="outlined">Define</Button>
+          <Button className={styles.formBtn} onClick={() => getDefinition()} variant="outlined">Define</Button>
         </FormControl>
       </form>}
     </div>
