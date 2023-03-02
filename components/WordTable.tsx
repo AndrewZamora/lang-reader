@@ -6,7 +6,9 @@ interface WordTableProps {
   deck: {
     segment: string,
     hiragana: string,
-    definition: string
+    definition?: string,
+    isWordLike: boolean,
+    id: string,
   }[],
 }
 
@@ -23,7 +25,7 @@ const WordTable = (props: WordTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {deck.map((card) => (
+          {deck?.length && deck.map((card) => (
             <TableRow
               key={card.segment}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

@@ -8,6 +8,8 @@ interface SelectionProps {
     segment: string,
     hiragana: string,
     definition: string | any
+    isWordLike?: boolean,
+    id?: string,
   },
   deck: string[],
   onAdd(word: object): void,
@@ -21,7 +23,8 @@ interface SelectionProps {
 const Selection = (props: SelectionProps) => {
   const { word, deck, onRemove, onAdd, onEdit, onDelete, onMerge, onDefine } = props
   const [showEditInputs, setShowEditInputs] = useState(false)
-  const [update, setUpdate] = useState<SelectionProps["word"]>({hiragana:'', segment: '', definition:''})
+  // TODO: REMOVE ANY
+  const [update, setUpdate] = useState<any>({ hiragana: '', segment: '', definition: '' })
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()

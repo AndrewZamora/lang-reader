@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'next/router'
 import Kuromoji from 'kuromoji'
 import Layout from '../components/Layout'
-import Reader from './Reader'
 const DICT_PATH = '/static/dict/'
 
 const initTokenizer = (): Promise<object> => {
