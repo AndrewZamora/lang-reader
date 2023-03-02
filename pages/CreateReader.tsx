@@ -49,7 +49,7 @@ const CreateReader: NextPage = () => {
     if (segmenter) return
     console.log("useEffect called")
     setUp()
-  }, [])
+  }, [segmenter])
 
   const createSegments = (text: string): object[] => {
     if (segmenter) {
