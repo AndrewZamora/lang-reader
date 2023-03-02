@@ -4,10 +4,12 @@ import WordTable from '../components/WordTable'
 import type { NextPage } from 'next'
 import Layout from '../components/Layout'
 
-interface Deck{
+interface Deck {
     segment: string,
     hiragana: string,
-    definition: string
+    definition?: string,
+    isWordLike: boolean,
+    id: string,
 }
 const getAllFlashcards = (ids: [string]) => {
   let flashcards: Array<Deck> = []
