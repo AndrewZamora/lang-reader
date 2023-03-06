@@ -5,11 +5,11 @@ import type { NextPage } from 'next'
 import Layout from '../components/Layout'
 
 interface Deck {
-    segment: string,
-    hiragana: string,
-    definition?: string,
-    isWordLike: boolean,
-    id: string,
+  segment: string,
+  hiragana: string,
+  definition?: string,
+  isWordLike: boolean,
+  id: string,
 }
 const getAllFlashcards = (ids: [string]) => {
   let flashcards: Array<Deck> = []
@@ -23,11 +23,13 @@ const getAllFlashcards = (ids: [string]) => {
   return flashcards.length ? flashcards : []
 }
 const createCards = () => {
-  const storedReaders = localStorage.getItem('langReaders')
-  if (storedReaders) {
-    const ids = JSON.parse(storedReaders).map((reader: { id: string }) => reader.id)
-    const allCards = getAllFlashcards(ids)
-    return allCards
+  if (typeof window !== 'undefined') {
+    const storedReaders = localStorage.getItem('langReaders')
+    if (storedReaders) {
+      const ids = JSON.parse(storedReaders).map((reader: { id: string }) => reader.id)
+      const allCards = getAllFlashcards(ids)
+      return allCards
+    }
   }
   return []
 }
