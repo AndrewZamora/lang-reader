@@ -1,8 +1,12 @@
 import React from 'react'
-import { Container } from '@mui/material'
+import { Container, Button } from '@mui/material'
 import WordTable from '../components/WordTable'
 import type { NextPage } from 'next'
 import Layout from '../components/Layout'
+import { saveAs } from 'file-saver'
+import { jsonToCsv } from '../utilities/createFile'
+import { Download } from '@mui/icons-material'
+import styles from './Flashcards.module.css'
 
 interface Deck {
   segment: string,
@@ -33,10 +37,33 @@ const createCards = () => {
   }
   return []
 }
+const handleDownload = async (flashcards: Deck[]) => {
+  if (!flashcards) return
+  const json = flashcards.map((card: Deck) => {
+    const {
+      segment,
+      hiragana,
+      definition
+    } = card
+    return { segment, reading: hiragana, definition }
+  })
+  const csv = jsonToCsv(json)
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const date = new Date()
+  saveAs(blob, `allFlashcards-${date.getTime()}.csv`)
+}
+
 const Flashcards: NextPage = () => {
   const createTable = () => {
     const deck = createCards()
-    return (deck?.length ? <WordTable deck={deck} /> : <h2>No flashcards have been added.</h2>)
+    return (deck?.length ? <div>
+      <div className={styles.flashcardButtons}  >
+        <Button onClick={() => handleDownload(deck)} variant="contained" endIcon={<Download />}>
+          Export to CSV
+        </Button>
+      </div>
+      <WordTable deck={deck} /></div>
+      : <h2>No flashcards have been added.</h2>)
   }
 
   return (
