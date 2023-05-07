@@ -1,15 +1,9 @@
 
 import React from 'react'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-
+import Deck from '../types/deck'
 interface WordTableProps {
-  deck: {
-    segment: string,
-    hiragana: string,
-    definition?: string,
-    isWordLike: boolean,
-    id: string,
-  }[],
+  deck: Array<Deck>,
 }
 
 const WordTable = (props: WordTableProps) => {

@@ -7,14 +7,8 @@ import { saveAs } from 'file-saver'
 import { jsonToCsv } from '../utilities/createFile'
 import { Download } from '@mui/icons-material'
 import styles from './Flashcards.module.css'
+import Deck from '../types/deck'
 
-interface Deck {
-  segment: string,
-  hiragana: string,
-  definition?: string,
-  isWordLike: boolean,
-  id: string,
-}
 const getAllFlashcards = (ids: [string]) => {
   let flashcards: Array<Deck> = []
   ids.forEach((id: string) => {
