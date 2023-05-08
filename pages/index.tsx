@@ -5,15 +5,7 @@ import { CreateSharp } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import ListReaders from '../components/ListReaders'
 import Layout from '../components/Layout'
-
-interface Reader {
-  name: string,
-  input: string,
-  lang: string,
-  segments: string[],
-  id: string
-}
-
+import Reader from '../types/Reader'
 
 const Home: NextPage = () => {
   const [readers, setReaders] = useState<Reader[]>([])

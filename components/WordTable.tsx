@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import Deck from '../types/deck'
+import Deck from '../types/Deck'
 interface WordTableProps {
   deck: Array<Deck>,
 }

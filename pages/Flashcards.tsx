@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver'
 import { jsonToCsv } from '../utilities/createFile'
 import { Download } from '@mui/icons-material'
 import styles from './Flashcards.module.css'
-import Deck from '../types/deck'
+import Deck from '../types/Deck'
 
 const getAllFlashcards = (ids: [string]) => {
   let flashcards: Array<Deck> = []

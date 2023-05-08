@@ -14,31 +14,17 @@ import { saveAs } from 'file-saver'
 import styles from './Reader.module.css'
 import Layout from '../components/Layout'
 import { jsonToCsv } from '../utilities/createFile'
-
+import Deck from '../types/Deck'
+import Reader from '../types/Reader'
 const DICT_PATH = '/static/dict/'
 
-interface Word {
-  segment: string,
-  isWordLike: boolean,
-  id: string,
-  definition: string,
-  hiragana: string
-}
-interface Reader {
-  name: string,
-  input: string,
-  lang: string,
-  segments: Word[],
-  id: string,
-  source?: string,
-}
 const Reader: NextPage = () => {
   const router = useRouter()
   const [reader, setReader] = useState<Reader | null>(null)
-  const [selection, setSelection] = useState<Word | null>(null)
+  const [selection, setSelection] = useState<Deck | null>(null)
   // TODO: REMOVE ANY
   const [kuroshiro, setKuroshiro] = useState<object | any>(null)
-  const [deck, setDeck] = useState<Word[]>([])
+  const [deck, setDeck] = useState<Deck[]>([])
   const [tab, setTab] = useState(0)
 
   const setUp = useCallback(async () => {
@@ -89,7 +75,7 @@ const Reader: NextPage = () => {
     }
   }
 
-  const handleDefine = async (segment: Word) => {
+  const handleDefine = async (segment: Deck) => {
     const definition = await getDefinition(segment.segment)
     if (definition.length && definition[0] && definition[0].senses.length && definition[0].senses[0].english_definitions.length) {
       return definition[0].senses[0].english_definitions[0]
@@ -106,7 +92,7 @@ const Reader: NextPage = () => {
     }
   }
 
-  const handleClick = async (segment: Word) => {
+  const handleClick = async (segment: Deck) => {
     const hiragana = await getHiragana(segment.segment)
     let newSelection = { ...segment, hiragana }
     if (segment.definition) {
@@ -115,7 +101,7 @@ const Reader: NextPage = () => {
     setSelection(newSelection)
   }
 
-  const addToDeck = (word: Word) => {
+  const addToDeck = (word: Deck) => {
     const deckUpdate = [...deck, word]
     setDeck(deckUpdate)
     const readerUpdate = { ...reader, deck: deckUpdate }
@@ -124,9 +110,9 @@ const Reader: NextPage = () => {
     }
   }
 
-  const removeFromDeck = (word: Word) => {
+  const removeFromDeck = (word: Deck) => {
     if (deck.length) {
-      const deckUpdate = deck.filter((card: Word) => card.segment !== word.segment)
+      const deckUpdate = deck.filter((card: Deck) => card.segment !== word.segment)
       setDeck(deckUpdate)
       const readerUpdate = { ...reader, deck: deckUpdate }
       if (reader) {
@@ -135,7 +121,7 @@ const Reader: NextPage = () => {
     }
   }
 
-  const mergeSegment = async (word: Word, direction: 'left' | 'right') => {
+  const mergeSegment = async (word: Deck, direction: 'left' | 'right') => {
     if (reader) {
       const wordIndex: number = reader.segments.findIndex(segment => segment.id === word.id)
       const directions = { right: 1, left: -1 }
@@ -155,7 +141,7 @@ const Reader: NextPage = () => {
     }
   }
 
-  const editSegment = (word: Word) => {
+  const editSegment = (word: Deck) => {
     if (reader) {
       const updatedSegments = reader.segments.map(segment => {
         if (segment.id === word.id) {
@@ -170,7 +156,7 @@ const Reader: NextPage = () => {
     }
   }
 
-  const deleteSegment = (word: Word) => {
+  const deleteSegment = (word: Deck) => {
     if (reader) {
       const updatedSegments = reader.segments.filter(segment => segment.id !== word.id)
       const readerUpdate = { ...reader }
@@ -206,7 +192,7 @@ const Reader: NextPage = () => {
     saveAs(blob, `${reader.name}.csv`)
   }
 
-  const handleSegmentElement = (segment: Word) => {
+  const handleSegmentElement = (segment: Deck) => {
     if (segment.isWordLike) {
       return (<span className={styles.segment}
         onClick={(() => handleClick(segment))}
@@ -238,12 +224,12 @@ const Reader: NextPage = () => {
               <Paper className={styles.selectionContainer}>
                 {selection && <div className={styles.selection}><Selection word={selection}
                   deck={deck.map((item) => item && item.segment)}
-                  onAdd={(word: Word) => addToDeck(word)}
-                  onRemove={(word: Word) => removeFromDeck(word)}
-                  onEdit={(word: Word) => editSegment(word)}
-                  onDefine={(word: Word) => handleDefine(word)}
-                  onDelete={(word: Word) => deleteSegment(word)}
-                  onMerge={(word: Word, direction: 'left' | 'right') => mergeSegment(word, direction)} /></div>}
+                  onAdd={(word: Deck) => addToDeck(word)}
+                  onRemove={(word: Deck) => removeFromDeck(word)}
+                  onEdit={(word: Deck) => editSegment(word)}
+                  onDefine={(word: Deck) => handleDefine(word)}
+                  onDelete={(word: Deck) => deleteSegment(word)}
+                  onMerge={(word: Deck, direction: 'left' | 'right') => mergeSegment(word, direction)} /></div>}
               </Paper>
             </Grid>
           </Grid>

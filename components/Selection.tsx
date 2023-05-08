@@ -2,15 +2,10 @@ import React, { useState } from 'react'
 import { Button, IconButton, FormControl, TextField, } from '@mui/material'
 import { Edit as EditIcon } from '@mui/icons-material'
 import styles from './Selection.module.css'
+import Deck from '../types/Deck'
 
 interface SelectionProps {
-  word: {
-    segment: string,
-    hiragana: string,
-    definition: string | any
-    isWordLike?: boolean,
-    id?: string,
-  },
+  word: Deck,
   deck: string[],
   onAdd(word: object): void,
   onRemove(word: object): void,

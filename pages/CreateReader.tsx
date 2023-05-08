@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'next/router'
 import Kuromoji from 'kuromoji'
 import Layout from '../components/Layout'
+import Word from '../types/Word'
 const DICT_PATH = '/static/dict/'
 
 const initTokenizer = (): Promise<object> => {
@@ -25,12 +26,6 @@ interface Reader {
   segments: object[],
   id: string,
   source?: string,
-}
-interface Word {
-  segment: string,
-  isWordLike: boolean,
-  id: string,
-  definition?: string
 }
 
 const CreateReader: NextPage = () => {
