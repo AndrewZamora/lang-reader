@@ -8,6 +8,8 @@ import { useRouter } from 'next/router'
 import Kuromoji from 'kuromoji'
 import Layout from '../components/Layout'
 import Word from '../types/Word'
+import Deck from '../types/Deck'
+import Reader from '../types/Reader'
 const DICT_PATH = '/static/dict/'
 
 const initTokenizer = (): Promise<object> => {
@@ -17,15 +19,6 @@ const initTokenizer = (): Promise<object> => {
       resolve(tokenizer)
     })
   });
-}
-
-interface Reader {
-  name: string,
-  input: string,
-  lang: string,
-  segments: object[],
-  id: string,
-  source?: string,
 }
 
 const CreateReader: NextPage = () => {
@@ -46,7 +39,7 @@ const CreateReader: NextPage = () => {
     setUp()
   }, [segmenter])
 
-  const createSegments = (text: string): object[] => {
+  const createSegments = (text: string): Deck[] => {
     if (segmenter) {
       const segments = segmenter.tokenize(text)
       return segments.map((segment: { pos: string; surface_form: string }) => {
