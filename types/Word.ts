@@ -3,4 +3,5 @@ export default interface Word {
   isWordLike: boolean,
   id: string,
   definition?: string,
+  hiragana?: string,
 }

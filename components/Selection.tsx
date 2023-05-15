@@ -3,6 +3,7 @@ import { Button, IconButton, FormControl, TextField, } from '@mui/material'
 import { Edit as EditIcon } from '@mui/icons-material'
 import styles from './Selection.module.css'
 import Deck from '../types/Deck'
+import Word from '../types/Word'
 
 interface SelectionProps {
   word: Deck,
@@ -11,31 +12,40 @@ interface SelectionProps {
   onRemove(word: object): void,
   onEdit(word: object): void,
   onDelete(word: object): void,
-  onDefine(word: object): void,
+  onDefine(word: object): Promise<string>,
   onMerge(word: object, direction: string): void,
 }
 
 const Selection = (props: SelectionProps) => {
   const { word, deck, onRemove, onAdd, onEdit, onDelete, onMerge, onDefine } = props
   const [showEditInputs, setShowEditInputs] = useState(false)
-  // TODO: REMOVE ANY
-  const [update, setUpdate] = useState<any>({ hiragana: '', segment: '', definition: '' })
+  const [update, setUpdate] = useState<Word | null>(null)
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    onEdit(update)
-    setShowEditInputs(false)
+    if (update) {
+      onEdit(update)
+      setShowEditInputs(false)
+    }
   }
 
   const handleDelete = () => {
-    onDelete(update)
-    setShowEditInputs(false)
+    if (update) {
+      onDelete(update)
+      setShowEditInputs(false)
+    }
   }
 
   const getDefinition = async () => {
-    // TODO: Need to look into a better way of handling await here
-    const definition = await onDefine(update)
-    setUpdate({ ...update, definition })
+    if (update) {
+      // TODO: Need to look into a better way of handling await here
+      const definition = await onDefine(update)
+      if (definition) {
+        setUpdate({ ...update, definition })
+      } else {
+        return ''
+      }
+    }
   }
 
   const handleEdit = () => {
@@ -61,7 +71,7 @@ const Selection = (props: SelectionProps) => {
         {word.definition && <p><span>Definition: </span>{word.definition}</p>}
         {deck.includes(word.segment) ? <Button variant="outlined" className={styles.button} onClick={() => onRemove(word)}>Remove from flashcards</Button> : <Button variant="outlined" className={styles.button} onClick={() => onAdd(word)}>Add to flashcards</Button>}
       </div>}
-      {showEditInputs && <form onSubmit={event => handleSubmit(event)}>
+      {(update && showEditInputs) && <form onSubmit={event => handleSubmit(event)}>
 
         <FormControl fullWidth sx={{ m: 1 }} className={styles.inputsContainer}>
           <TextField

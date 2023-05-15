@@ -23,7 +23,7 @@ const Home: NextPage = () => {
     }
     return []
   }
-  // const readersList = readers.length ? readers : getReaders()
+
   const handleClick = (id: string) => {
     router.push(`/Reader?id=${id}`)
   }

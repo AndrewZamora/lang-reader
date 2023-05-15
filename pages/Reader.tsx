@@ -75,10 +75,12 @@ const Reader: NextPage = () => {
     }
   }
 
-  const handleDefine = async (segment: Deck) => {
+  const handleDefine = async (segment: Deck):Promise<string> => {
     const definition = await getDefinition(segment.segment)
     if (definition.length && definition[0] && definition[0].senses.length && definition[0].senses[0].english_definitions.length) {
       return definition[0].senses[0].english_definitions[0]
+    } else {
+      return ''
     }
   }
 
