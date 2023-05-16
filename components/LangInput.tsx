@@ -51,7 +51,6 @@ const LangInput = (props: LangInputProps) => {
   }
 
   const handleFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event)
     if (event.target.files && event.target.files[0] && worker) {
       setOpenModal(false)
       const file = event.target.files[0]

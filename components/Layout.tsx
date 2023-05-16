@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material'
 import { GitHub, Menu, Create, Style } from '@mui/icons-material'
 import Link from 'next/link'
@@ -11,8 +11,7 @@ interface Props {
    * You won't need it on your project.
    */
   window?: () => Window,
-  // TODO: REMOVE ANY
-  children: any 
+  children: ReactNode,
 }
 export default function Layout(props: Props) {
   const { window, children } = props
